@@ -132,7 +132,10 @@
                                       <td class="center">no</td>
                                       <td class="center">no</td>
                                       <td class="center">no</td>
-                                      <td>>/td>
+                                      <td class="center">
+                                        <button type="button" class="btn btn-xs btn-primary"><i class="fa fa-list"></i></button>
+                                        <button class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i></button>
+                                      </td>
                                   </tr>
                                   <tr class="odd gradeX">
                                       <td>prueba2.com.ar</td>
@@ -142,6 +145,10 @@
                                       <td class="center">no</td>
                                       <td class="center">no</td>
                                       <td class="center">no</td>
+                                      <td class="center">
+                                        <button type="button" class="btn btn-xs btn-primary"><i class="fa fa-list"></i></button>
+                                        <button class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i></button>
+                                      </td>
                                   </tr>
                               </tbody>
                           </table>
@@ -154,6 +161,48 @@
           </div>
 
 
+        <div id=form class="col-lg-6" >
+          <div class="panel panel-default">
+              <div class="panel-heading">
+                  Nuevo Sitio
+              </div>
+              <div class="panel-body">
+                <form role=form>
+                    <label>Dominio</label>
+                    <input class="form-control" name="dominio">
+                    <br>
+                    <label>Configuración</label>
+                    <div class="checkbox">
+                        <label>
+                            <input name="ssl" type="checkbox" value=""> SSL
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input name="cgi" type="checkbox" value=""> CGI
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input name="python" type="checkbox" value=""> Python
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input name="ruby" type="checkbox" value=""> Ruby
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input name="perl" type="checkbox" value=""> Perl
+                        </label>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-default">Guardar</button>
+                    <button type="cancel" class="btn btn-default">Salir</button>
+                </form>
+              </div>
+        </div>
 
         </div>
         <!-- /#page-wrapper -->
