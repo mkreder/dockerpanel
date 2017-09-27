@@ -1,0 +1,4 @@
+Hello is a simple template function.
+{% func Hello(name string) %}
+Hello, {%s name %}!
+{% endfunc %}
