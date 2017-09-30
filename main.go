@@ -63,6 +63,7 @@ func main() {
 	r.Get("/login", LoginHandler)
 
 	r.Post("/addweb", controller.AddWeb)
+	r.Get("/removeWeb",controller.RemoveWeb)
 
 	port := 9090
 	srv := &http.Server{

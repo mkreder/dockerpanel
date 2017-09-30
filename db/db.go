@@ -10,6 +10,8 @@ import (
 type Manager interface {
 	AddWeb(web *model.Web) error
 	CheckIfWebExists(dominio string) bool
+    GetAllWebs() []model.Web
+	RemoveWeb(id string)
 
 	migrate()
 	// Add other methods
@@ -30,6 +32,13 @@ func init() {
 	Mgr = &manager{db: db}
 	Mgr.migrate()
 }
+func (mgr *manager) migrate(){
+	mgr.db.AutoMigrate(&model.Web{})
+}
+
+
+// Web
+
 
 func (mgr *manager) AddWeb(web *model.Web) (err error) {
 	mgr.db.Create(web)
@@ -39,13 +48,20 @@ func (mgr *manager) AddWeb(web *model.Web) (err error) {
 	return
 }
 
+
 func (mgr *manager) CheckIfWebExists(dominio string) bool{
 	var web model.Web
 	exists := mgr.db.First(&web,"dominio = ?",dominio).RecordNotFound()
 	return ! exists
 }
 
-func (mgr *manager) migrate(){
-	mgr.db.AutoMigrate(&model.Web{})
+func (mgr *manager) GetAllWebs() []model.Web {
+	var webs []model.Web
+	mgr.db.Find(&webs)
+	return webs
 }
 
+
+func (mgr *manager) RemoveWeb(id string) {
+	mgr.db.Delete(model.Web{}, "id == ?", id)
+}

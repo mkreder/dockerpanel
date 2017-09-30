@@ -5,21 +5,24 @@
 package templates
 
 //line templates/web.qtpl:1
+import "github.com/mkreder/dockerpanel/model"
+
+//line templates/web.qtpl:2
 import (
 	qtio422016 "io"
 
 	qt422016 "github.com/valyala/quicktemplate"
 )
 
-//line templates/web.qtpl:1
+//line templates/web.qtpl:2
 var (
 	_ = qtio422016.Copy
 	_ = qt422016.AcquireByteBuffer
 )
 
-//line templates/web.qtpl:1
-func StreamWebTemplate(qw422016 *qt422016.Writer) {
-	//line templates/web.qtpl:1
+//line templates/web.qtpl:2
+func StreamWebTemplate(qw422016 *qt422016.Writer, webs []model.Web) {
+	//line templates/web.qtpl:2
 	qw422016.N().S(`
 
 <!DOCTYPE html>
@@ -163,32 +166,148 @@ func StreamWebTemplate(qw422016 *qt422016.Writer) {
                             </tr>
                             </thead>
                             <tbody>
+                            `)
+	//line templates/web.qtpl:145
+	for _, web := range webs {
+		//line templates/web.qtpl:145
+		qw422016.N().S(`
                             <tr class="odd gradeX">
-                                <td>prueba.com.ar</td>
+                                <td> `)
+		//line templates/web.qtpl:147
+		qw422016.E().S(web.Dominio)
+		//line templates/web.qtpl:147
+		qw422016.N().S(` </td>
+
+                                `)
+		//line templates/web.qtpl:149
+		switch web.Status {
+		//line templates/web.qtpl:150
+		case 1:
+			//line templates/web.qtpl:150
+			qw422016.N().S(`
+                                <td>a configurar</td>
+                                `)
+		//line templates/web.qtpl:152
+		case 2:
+			//line templates/web.qtpl:152
+			qw422016.N().S(`
+                                <td>configurado</td>
+                                `)
+		//line templates/web.qtpl:154
+		case 3:
+			//line templates/web.qtpl:154
+			qw422016.N().S(`
                                 <td>corriendo</td>
+                                `)
+			//line templates/web.qtpl:156
+		}
+		//line templates/web.qtpl:156
+		qw422016.N().S(`
+
+                                `)
+		//line templates/web.qtpl:158
+		if web.SSL {
+			//line templates/web.qtpl:158
+			qw422016.N().S(`
                                 <td class="center">si</td>
+                                `)
+			//line templates/web.qtpl:160
+		} else {
+			//line templates/web.qtpl:160
+			qw422016.N().S(`
                                 <td class="center">no</td>
+                                `)
+			//line templates/web.qtpl:162
+		}
+		//line templates/web.qtpl:162
+		qw422016.N().S(`
+
+                                `)
+		//line templates/web.qtpl:164
+		if web.CGI {
+			//line templates/web.qtpl:164
+			qw422016.N().S(`
+                                <td class="center">si</td>
+                                `)
+			//line templates/web.qtpl:166
+		} else {
+			//line templates/web.qtpl:166
+			qw422016.N().S(`
                                 <td class="center">no</td>
+                                `)
+			//line templates/web.qtpl:168
+		}
+		//line templates/web.qtpl:168
+		qw422016.N().S(`
+
+                                `)
+		//line templates/web.qtpl:170
+		if web.Python {
+			//line templates/web.qtpl:170
+			qw422016.N().S(`
+                                <td class="center">si</td>
+                                `)
+			//line templates/web.qtpl:172
+		} else {
+			//line templates/web.qtpl:172
+			qw422016.N().S(`
                                 <td class="center">no</td>
+                                `)
+			//line templates/web.qtpl:174
+		}
+		//line templates/web.qtpl:174
+		qw422016.N().S(`
+
+                                `)
+		//line templates/web.qtpl:176
+		if web.Ruby {
+			//line templates/web.qtpl:176
+			qw422016.N().S(`
+                                <td class="center">si</td>
+                                `)
+			//line templates/web.qtpl:178
+		} else {
+			//line templates/web.qtpl:178
+			qw422016.N().S(`
                                 <td class="center">no</td>
+                                `)
+			//line templates/web.qtpl:180
+		}
+		//line templates/web.qtpl:180
+		qw422016.N().S(`
+
+                                `)
+		//line templates/web.qtpl:182
+		if web.Perl {
+			//line templates/web.qtpl:182
+			qw422016.N().S(`
+                                <td class="center">si</td>
+                                `)
+			//line templates/web.qtpl:184
+		} else {
+			//line templates/web.qtpl:184
+			qw422016.N().S(`
+                                <td class="center">no</td>
+                                `)
+			//line templates/web.qtpl:186
+		}
+		//line templates/web.qtpl:186
+		qw422016.N().S(`
+
                                 <td class="center">
                                     <button type="button" class="btn btn-xs btn-primary"><i class="fa fa-list"></i></button>
-                                    <button class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i></button>
+                                    <button class="btn btn-xs btn-danger" onclick="location.href='removeWeb?id=`)
+		//line templates/web.qtpl:190
+		qw422016.N().D(int(web.ID))
+		//line templates/web.qtpl:190
+		qw422016.N().S(`';"><i class="fa fa-trash-o"></i></button>
                                 </td>
                             </tr>
-                            <tr class="odd gradeX">
-                                <td>prueba2.com.ar</td>
-                                <td>corriendo</td>
-                                <td class="center">si</td>
-                                <td class="center">no</td>
-                                <td class="center">no</td>
-                                <td class="center">no</td>
-                                <td class="center">no</td>
-                                <td class="center">
-                                    <button type="button" class="btn btn-xs btn-primary"><i class="fa fa-list"></i></button>
-                                    <button class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i></button>
-                                </td>
-                            </tr>
+                            `)
+		//line templates/web.qtpl:193
+	}
+	//line templates/web.qtpl:193
+	qw422016.N().S(`
                             </tbody>
                         </table>
                     </div>
@@ -272,31 +391,31 @@ func StreamWebTemplate(qw422016 *qt422016.Writer) {
 </html>
 
 `)
-//line templates/web.qtpl:252
+//line templates/web.qtpl:276
 }
 
-//line templates/web.qtpl:252
-func WriteWebTemplate(qq422016 qtio422016.Writer) {
-	//line templates/web.qtpl:252
+//line templates/web.qtpl:276
+func WriteWebTemplate(qq422016 qtio422016.Writer, webs []model.Web) {
+	//line templates/web.qtpl:276
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line templates/web.qtpl:252
-	StreamWebTemplate(qw422016)
-	//line templates/web.qtpl:252
+	//line templates/web.qtpl:276
+	StreamWebTemplate(qw422016, webs)
+	//line templates/web.qtpl:276
 	qt422016.ReleaseWriter(qw422016)
-//line templates/web.qtpl:252
+//line templates/web.qtpl:276
 }
 
-//line templates/web.qtpl:252
-func WebTemplate() string {
-	//line templates/web.qtpl:252
+//line templates/web.qtpl:276
+func WebTemplate(webs []model.Web) string {
+	//line templates/web.qtpl:276
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line templates/web.qtpl:252
-	WriteWebTemplate(qb422016)
-	//line templates/web.qtpl:252
+	//line templates/web.qtpl:276
+	WriteWebTemplate(qb422016, webs)
+	//line templates/web.qtpl:276
 	qs422016 := string(qb422016.B)
-	//line templates/web.qtpl:252
+	//line templates/web.qtpl:276
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line templates/web.qtpl:252
+	//line templates/web.qtpl:276
 	return qs422016
-//line templates/web.qtpl:252
+//line templates/web.qtpl:276
 }

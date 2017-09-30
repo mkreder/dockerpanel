@@ -11,7 +11,8 @@ import (
 )
 
 func WebHandler(w http.ResponseWriter, r *http.Request) {
-	templates.WriteWebTemplate(w)
+	webs := db.Mgr.GetAllWebs()
+	templates.WriteWebTemplate(w,webs)
 }
 
 func AddWeb(w http.ResponseWriter, r *http.Request) {
@@ -20,7 +21,6 @@ func AddWeb(w http.ResponseWriter, r *http.Request) {
 	if ( db.Mgr.CheckIfWebExists(dominio) ){
 		log.Printf("El dominio %s ya existe",dominio)
 	} else {
-		log.Printf("El dominio %s no existe ",dominio)
 		var err error
 		web := model.Web{}
 		web.Dominio = dominio
@@ -65,9 +65,18 @@ func AddWeb(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
+		web.Status = 1
+
 		db.Mgr.AddWeb(&web)
 
 	}
-	templates.WriteWebTemplate(w)
+	templates.WriteWebTemplate(w,db.Mgr.GetAllWebs())
 
+
+}
+
+func RemoveWeb(w http.ResponseWriter, r *http.Request) {
+	id := r.URL.Query().Get("id")
+	db.Mgr.RemoveWeb(id)
+	templates.WriteWebTemplate(w,db.Mgr.GetAllWebs())
 }

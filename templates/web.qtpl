@@ -1,4 +1,5 @@
-{% func WebTemplate() %}
+{% import "github.com/mkreder/dockerpanel/model" %}
+{% func WebTemplate(webs []model.Web) %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -141,32 +142,55 @@
                             </tr>
                             </thead>
                             <tbody>
+                            {% for _, web := range webs %}
                             <tr class="odd gradeX">
-                                <td>prueba.com.ar</td>
+                                <td> {%s web.Dominio %} </td>
+
+                                {% switch web.Status %}
+                                {% case 1 %}
+                                <td>a configurar</td>
+                                {% case 2 %}
+                                <td>configurado</td>
+                                {% case 3 %}
                                 <td>corriendo</td>
+                                {% endswitch %}
+
+                                {% if web.SSL %}
                                 <td class="center">si</td>
+                                {% else %}
                                 <td class="center">no</td>
+                                {% endif %}
+
+                                {% if web.CGI %}
+                                <td class="center">si</td>
+                                {% else %}
                                 <td class="center">no</td>
+                                {% endif %}
+
+                                {% if web.Python %}
+                                <td class="center">si</td>
+                                {% else %}
                                 <td class="center">no</td>
+                                {% endif %}
+
+                                {% if web.Ruby %}
+                                <td class="center">si</td>
+                                {% else %}
                                 <td class="center">no</td>
+                                {% endif %}
+
+                                {% if web.Perl %}
+                                <td class="center">si</td>
+                                {% else %}
+                                <td class="center">no</td>
+                                {% endif %}
+
                                 <td class="center">
                                     <button type="button" class="btn btn-xs btn-primary"><i class="fa fa-list"></i></button>
-                                    <button class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i></button>
+                                    <button class="btn btn-xs btn-danger" onclick="location.href='removeWeb?id={%d int(web.ID) %}';"><i class="fa fa-trash-o"></i></button>
                                 </td>
                             </tr>
-                            <tr class="odd gradeX">
-                                <td>prueba2.com.ar</td>
-                                <td>corriendo</td>
-                                <td class="center">si</td>
-                                <td class="center">no</td>
-                                <td class="center">no</td>
-                                <td class="center">no</td>
-                                <td class="center">no</td>
-                                <td class="center">
-                                    <button type="button" class="btn btn-xs btn-primary"><i class="fa fa-list"></i></button>
-                                    <button class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i></button>
-                                </td>
-                            </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>
