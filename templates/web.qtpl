@@ -8,6 +8,7 @@
         var x = document.getElementById('form');
         x.style.display = 'block';
     }
+
     function hideDiv() {
         var x = document.getElementById('form');
         x.style.display = 'none';
@@ -16,8 +17,10 @@
         document.getElementById("cgi").checked = false;
         document.getElementById("python").checked = false;
         document.getElementById("perl").checked = false;
+        document.getElementById("php").checked = false;
         document.getElementById("ruby").checked = false;
     }
+
 </script>
 <head>
 
@@ -134,6 +137,7 @@
                                 <th>Dominio</th>
                                 <th>Estado</th>
                                 <th>SSL</th>
+                                <th>PHP</th>
                                 <th>CGI</th>
                                 <th>Python</th>
                                 <th>Ruby</th>
@@ -156,6 +160,12 @@
                                 {% endswitch %}
 
                                 {% if web.SSL %}
+                                <td class="center">si</td>
+                                {% else %}
+                                <td class="center">no</td>
+                                {% endif %}
+
+                                {% if web.PHP %}
                                 <td class="center">si</td>
                                 {% else %}
                                 <td class="center">no</td>
@@ -184,6 +194,7 @@
                                 {% else %}
                                 <td class="center">no</td>
                                 {% endif %}
+
 
                                 <td class="center">
                                     <button type="button" class="btn btn-xs btn-primary"><i class="fa fa-list"></i></button>
@@ -217,6 +228,11 @@
                         <div class="checkbox">
                             <label>
                                 <input id="ssl" name="ssl" type="checkbox" value="true"> SSL
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input id="php" name="php" type="checkbox" value="true"> PHP
                             </label>
                         </div>
                         <div class="checkbox">

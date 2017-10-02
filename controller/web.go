@@ -41,6 +41,15 @@ func AddWeb(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
+
+		php := strings.Join(r.Form["php"],"")
+		if len(php) != 0 {
+			web.PHP, err = strconv.ParseBool(php)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
+
 		python := strings.Join(r.Form["python"],"")
 		if len(python) != 0 {
 			web.Python, err = strconv.ParseBool(python)

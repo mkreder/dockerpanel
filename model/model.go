@@ -10,5 +10,6 @@ type Web struct {
 	Python bool
 	Ruby bool
 	Perl bool
+	PHP bool
 	Status int
 }
