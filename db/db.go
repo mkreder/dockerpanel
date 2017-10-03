@@ -43,19 +43,11 @@ func (mgr *manager) migrate(){
 
 
 func (mgr *manager) AddWeb(web *model.Web) (err error) {
-	mgr.db.Create(web)
-	if errs := mgr.db.GetErrors(); len(errs) > 0 {
-		err = errs[0]
-	}
-	return err
+	return mgr.db.Create(web).Error
 }
 
 func (mgr *manager) UpdateWeb(web *model.Web) (err error) {
-	mgr.db.Save(&web)
-	if errs := mgr.db.GetErrors(); len(errs) > 0 {
-		err = errs[0]
-	}
-	return err
+	return mgr.db.Save(&web).Error
 }
 
 func (mgr *manager) CheckIfWebExists(dominio string) bool{
@@ -78,9 +70,5 @@ func (mgr *manager) GetWeb(id string) model.Web {
 
 
 func (mgr *manager) RemoveWeb(id string) (err error) {
-	mgr.db.Delete(model.Web{}, "id == ?", id)
-	if errs := mgr.db.GetErrors(); len(errs) > 0 {
-		err = errs[0]
-	}
-	return err
+	return mgr.db.Delete(model.Web{}, "id == ?", id).Error
 }
