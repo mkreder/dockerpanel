@@ -1,6 +1,6 @@
 {% import "github.com/mkreder/dockerpanel/model" %}
 {% import "strconv" %}
-{% func WebTemplate(webs []model.Web) %}
+{% func WebTemplate(webs []model.Web, error string) %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -96,6 +96,12 @@
 </head>
 
 <body>
+
+{% if len(error) > 0 %}
+<script type="text/javascript">
+    window.alert("{%s error %}")
+</script>
+{% endif %}
 
 <div id="wrapper">
 

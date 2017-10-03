@@ -5,23 +5,23 @@ import (
 	"github.com/mkreder/dockerpanel/templates"
 	"github.com/mkreder/dockerpanel/db"
 	"strings"
-	"log"
 	"github.com/mkreder/dockerpanel/model"
 
 )
 
 func WebHandler(w http.ResponseWriter, r *http.Request) {
 	webs := db.Mgr.GetAllWebs()
-	templates.WriteWebTemplate(w,webs)
+	templates.WriteWebTemplate(w,webs,"")
 }
 
 func AddWeb(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	dominio := strings.Join(r.Form["dominio"],"")
 	id := strings.Join(r.Form["id"],"")
+	var err error
 
 	if ( len(id) == 0 ) && ( db.Mgr.CheckIfWebExists(dominio) ){
-		log.Printf("El dominio %s ya existe",dominio)
+		templates.WriteWebTemplate(w, db.Mgr.GetAllWebs(),"El sitio web ingresado ya existe")
 	} else {
 		var web model.Web
 		if (len(id) != 0) {
@@ -74,20 +74,31 @@ func AddWeb(w http.ResponseWriter, r *http.Request) {
 
 		web.Status = 1
 		if len(id) == 0 {
-			db.Mgr.AddWeb(&web)
+			err = db.Mgr.AddWeb(&web)
+			if err != nil {
+				templates.WriteWebTemplate(w, db.Mgr.GetAllWebs(),"Error al agregar el sitio web")
+			} else {
+				templates.WriteWebTemplate(w, db.Mgr.GetAllWebs(),"")
+			}
 		} else {
-			db.Mgr.UpdateWeb(&web)
+			err = db.Mgr.UpdateWeb(&web)
+			if err != nil {
+				templates.WriteWebTemplate(w, db.Mgr.GetAllWebs(),"Error al actualizar el sitio web")
+			} else {
+				templates.WriteWebTemplate(w, db.Mgr.GetAllWebs(),"")
+			}
 		}
-
-
 	}
-	templates.WriteWebTemplate(w,db.Mgr.GetAllWebs())
 
 
 }
 
 func RemoveWeb(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id")
-	db.Mgr.RemoveWeb(id)
-	templates.WriteWebTemplate(w,db.Mgr.GetAllWebs())
+	err := db.Mgr.RemoveWeb(id)
+	if err != nil {
+		templates.WriteWebTemplate(w,db.Mgr.GetAllWebs(),"Error al borrar el sitio web")
+	} else {
+		templates.WriteWebTemplate(w,db.Mgr.GetAllWebs(),"")
+	}
 }

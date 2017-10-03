@@ -11,7 +11,7 @@ type Manager interface {
 	AddWeb(web *model.Web) error
 	CheckIfWebExists(dominio string) bool
     GetAllWebs() []model.Web
-	RemoveWeb(id string)
+	RemoveWeb(id string) (err error)
 	UpdateWeb(web *model.Web) (err error)
 	GetWeb(id string) model.Web
 
@@ -47,7 +47,7 @@ func (mgr *manager) AddWeb(web *model.Web) (err error) {
 	if errs := mgr.db.GetErrors(); len(errs) > 0 {
 		err = errs[0]
 	}
-	return
+	return err
 }
 
 func (mgr *manager) UpdateWeb(web *model.Web) (err error) {
@@ -55,7 +55,7 @@ func (mgr *manager) UpdateWeb(web *model.Web) (err error) {
 	if errs := mgr.db.GetErrors(); len(errs) > 0 {
 		err = errs[0]
 	}
-	return
+	return err
 }
 
 func (mgr *manager) CheckIfWebExists(dominio string) bool{
@@ -77,6 +77,10 @@ func (mgr *manager) GetWeb(id string) model.Web {
 }
 
 
-func (mgr *manager) RemoveWeb(id string) {
+func (mgr *manager) RemoveWeb(id string) (err error) {
 	mgr.db.Delete(model.Web{}, "id == ?", id)
+	if errs := mgr.db.GetErrors(); len(errs) > 0 {
+		err = errs[0]
+	}
+	return err
 }
