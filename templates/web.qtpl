@@ -5,6 +5,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <script type="text/javascript">
+    function validateForm() {
+        var x = document.getElementById("dominio").value;
+        if (x == "" ) {
+            alert("Se debe completar el dominio");
+            return false;
+        }
+
+        if (/^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/.test(x)) {
+        } else {
+            alert("Nombre de dominio invalido");
+            return false;
+        }
+    }
+
     function showDiv() {
         var x = document.getElementById('form');
         x.style.display = 'block';
@@ -264,7 +278,7 @@
                     Nuevo Sitio
                 </div>
                 <div class="panel-body">
-                    <form id="addweb" action="/addweb" role=form method="post">
+                    <form id="addweb" action="/addweb" onsubmit="return validateForm()" role=form method="post">
                         <label>Dominio</label>
                         <input id="id" name="id" id="dominio" hidden="true" >
                         <input class="form-control" name="dominio" id="dominio">

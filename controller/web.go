@@ -21,7 +21,7 @@ func AddWeb(w http.ResponseWriter, r *http.Request) {
 	var err error
 
 	if ( len(id) == 0 ) && ( db.Mgr.CheckIfWebExists(dominio) ){
-		templates.WriteWebTemplate(w, db.Mgr.GetAllWebs(),"El sitio web ingresado ya existe")
+		templates.WriteWebTemplate(w, db.Mgr.GetAllWebs(),"El sitio web " + dominio + " ya existe")
 	} else {
 		var web model.Web
 		if (len(id) != 0) {
