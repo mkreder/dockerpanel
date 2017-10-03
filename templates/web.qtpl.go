@@ -8,21 +8,24 @@ package templates
 import "github.com/mkreder/dockerpanel/model"
 
 //line templates/web.qtpl:2
+import "strconv"
+
+//line templates/web.qtpl:3
 import (
 	qtio422016 "io"
 
 	qt422016 "github.com/valyala/quicktemplate"
 )
 
-//line templates/web.qtpl:2
+//line templates/web.qtpl:3
 var (
 	_ = qtio422016.Copy
 	_ = qt422016.AcquireByteBuffer
 )
 
-//line templates/web.qtpl:2
+//line templates/web.qtpl:3
 func StreamWebTemplate(qw422016 *qt422016.Writer, webs []model.Web) {
-	//line templates/web.qtpl:2
+	//line templates/web.qtpl:3
 	qw422016.N().S(`
 
 <!DOCTYPE html>
@@ -43,6 +46,44 @@ func StreamWebTemplate(qw422016 *qt422016.Writer, webs []model.Web) {
         document.getElementById("perl").checked = false;
         document.getElementById("php").checked = false;
         document.getElementById("ruby").checked = false;
+    }
+
+    function modifyWeb(id,dominio,ssl,cgi,python,perl,php,ruby) {
+        document.getElementById("id").value = id;
+        document.getElementById("dominio").value = dominio;
+        console.log(ssl)
+        if ( ssl == true ){
+            document.getElementById("ssl").checked = true;
+        } else {
+            document.getElementById("ssl").checked = false;
+        }
+        if ( cgi == true ) {
+            document.getElementById("cgi").checked = true;
+        } else {
+            document.getElementById("cgi").checked = false;
+        }
+        if ( python == true ){
+            document.getElementById("python").checked = true;
+        } else {
+            document.getElementById("python").checked = false;
+        }
+        if ( perl == true ) {
+            document.getElementById("perl").checked = true;
+        } else {
+            document.getElementById("perl").checked = false;
+        }
+        if ( php == true ) {
+            document.getElementById("php").checked = true;
+        } else {
+            document.getElementById("php").checked = false;
+        }
+        if ( ruby == true ) {
+            document.getElementById("ruby").checked = true;
+        } else {
+            document.getElementById("ruby").checked = false;
+        }
+        var x = document.getElementById('form');
+        x.style.display = 'block';
     }
 
 </script>
@@ -171,165 +212,197 @@ func StreamWebTemplate(qw422016 *qt422016.Writer, webs []model.Web) {
                             </thead>
                             <tbody>
                             `)
-	//line templates/web.qtpl:149
+	//line templates/web.qtpl:188
 	for _, web := range webs {
-		//line templates/web.qtpl:149
+		//line templates/web.qtpl:188
 		qw422016.N().S(`
                             <tr class="odd gradeX">
                                 <td> `)
-		//line templates/web.qtpl:151
+		//line templates/web.qtpl:190
 		qw422016.E().S(web.Dominio)
-		//line templates/web.qtpl:151
+		//line templates/web.qtpl:190
 		qw422016.N().S(` </td>
 
                                 `)
-		//line templates/web.qtpl:153
+		//line templates/web.qtpl:192
 		switch web.Status {
-		//line templates/web.qtpl:154
+		//line templates/web.qtpl:193
 		case 1:
-			//line templates/web.qtpl:154
+			//line templates/web.qtpl:193
 			qw422016.N().S(`
                                 <td>a configurar</td>
                                 `)
-		//line templates/web.qtpl:156
+		//line templates/web.qtpl:195
 		case 2:
-			//line templates/web.qtpl:156
+			//line templates/web.qtpl:195
 			qw422016.N().S(`
                                 <td>configurado</td>
                                 `)
-		//line templates/web.qtpl:158
+		//line templates/web.qtpl:197
 		case 3:
-			//line templates/web.qtpl:158
+			//line templates/web.qtpl:197
 			qw422016.N().S(`
                                 <td>corriendo</td>
                                 `)
-			//line templates/web.qtpl:160
+			//line templates/web.qtpl:199
 		}
-		//line templates/web.qtpl:160
+		//line templates/web.qtpl:199
 		qw422016.N().S(`
 
                                 `)
-		//line templates/web.qtpl:162
+		//line templates/web.qtpl:201
 		if web.SSL {
-			//line templates/web.qtpl:162
+			//line templates/web.qtpl:201
 			qw422016.N().S(`
                                 <td class="center">si</td>
                                 `)
-			//line templates/web.qtpl:164
+			//line templates/web.qtpl:203
 		} else {
-			//line templates/web.qtpl:164
+			//line templates/web.qtpl:203
 			qw422016.N().S(`
                                 <td class="center">no</td>
                                 `)
-			//line templates/web.qtpl:166
+			//line templates/web.qtpl:205
 		}
-		//line templates/web.qtpl:166
+		//line templates/web.qtpl:205
 		qw422016.N().S(`
 
                                 `)
-		//line templates/web.qtpl:168
+		//line templates/web.qtpl:207
 		if web.PHP {
-			//line templates/web.qtpl:168
+			//line templates/web.qtpl:207
 			qw422016.N().S(`
                                 <td class="center">si</td>
                                 `)
-			//line templates/web.qtpl:170
+			//line templates/web.qtpl:209
 		} else {
-			//line templates/web.qtpl:170
+			//line templates/web.qtpl:209
 			qw422016.N().S(`
                                 <td class="center">no</td>
                                 `)
-			//line templates/web.qtpl:172
+			//line templates/web.qtpl:211
 		}
-		//line templates/web.qtpl:172
+		//line templates/web.qtpl:211
 		qw422016.N().S(`
 
                                 `)
-		//line templates/web.qtpl:174
+		//line templates/web.qtpl:213
 		if web.CGI {
-			//line templates/web.qtpl:174
+			//line templates/web.qtpl:213
 			qw422016.N().S(`
                                 <td class="center">si</td>
                                 `)
-			//line templates/web.qtpl:176
+			//line templates/web.qtpl:215
 		} else {
-			//line templates/web.qtpl:176
+			//line templates/web.qtpl:215
 			qw422016.N().S(`
                                 <td class="center">no</td>
                                 `)
-			//line templates/web.qtpl:178
+			//line templates/web.qtpl:217
 		}
-		//line templates/web.qtpl:178
+		//line templates/web.qtpl:217
 		qw422016.N().S(`
 
                                 `)
-		//line templates/web.qtpl:180
+		//line templates/web.qtpl:219
 		if web.Python {
-			//line templates/web.qtpl:180
+			//line templates/web.qtpl:219
 			qw422016.N().S(`
                                 <td class="center">si</td>
                                 `)
-			//line templates/web.qtpl:182
+			//line templates/web.qtpl:221
 		} else {
-			//line templates/web.qtpl:182
+			//line templates/web.qtpl:221
 			qw422016.N().S(`
                                 <td class="center">no</td>
                                 `)
-			//line templates/web.qtpl:184
+			//line templates/web.qtpl:223
 		}
-		//line templates/web.qtpl:184
+		//line templates/web.qtpl:223
 		qw422016.N().S(`
 
                                 `)
-		//line templates/web.qtpl:186
+		//line templates/web.qtpl:225
 		if web.Ruby {
-			//line templates/web.qtpl:186
+			//line templates/web.qtpl:225
 			qw422016.N().S(`
                                 <td class="center">si</td>
                                 `)
-			//line templates/web.qtpl:188
+			//line templates/web.qtpl:227
 		} else {
-			//line templates/web.qtpl:188
+			//line templates/web.qtpl:227
 			qw422016.N().S(`
                                 <td class="center">no</td>
                                 `)
-			//line templates/web.qtpl:190
+			//line templates/web.qtpl:229
 		}
-		//line templates/web.qtpl:190
+		//line templates/web.qtpl:229
 		qw422016.N().S(`
 
                                 `)
-		//line templates/web.qtpl:192
+		//line templates/web.qtpl:231
 		if web.Perl {
-			//line templates/web.qtpl:192
+			//line templates/web.qtpl:231
 			qw422016.N().S(`
                                 <td class="center">si</td>
                                 `)
-			//line templates/web.qtpl:194
+			//line templates/web.qtpl:233
 		} else {
-			//line templates/web.qtpl:194
+			//line templates/web.qtpl:233
 			qw422016.N().S(`
                                 <td class="center">no</td>
                                 `)
-			//line templates/web.qtpl:196
+			//line templates/web.qtpl:235
 		}
-		//line templates/web.qtpl:196
+		//line templates/web.qtpl:235
 		qw422016.N().S(`
 
 
                                 <td class="center">
-                                    <button type="button" class="btn btn-xs btn-primary"><i class="fa fa-list"></i></button>
-                                    <button class="btn btn-xs btn-danger" onclick="location.href='removeWeb?id=`)
-		//line templates/web.qtpl:201
+                                    <button type="button" class="btn btn-xs btn-primary" onclick='modifyWeb(`)
+		//line templates/web.qtpl:239
 		qw422016.N().D(int(web.ID))
-		//line templates/web.qtpl:201
+		//line templates/web.qtpl:239
+		qw422016.N().S(`, "`)
+		//line templates/web.qtpl:239
+		qw422016.E().S(web.Dominio)
+		//line templates/web.qtpl:239
+		qw422016.N().S(`", `)
+		//line templates/web.qtpl:239
+		qw422016.E().S(strconv.FormatBool(web.SSL))
+		//line templates/web.qtpl:239
+		qw422016.N().S(`, `)
+		//line templates/web.qtpl:239
+		qw422016.E().S(strconv.FormatBool(web.CGI))
+		//line templates/web.qtpl:239
+		qw422016.N().S(`, `)
+		//line templates/web.qtpl:239
+		qw422016.E().S(strconv.FormatBool(web.Python))
+		//line templates/web.qtpl:239
+		qw422016.N().S(`, `)
+		//line templates/web.qtpl:239
+		qw422016.E().S(strconv.FormatBool(web.Perl))
+		//line templates/web.qtpl:239
+		qw422016.N().S(`, `)
+		//line templates/web.qtpl:239
+		qw422016.E().S(strconv.FormatBool(web.PHP))
+		//line templates/web.qtpl:239
+		qw422016.N().S(`, `)
+		//line templates/web.qtpl:239
+		qw422016.E().S(strconv.FormatBool(web.Ruby))
+		//line templates/web.qtpl:239
+		qw422016.N().S(` )' ><i class="fa fa-list"></i></button>
+                                    <button class="btn btn-xs btn-danger" onclick="location.href='removeWeb?id=`)
+		//line templates/web.qtpl:240
+		qw422016.N().D(int(web.ID))
+		//line templates/web.qtpl:240
 		qw422016.N().S(`';"><i class="fa fa-trash-o"></i></button>
                                 </td>
                             </tr>
                             `)
-		//line templates/web.qtpl:204
+		//line templates/web.qtpl:243
 	}
-	//line templates/web.qtpl:204
+	//line templates/web.qtpl:243
 	qw422016.N().S(`
                             </tbody>
                         </table>
@@ -419,31 +492,31 @@ func StreamWebTemplate(qw422016 *qt422016.Writer, webs []model.Web) {
 </html>
 
 `)
-//line templates/web.qtpl:292
+//line templates/web.qtpl:331
 }
 
-//line templates/web.qtpl:292
+//line templates/web.qtpl:331
 func WriteWebTemplate(qq422016 qtio422016.Writer, webs []model.Web) {
-	//line templates/web.qtpl:292
+	//line templates/web.qtpl:331
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line templates/web.qtpl:292
+	//line templates/web.qtpl:331
 	StreamWebTemplate(qw422016, webs)
-	//line templates/web.qtpl:292
+	//line templates/web.qtpl:331
 	qt422016.ReleaseWriter(qw422016)
-//line templates/web.qtpl:292
+//line templates/web.qtpl:331
 }
 
-//line templates/web.qtpl:292
+//line templates/web.qtpl:331
 func WebTemplate(webs []model.Web) string {
-	//line templates/web.qtpl:292
+	//line templates/web.qtpl:331
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line templates/web.qtpl:292
+	//line templates/web.qtpl:331
 	WriteWebTemplate(qb422016, webs)
-	//line templates/web.qtpl:292
+	//line templates/web.qtpl:331
 	qs422016 := string(qb422016.B)
-	//line templates/web.qtpl:292
+	//line templates/web.qtpl:331
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line templates/web.qtpl:292
+	//line templates/web.qtpl:331
 	return qs422016
-//line templates/web.qtpl:292
+//line templates/web.qtpl:331
 }

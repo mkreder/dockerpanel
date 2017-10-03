@@ -12,6 +12,8 @@ type Manager interface {
 	CheckIfWebExists(dominio string) bool
     GetAllWebs() []model.Web
 	RemoveWeb(id string)
+	UpdateWeb(web *model.Web) (err error)
+	GetWeb(id string) model.Web
 
 	migrate()
 	// Add other methods
@@ -48,6 +50,13 @@ func (mgr *manager) AddWeb(web *model.Web) (err error) {
 	return
 }
 
+func (mgr *manager) UpdateWeb(web *model.Web) (err error) {
+	mgr.db.Save(&web)
+	if errs := mgr.db.GetErrors(); len(errs) > 0 {
+		err = errs[0]
+	}
+	return
+}
 
 func (mgr *manager) CheckIfWebExists(dominio string) bool{
 	var web model.Web
@@ -59,6 +68,12 @@ func (mgr *manager) GetAllWebs() []model.Web {
 	var webs []model.Web
 	mgr.db.Find(&webs)
 	return webs
+}
+
+func (mgr *manager) GetWeb(id string) model.Web {
+	var web model.Web
+	mgr.db.First(&web,id)
+	return web
 }
 
 
