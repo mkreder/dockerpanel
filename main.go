@@ -68,6 +68,9 @@ func main() {
 	r.Get("/login", login.LoginHandler)
 	r.Post("/login", login.LoginHandler)
 
+	r.Get("/profile", controller.ProfileHandler)
+	r.Post("/profile", controller.ProfileHandler)
+
 	r.Get("/logout", login.LogoutHandler)
 
 	port := 9090

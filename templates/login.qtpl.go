@@ -54,7 +54,7 @@ func StreamLoginTemplate(qw422016 *qt422016.Writer, error string) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+    <title>Docker Panel - Login</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -111,12 +111,6 @@ func StreamLoginTemplate(qw422016 *qt422016.Writer, error string) {
                             <div class="form-group">
                                 <input class="form-control" placeholder="Password" id="password" name="password" type="password" value="">
                             </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input name="remember" type="checkbox" value="Remember Me">Remember Me
-                                </label>
-                            </div>
-                            <!-- Change this to a button or input when using this as a form -->
                             <button type="submit" class="btn btn-lg btn-success btn-block">Login</button>
                         </fieldset>
                     </form>
@@ -142,31 +136,31 @@ func StreamLoginTemplate(qw422016 *qt422016.Writer, error string) {
 
 </html>
 `)
-//line templates/login.qtpl:110
+//line templates/login.qtpl:104
 }
 
-//line templates/login.qtpl:110
+//line templates/login.qtpl:104
 func WriteLoginTemplate(qq422016 qtio422016.Writer, error string) {
-	//line templates/login.qtpl:110
+	//line templates/login.qtpl:104
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line templates/login.qtpl:110
+	//line templates/login.qtpl:104
 	StreamLoginTemplate(qw422016, error)
-	//line templates/login.qtpl:110
+	//line templates/login.qtpl:104
 	qt422016.ReleaseWriter(qw422016)
-//line templates/login.qtpl:110
+//line templates/login.qtpl:104
 }
 
-//line templates/login.qtpl:110
+//line templates/login.qtpl:104
 func LoginTemplate(error string) string {
-	//line templates/login.qtpl:110
+	//line templates/login.qtpl:104
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line templates/login.qtpl:110
+	//line templates/login.qtpl:104
 	WriteLoginTemplate(qb422016, error)
-	//line templates/login.qtpl:110
+	//line templates/login.qtpl:104
 	qs422016 := string(qb422016.B)
-	//line templates/login.qtpl:110
+	//line templates/login.qtpl:104
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line templates/login.qtpl:110
+	//line templates/login.qtpl:104
 	return qs422016
-//line templates/login.qtpl:110
+//line templates/login.qtpl:104
 }

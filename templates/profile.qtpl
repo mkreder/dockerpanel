@@ -1,7 +1,29 @@
-{% func HomeTemplate() %}
+{% func ProfileTemplate(error string) %}
 
 <!DOCTYPE html>
 <html lang="en">
+<script type="text/javascript">
+    function validateForm() {
+        var x = document.getElementById("pass1").value;
+        if (x == "") {
+            alert("Se debe completar el campo contraseña");
+            return false;
+        }
+
+        var y = document.getElementById("pass2").value;
+        if (2 == "") {
+            alert("Se debe completar el campo repetir contraseña");
+            return false;
+        }
+
+
+        if ( x != y ) {
+            alert("Las contraseñas ingresadas no coinciden");
+            return false;
+        }
+
+    }
+</script>
 
 <head>
 
@@ -38,6 +60,11 @@
 </head>
 
 <body>
+{% if len(error) > 0 %}
+<script type="text/javascript">
+    window.alert("{%s error %}")
+</script>
+{% endif %}
 
 <div id="wrapper">
 
@@ -103,6 +130,24 @@
 
     <div id="page-wrapper">
 
+        <div id="form" class="col-lg-6"  >
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Cambiar contraseña
+                </div>
+                <div class="panel-body">
+                    <form id="addweb" action="/profile" onsubmit="return validateForm()" role=form method="post">
+                        <label>Contraseña</label>
+                        <input class="form-control" type="password" name="pass1" id="pass1">
+                        <label>Repetir Contraseña</label>
+                        <input class="form-control" type="password" name="pass2" id="pass2">
+                        <button type="submit" class="btn btn-default">Guardar</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <!-- /#page-wrapper -->
 
 
 

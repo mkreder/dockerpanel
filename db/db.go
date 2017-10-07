@@ -17,6 +17,7 @@ type Manager interface {
 	GetWeb(id string) model.Web
 
 	GetUser(email string) model.User
+	UpdatePassword(user string, hash string) (err error)
 
 	migrate()
 	// Add other methods
@@ -83,12 +84,22 @@ func (mgr *manager) GetWeb(id string) model.Web {
 	return web
 }
 
+func (mgr *manager) RemoveWeb(id string) (err error) {
+	return mgr.db.Delete(model.Web{}, "id == ?", id).Error
+}
+
+// User
+
 func (mgr *manager) GetUser(email string) model.User {
 	var usr model.User
 	mgr.db.First(&usr,"email = ?",email)
 	return usr
 }
 
-func (mgr *manager) RemoveWeb(id string) (err error) {
-	return mgr.db.Delete(model.Web{}, "id == ?", id).Error
+func (mgr *manager) UpdatePassword(user string, hash string) (err error) {
+	var usr model.User
+	mgr.db.First(&usr,"email = ?",user)
+	usr.Password = hash
+	return mgr.db.Save(&usr).Error
 }
+
