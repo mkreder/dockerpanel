@@ -18,12 +18,33 @@ var (
 )
 
 //line templates/login.qtpl:1
-func StreamLoginTemplate(qw422016 *qt422016.Writer) {
+func StreamLoginTemplate(qw422016 *qt422016.Writer, error string) {
 	//line templates/login.qtpl:1
 	qw422016.N().S(`
 
 <!DOCTYPE html>
 <html lang="en">
+<script type="text/javascript">
+    function validateForm() {
+        var x = document.getElementById("email").value;
+        if (x == "" ) {
+            alert("Se debe completar el email");
+            return false;
+        }
+
+        if (/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(x)) {
+        } else {
+            alert("Email invalido");
+            return false;
+        }
+
+        var y = document.getElementById("password").value;
+        if (y == "" ) {
+            alert("Se debe completar el password");
+            return false;
+        }
+    }
+</script>
 
 <head>
 
@@ -57,7 +78,23 @@ func StreamLoginTemplate(qw422016 *qt422016.Writer) {
 </head>
 
 <body>
-
+`)
+	//line templates/login.qtpl:59
+	if len(error) > 0 {
+		//line templates/login.qtpl:59
+		qw422016.N().S(`
+<script type="text/javascript">
+    window.alert("`)
+		//line templates/login.qtpl:61
+		qw422016.E().S(error)
+		//line templates/login.qtpl:61
+		qw422016.N().S(`")
+</script>
+`)
+		//line templates/login.qtpl:63
+	}
+	//line templates/login.qtpl:63
+	qw422016.N().S(`
 <div class="container">
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
@@ -66,13 +103,13 @@ func StreamLoginTemplate(qw422016 *qt422016.Writer) {
                     <h3 class="panel-title">Please Sign In</h3>
                 </div>
                 <div class="panel-body">
-                    <form role="form">
+                    <form id="login" action="/login" onsubmit="return validateForm()" role=form method="post">
                         <fieldset>
                             <div class="form-group">
-                                <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                <input class="form-control" placeholder="E-mail" id="email" name="email" autofocus>
                             </div>
                             <div class="form-group">
-                                <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                                <input class="form-control" placeholder="Password" id="password" name="password" type="password" value="">
                             </div>
                             <div class="checkbox">
                                 <label>
@@ -80,7 +117,7 @@ func StreamLoginTemplate(qw422016 *qt422016.Writer) {
                                 </label>
                             </div>
                             <!-- Change this to a button or input when using this as a form -->
-                            <a href="/" class="btn btn-lg btn-success btn-block">Login</a>
+                            <button type="submit" class="btn btn-lg btn-success btn-block">Login</button>
                         </fieldset>
                     </form>
                 </div>
@@ -105,31 +142,31 @@ func StreamLoginTemplate(qw422016 *qt422016.Writer) {
 
 </html>
 `)
-//line templates/login.qtpl:85
+//line templates/login.qtpl:110
 }
 
-//line templates/login.qtpl:85
-func WriteLoginTemplate(qq422016 qtio422016.Writer) {
-	//line templates/login.qtpl:85
+//line templates/login.qtpl:110
+func WriteLoginTemplate(qq422016 qtio422016.Writer, error string) {
+	//line templates/login.qtpl:110
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line templates/login.qtpl:85
-	StreamLoginTemplate(qw422016)
-	//line templates/login.qtpl:85
+	//line templates/login.qtpl:110
+	StreamLoginTemplate(qw422016, error)
+	//line templates/login.qtpl:110
 	qt422016.ReleaseWriter(qw422016)
-//line templates/login.qtpl:85
+//line templates/login.qtpl:110
 }
 
-//line templates/login.qtpl:85
-func LoginTemplate() string {
-	//line templates/login.qtpl:85
+//line templates/login.qtpl:110
+func LoginTemplate(error string) string {
+	//line templates/login.qtpl:110
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line templates/login.qtpl:85
-	WriteLoginTemplate(qb422016)
-	//line templates/login.qtpl:85
+	//line templates/login.qtpl:110
+	WriteLoginTemplate(qb422016, error)
+	//line templates/login.qtpl:110
 	qs422016 := string(qb422016.B)
-	//line templates/login.qtpl:85
+	//line templates/login.qtpl:110
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line templates/login.qtpl:85
+	//line templates/login.qtpl:110
 	return qs422016
-//line templates/login.qtpl:85
+//line templates/login.qtpl:110
 }

@@ -4,6 +4,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"log"
 	"github.com/mkreder/dockerpanel/model"
+	"golang.org/x/crypto/bcrypt"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -14,6 +15,8 @@ type Manager interface {
 	RemoveWeb(id string) (err error)
 	UpdateWeb(web *model.Web) (err error)
 	GetWeb(id string) model.Web
+
+	GetUser(email string) model.User
 
 	migrate()
 	// Add other methods
@@ -36,6 +39,18 @@ func init() {
 }
 func (mgr *manager) migrate(){
 	mgr.db.AutoMigrate(&model.Web{})
+	mgr.db.AutoMigrate(&model.User{})
+
+	// Add default user
+	var usr model.User
+
+	if mgr.db.First(&usr,"email = ?","admin@admin.com").RecordNotFound(){
+		usr.Email = "admin@admin.com"
+		hash, _ := bcrypt.GenerateFromPassword([]byte("admin"), bcrypt.DefaultCost)
+		usr.Password = string(hash)
+		mgr.db.Create(&usr)
+	}
+
 }
 
 
@@ -68,6 +83,11 @@ func (mgr *manager) GetWeb(id string) model.Web {
 	return web
 }
 
+func (mgr *manager) GetUser(email string) model.User {
+	var usr model.User
+	mgr.db.First(&usr,"email = ?",email)
+	return usr
+}
 
 func (mgr *manager) RemoveWeb(id string) (err error) {
 	return mgr.db.Delete(model.Web{}, "id == ?", id).Error

@@ -15,17 +15,20 @@ import (
 
 	"github.com/mkreder/dockerpanel/controller"
 	"github.com/mkreder/dockerpanel/templates"
+	"github.com/mkreder/dockerpanel/login"
 
 )
 
+
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	templates.WriteHomeTemplate(w)
+	userName := login.GetUserName(r)
+	if userName != "" {
+		templates.WriteHomeTemplate(w)
+	} else {
+		templates.WriteLoginTemplate(w,"")
+	}
 }
 
-
-func LoginHandler(w http.ResponseWriter, r *http.Request) {
-	templates.WriteLoginTemplate(w)
-}
 
 // FileServer conveniently sets up a http.FileServer handler to serve
 // static files from a http.FileSystem.
@@ -51,8 +54,6 @@ func FileServer(r chi.Router, path string, root http.FileSystem) {
 
 func main() {
 
-
-
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
 	r.Use(middleware.Logger)
@@ -60,10 +61,14 @@ func main() {
 
 	r.Get("/", HomeHandler)
 	r.Get("/web", controller.WebHandler)
-	r.Get("/login", LoginHandler)
-
-	r.Post("/addweb", controller.AddWeb)
+	r.Post("/web", controller.AddWeb)
 	r.Get("/removeWeb",controller.RemoveWeb)
+
+
+	r.Get("/login", login.LoginHandler)
+	r.Post("/login", login.LoginHandler)
+
+	r.Get("/logout", login.LogoutHandler)
 
 	port := 9090
 	srv := &http.Server{

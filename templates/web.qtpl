@@ -142,7 +142,7 @@
                     <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
                     </li>
                     <li class="divider"></li>
-                    <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                     </li>
                 </ul>
                 <!-- /.dropdown-user -->
@@ -278,7 +278,7 @@
                     Nuevo Sitio
                 </div>
                 <div class="panel-body">
-                    <form id="addweb" action="/addweb" onsubmit="return validateForm()" role=form method="post">
+                    <form id="addweb" action="/web" onsubmit="return validateForm()" role=form method="post">
                         <label>Dominio</label>
                         <input id="id" name="id" id="dominio" hidden="true" >
                         <input class="form-control" name="dominio" id="dominio">
