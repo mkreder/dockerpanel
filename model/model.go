@@ -7,11 +7,26 @@ type Web struct {
 	Dominio string
 	CGI bool
 	SSL bool
-	Python bool
-	Ruby bool
-	Perl bool
 	PHP bool
+	PHPversion string
+	PHPmethod string
+	Webserver string
 	Status int
+}
+
+
+type Region struct {
+	gorm.Model
+	Dominio string
+	Email string
+	Registros []Registro
+}
+
+type Registro struct {
+	gorm.Model
+	Tipo string
+	Nombre string
+	Valor string
 }
 
 type User struct {

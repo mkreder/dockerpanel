@@ -24,19 +24,33 @@
         x.style.display = 'block';
     }
 
+    function activateSelects(){
+        if ( document.getElementById('php').checked ) {
+            document.getElementById('phpVersion').removeAttribute("disabled");
+            document.getElementById('phpMethod').removeAttribute("disabled");
+        } else {
+            document.getElementById('phpVersion').setAttribute("disabled","disabled")
+            document.getElementById('phpMethod').setAttribute("disabled","disabled");
+        }
+
+    }
+
     function hideDiv() {
         var x = document.getElementById('form');
         x.style.display = 'none';
         document.getElementById("dominio").value = "";
         document.getElementById("ssl").checked = false;
         document.getElementById("cgi").checked = false;
-        document.getElementById("python").checked = false;
-        document.getElementById("perl").checked = false;
         document.getElementById("php").checked = false;
-        document.getElementById("ruby").checked = false;
+        document.getElementById("phpVersion").options[0].selected = true;
+        document.getElementById("phpMethod").options[0].selected = true;
+        document.getElementById("webserver").options[0].selected = true;
+        document.getElementById('phpVersion').setAttribute("disabled","disabled")
+        document.getElementById('phpMethod').setAttribute("disabled","disabled");
+
     }
 
-    function modifyWeb(id,dominio,ssl,cgi,python,perl,php,ruby) {
+    function modifyWeb(id,dominio,ssl,cgi,php,phpVersion,phpMethod,webserver) {
         document.getElementById("id").value = id;
         document.getElementById("dominio").value = dominio;
 
@@ -50,27 +64,41 @@
         } else {
             document.getElementById("cgi").checked = false;
         }
-        if ( python == true ){
-            document.getElementById("python").checked = true;
-        } else {
-            document.getElementById("python").checked = false;
-        }
-        if ( perl == true ) {
-            document.getElementById("perl").checked = true;
-        } else {
-            document.getElementById("perl").checked = false;
-        }
         if ( php == true ) {
             document.getElementById("php").checked = true;
+            document.getElementById('phpVersion').removeAttribute("disabled");
+            document.getElementById('phpMethod').removeAttribute("disabled");
         } else {
             document.getElementById("php").checked = false;
         }
-        if ( ruby == true ) {
-            document.getElementById("ruby").checked = true;
-        } else {
-            document.getElementById("ruby").checked = false;
-        }
         var x = document.getElementById('form');
+
+        var selphpVersion = document.getElementById("phpVersion");
+
+
+        for (var i = 0; i < selphpVersion.options.length; i++) {
+            if (selphpVersion.options[i].text== phpVersion) {
+                selphpVersion.options[i].selected = true;
+            }
+        }
+
+        var selphpMethod = document.getElementById("phpMethod");
+
+        for (var i = 0; i < selphpMethod.options.length; i++) {
+            if (selphpMethod.options[i].text== phpMethod) {
+                selphpMethod.options[i].selected = true;
+            }
+        }
+
+        var selwebserver = document.getElementById("webserver");
+
+        for (var i = 0; i < selwebserver.options.length; i++) {
+            if (selwebserver.options[i].text== webserver) {
+                selwebserver.options[i].selected = true;
+            }
+        }
+
+
         x.style.display = 'block';
     }
 
@@ -195,12 +223,10 @@
                             <tr>
                                 <th>Dominio</th>
                                 <th>Estado</th>
+                                <th>Servidor Web</th>
                                 <th>SSL</th>
                                 <th>PHP</th>
                                 <th>CGI</th>
-                                <th>Python</th>
-                                <th>Ruby</th>
-                                <th>Perl</th>
                                 <th>Acciones</th>
                             </tr>
                             </thead>
@@ -208,6 +234,7 @@
                             {% for _, web := range webs %}
                             <tr class="odd gradeX">
                                 <td> {%s web.Dominio %} </td>
+
 
                                 {% switch web.Status %}
                                 {% case 1 %}
@@ -217,6 +244,9 @@
                                 {% case 3 %}
                                 <td>corriendo</td>
                                 {% endswitch %}
+
+                                <td> {%s web.Webserver %} </td>
+
 
                                 {% if web.SSL %}
                                 <td class="center">si</td>
@@ -236,27 +266,10 @@
                                 <td class="center">no</td>
                                 {% endif %}
 
-                                {% if web.Python %}
-                                <td class="center">si</td>
-                                {% else %}
-                                <td class="center">no</td>
-                                {% endif %}
-
-                                {% if web.Ruby %}
-                                <td class="center">si</td>
-                                {% else %}
-                                <td class="center">no</td>
-                                {% endif %}
-
-                                {% if web.Perl %}
-                                <td class="center">si</td>
-                                {% else %}
-                                <td class="center">no</td>
-                                {% endif %}
 
 
                                 <td class="center">
-                                    <button type="button" class="btn btn-xs btn-primary" onclick='modifyWeb({%d int(web.ID) %}, "{%s web.Dominio %}", {%s strconv.FormatBool(web.SSL) %}, {%s strconv.FormatBool(web.CGI) %}, {%s strconv.FormatBool(web.Python) %}, {%s strconv.FormatBool(web.Perl) %}, {%s strconv.FormatBool(web.PHP) %}, {%s strconv.FormatBool(web.Ruby) %} )' ><i class="fa fa-list"></i></button>
+                                    <button type="button" class="btn btn-xs btn-primary" onclick='modifyWeb({%d int(web.ID) %}, "{%s web.Dominio %}", {%s strconv.FormatBool(web.SSL) %}, {%s strconv.FormatBool(web.CGI) %}, {%s strconv.FormatBool(web.PHP) %}, "{%s web.PHPversion %}", "{%s web.PHPmethod %}" , "{%s web.Webserver %}" )' ><i class="fa fa-list"></i></button>
                                     <button class="btn btn-xs btn-danger" onclick="location.href='removeWeb?id={%d int(web.ID) %}';"><i class="fa fa-trash-o"></i></button>
                                 </td>
                             </tr>
@@ -284,14 +297,15 @@
                         <input class="form-control" name="dominio" id="dominio">
                         <br>
                         <label>Configuración</label>
+                        <br>
+                        Servidor Web
+                        <select  class="form-control"  id="webserver" name="webserver">
+                            <option value="apache">Apache</option>
+                            <option value="nginx">Nginx</option>
+                        </select>
                         <div class="checkbox">
                             <label>
                                 <input id="ssl" name="ssl" type="checkbox" value="true"> SSL
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input id="php" name="php" type="checkbox" value="true"> PHP
                             </label>
                         </div>
                         <div class="checkbox">
@@ -301,19 +315,24 @@
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input id="python" name="python" type="checkbox" value="true"> Python
+                                <input id="php" name="php" type="checkbox" value="true" onclick="activateSelects()"> PHP
                             </label>
                         </div>
-                        <div class="checkbox">
-                            <label>
-                                <input id="ruby" name="ruby" type="checkbox" value="true"> Ruby
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input id="perl" name="perl" type="checkbox" value="true"> Perl
-                            </label>
-                        </div>
+                        Versión de PHP
+                        <select  class="form-control"  id="phpVersion" name="phpVersion" disabled>
+                            <option value="5.4">5.4</option>
+                            <option value="5.6">5.6</option>
+                            <option value="7.0">7.0</option>
+                            <option value="7.1">7.1</option>
+                        </select>
+
+                        <br>
+                        Metodo PHP
+                        <select   class="form-control" id="phpMethod" name="phpMethod" disabled=>
+                            <option value="fpm">PHP-FPM</option>
+                            <option value="fcgi">FastCGI</option>
+                        </select>
+
                         <br>
                         <button type="submit" class="btn btn-default">Guardar</button>
                         <button type="button" class="btn btn-default" onclick="hideDiv()">Cancelar</button>

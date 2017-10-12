@@ -52,7 +52,6 @@ func AddWeb(w http.ResponseWriter, r *http.Request) {
 				web.SSL = false
 			}
 
-
 			php := strings.Join(r.Form["php"],"")
 			if len(php) != 0 {
 				web.PHP = true
@@ -60,26 +59,17 @@ func AddWeb(w http.ResponseWriter, r *http.Request) {
 				web.PHP = false
 			}
 
-			python := strings.Join(r.Form["python"],"")
-			if len(python) != 0 {
-				web.Python = true
-			} else {
-				web.Python = false
-			}
+			phpVersion := strings.Join(r.Form["phpVersion"],"")
+			web.PHPversion = phpVersion
 
-			perl := strings.Join(r.Form["perl"],"")
-			if len(perl) != 0 {
-				web.Perl = true
-			} else {
-				web.Perl = false
-			}
 
-			ruby := strings.Join(r.Form["ruby"],"")
-			if len(ruby) != 0 {
-				web.Ruby = true
-			} else {
-				web.Ruby = false
-			}
+			phpMethod := strings.Join(r.Form["phpMethod"],"")
+			web.PHPmethod = phpMethod
+
+
+			webserver := strings.Join(r.Form["webserver"],"")
+			web.Webserver = webserver
+
 
 			web.Status = 1
 			if len(id) == 0 {
