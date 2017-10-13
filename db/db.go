@@ -19,6 +19,15 @@ type Manager interface {
 	GetUser(email string) model.User
 	UpdatePassword(user string, hash string) (err error)
 
+	AddZona(zona *model.Zona) error
+	CheckIfZonaExists(dominio string) bool
+	GetAllZonas() []model.Zona
+	RemoveZona(id string) (err error)
+	UpdateZona(zona *model.Zona) (err error)
+	GetZona(id string) model.Zona
+
+	AddRegistros(registros []model.Registro)
+
 	migrate()
 	// Add other methods
 }
@@ -41,6 +50,8 @@ func init() {
 func (mgr *manager) migrate(){
 	mgr.db.AutoMigrate(&model.Web{})
 	mgr.db.AutoMigrate(&model.User{})
+	mgr.db.AutoMigrate(&model.Zona{})
+	mgr.db.AutoMigrate(&model.Registro{})
 
 	// Add default user
 	var usr model.User
@@ -103,3 +114,42 @@ func (mgr *manager) UpdatePassword(user string, hash string) (err error) {
 	return mgr.db.Save(&usr).Error
 }
 
+
+// Zona
+
+func (mgr *manager) AddZona(zona *model.Zona) (err error) {
+	return mgr.db.Create(zona).Error
+}
+
+func (mgr *manager) UpdateZona(zona *model.Zona) (err error) {
+	return mgr.db.Save(&zona).Error
+}
+
+func (mgr *manager) CheckIfZonaExists(dominio string) bool{
+	var zona model.Zona
+	exists := mgr.db.First(&zona,"dominio = ?",dominio).RecordNotFound()
+	return ! exists
+}
+
+func (mgr *manager) GetAllZonas() []model.Zona {
+	var zonas []model.Zona
+	mgr.db.Find(&zonas)
+	return zonas
+}
+
+func (mgr *manager) GetZona(id string) model.Zona {
+	var zona model.Zona
+	mgr.db.First(&zona,id)
+	return zona
+}
+
+func (mgr *manager) RemoveZona(id string) (err error) {
+	return mgr.db.Delete(model.Zona{}, "id == ?", id).Error
+}
+
+func (mgr *manager) AddRegistros(registros []model.Registro) {
+	for  _ , registro := range registros {
+		mgr.db.Create(&registro)
+
+	}
+}

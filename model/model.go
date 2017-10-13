@@ -11,15 +11,7 @@ type Web struct {
 	PHPversion string
 	PHPmethod string
 	Webserver string
-	Status int
-}
-
-
-type Region struct {
-	gorm.Model
-	Dominio string
-	Email string
-	Registros []Registro
+	Estado int
 }
 
 type Registro struct {
@@ -27,7 +19,18 @@ type Registro struct {
 	Tipo string
 	Nombre string
 	Valor string
+	Prioridad string
+	ZonaID uint
 }
+
+type Zona struct {
+	gorm.Model
+	Dominio string
+	Email string
+	Estado int
+	Registros []Registro
+}
+
 
 type User struct {
 	gorm.Model

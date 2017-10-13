@@ -71,7 +71,7 @@ func AddWeb(w http.ResponseWriter, r *http.Request) {
 			web.Webserver = webserver
 
 
-			web.Status = 1
+			web.Estado = 1
 			if len(id) == 0 {
 				err = db.Mgr.AddWeb(&web)
 				if err != nil {

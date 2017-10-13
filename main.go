@@ -64,6 +64,10 @@ func main() {
 	r.Post("/web", controller.AddWeb)
 	r.Get("/removeWeb",controller.RemoveWeb)
 
+	r.Get("/dns", controller.ZonaHandler)
+	r.Post("/dns", controller.AddRegion)
+	r.Get("/removeZona",controller.RemoveRegion)
+
 
 	r.Get("/login", login.LoginHandler)
 	r.Post("/login", login.LoginHandler)
