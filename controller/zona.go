@@ -111,7 +111,7 @@ func AddRegion(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func RemoveRegion(w http.ResponseWriter, r *http.Request) {
+func RemoveZona(w http.ResponseWriter, r *http.Request) {
 	userName := login.GetUserName(r)
 	if userName != "" {
 		id := r.URL.Query().Get("id")

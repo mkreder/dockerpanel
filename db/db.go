@@ -27,6 +27,13 @@ type Manager interface {
 	GetZona(id string) model.Zona
 
 	AddRegistros(registros []model.Registro)
+	GetRegistros(zonaid string) []model.Registro
+	CheckIfRegistroExists(nombre string,tipo string, valor string, prioridad string) bool
+	GetRegistro(id string) model.Registro
+	AddRegistro(registro *model.Registro) (err error)
+	UpdateRegistro(registro *model.Registro) (err error)
+	RemoveRegistro(id string) (err error)
+
 
 	migrate()
 	// Add other methods
@@ -152,4 +159,34 @@ func (mgr *manager) AddRegistros(registros []model.Registro) {
 		mgr.db.Create(&registro)
 
 	}
+}
+
+func (mgr *manager) GetRegistros(zonaid string) []model.Registro{
+	var registros []model.Registro
+	mgr.db.Where("zona_id = ?", zonaid).Find(&registros)
+	return registros
+}
+
+func (mgr *manager) CheckIfRegistroExists(nombre string,tipo string, valor string, prioridad string) bool{
+	var registro model.Registro
+	exists := mgr.db.First(&registro,"nombre = ? AND tipo = ? AND valor = ? AND prioridad = ? ",nombre,tipo,valor,prioridad).RecordNotFound()
+	return ! exists
+}
+
+func (mgr *manager) GetRegistro(id string) model.Registro {
+	var registro model.Registro
+	mgr.db.First(&registro,id)
+	return registro
+}
+
+func (mgr *manager) AddRegistro(registro *model.Registro) (err error) {
+	return mgr.db.Create(registro).Error
+}
+
+func (mgr *manager) UpdateRegistro(registro *model.Registro) (err error) {
+	return mgr.db.Save(&registro).Error
+}
+
+func (mgr *manager) RemoveRegistro(id string) (err error) {
+	return mgr.db.Delete(model.Registro{}, "id == ?", id).Error
 }
