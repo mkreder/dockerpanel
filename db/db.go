@@ -151,6 +151,9 @@ func (mgr *manager) GetZona(id string) model.Zona {
 }
 
 func (mgr *manager) RemoveZona(id string) (err error) {
+	for _ , registro := range Mgr.GetZona(id).Registros {
+		Mgr.RemoveRegistro(string(registro.ID))
+	}
 	return mgr.db.Delete(model.Zona{}, "id == ?", id).Error
 }
 

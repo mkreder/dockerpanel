@@ -37,3 +37,10 @@ type User struct {
 	Email string
 	Password string
 }
+
+type Ftp struct {
+	gorm.Model
+	Username string
+	Password string
+	Web Web
+}
