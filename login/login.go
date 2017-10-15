@@ -5,7 +5,8 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"github.com/gorilla/securecookie"
 	"github.com/mkreder/dockerpanel/templates"
-	"github.com/mkreder/dockerpanel/db"
+	"github.com/mkreder/dockerpanel/model"
+
 )
 
 var cookieHandler = securecookie.New(
@@ -13,9 +14,9 @@ var cookieHandler = securecookie.New(
 	securecookie.GenerateRandomKey(32))
 
 
-func setSession(userName string, response http.ResponseWriter) {
+func setSession(UsuarioName string, response http.ResponseWriter) {
 	value := map[string]string{
-		"name": userName,
+		"name": UsuarioName,
 	}
 	if encoded, err := cookieHandler.Encode("session", value); err == nil {
 		cookie := &http.Cookie{
@@ -27,14 +28,14 @@ func setSession(userName string, response http.ResponseWriter) {
 	}
 }
 
-func GetUserName(request *http.Request) (userName string) {
+func GetUNombreUsuario(request *http.Request) (UsuarioName string) {
 	if cookie, err := request.Cookie("session"); err == nil {
 		cookieValue := make(map[string]string)
 		if err = cookieHandler.Decode("session", cookie.Value, &cookieValue); err == nil {
-			userName = cookieValue["name"]
+			UsuarioName = cookieValue["name"]
 		}
 	}
-	return userName
+	return UsuarioName
 }
 
 func clearSession(response http.ResponseWriter) {
@@ -55,8 +56,8 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	if len(email) == 0 {
 		templates.WriteLoginTemplate(w, "")
 	} else {
-		user := db.Mgr.GetUser(email)
-		if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(pass)); err != nil {
+		Usuario := model.Mgr.GetUsuario(email)
+		if err := bcrypt.CompareHashAndPassword([]byte(Usuario.Password), []byte(pass)); err != nil {
 			templates.WriteLoginTemplate(w,"Contraseña invalida")
 		} else {
 			setSession(email, w)

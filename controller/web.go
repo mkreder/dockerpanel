@@ -3,7 +3,6 @@ package controller
 import "net/http"
 import (
 	"github.com/mkreder/dockerpanel/templates"
-	"github.com/mkreder/dockerpanel/db"
 	"strings"
 	"github.com/mkreder/dockerpanel/model"
 
@@ -11,9 +10,9 @@ import (
 )
 
 func WebHandler(w http.ResponseWriter, r *http.Request) {
-	userName := login.GetUserName(r)
-	if userName != "" {
-		webs := db.Mgr.GetAllWebs()
+	UsuarioName := login.GetUNombreUsuario(r)
+	if UsuarioName != "" {
+		webs := model.Mgr.GetAllWebs()
 		templates.WriteWebTemplate(w,webs,"")
 	} else {
 		templates.WriteLoginTemplate(w,"")
@@ -22,19 +21,19 @@ func WebHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddWeb(w http.ResponseWriter, r *http.Request) {
-	userName := login.GetUserName(r)
-	if userName != "" {
+	UsuarioName := login.GetUNombreUsuario(r)
+	if UsuarioName != "" {
 		r.ParseForm()
 		dominio := strings.Join(r.Form["dominio"],"")
 		id := strings.Join(r.Form["id"],"")
 		var err error
 
-		if ( len(id) == 0 ) && ( db.Mgr.CheckIfWebExists(dominio) ){
-			templates.WriteWebTemplate(w, db.Mgr.GetAllWebs(),"El sitio web " + dominio + " ya existe")
+		if ( len(id) == 0 ) && ( model.Mgr.CheckIfWebExists(dominio) ){
+			templates.WriteWebTemplate(w, model.Mgr.GetAllWebs(),"El sitio web " + dominio + " ya existe")
 		} else {
 			var web model.Web
 			if (len(id) != 0) {
-				web = db.Mgr.GetWeb(id)
+				web = model.Mgr.GetWeb(id)
 			}
 			web.Dominio = dominio
 
@@ -73,18 +72,18 @@ func AddWeb(w http.ResponseWriter, r *http.Request) {
 
 			web.Estado = 1
 			if len(id) == 0 {
-				err = db.Mgr.AddWeb(&web)
+				err = model.Mgr.AddWeb(&web)
 				if err != nil {
-					templates.WriteWebTemplate(w, db.Mgr.GetAllWebs(),"Error al agregar el sitio web")
+					templates.WriteWebTemplate(w, model.Mgr.GetAllWebs(),"Error al agregar el sitio web")
 				} else {
-					templates.WriteWebTemplate(w, db.Mgr.GetAllWebs(),"")
+					templates.WriteWebTemplate(w, model.Mgr.GetAllWebs(),"")
 				}
 			} else {
-				err = db.Mgr.UpdateWeb(&web)
+				err = model.Mgr.UpdateWeb(&web)
 				if err != nil {
-					templates.WriteWebTemplate(w, db.Mgr.GetAllWebs(),"Error al actualizar el sitio web")
+					templates.WriteWebTemplate(w, model.Mgr.GetAllWebs(),"Error al actualizar el sitio web")
 				} else {
-					templates.WriteWebTemplate(w, db.Mgr.GetAllWebs(),"")
+					templates.WriteWebTemplate(w, model.Mgr.GetAllWebs(),"")
 				}
 			}
 		}
@@ -94,14 +93,14 @@ func AddWeb(w http.ResponseWriter, r *http.Request) {
 }
 
 func RemoveWeb(w http.ResponseWriter, r *http.Request) {
-	userName := login.GetUserName(r)
-	if userName != "" {
+	UsuarioName := login.GetUNombreUsuario(r)
+	if UsuarioName != "" {
 		id := r.URL.Query().Get("id")
-		err := db.Mgr.RemoveWeb(id)
+		err := model.Mgr.RemoveWeb(id)
 		if err != nil {
-			templates.WriteWebTemplate(w,db.Mgr.GetAllWebs(),"Error al borrar el sitio web")
+			templates.WriteWebTemplate(w,model.Mgr.GetAllWebs(),"Error al borrar el sitio web")
 		} else {
-			templates.WriteWebTemplate(w,db.Mgr.GetAllWebs(),"")
+			templates.WriteWebTemplate(w,model.Mgr.GetAllWebs(),"")
 		}
 	} else {
 		templates.WriteLoginTemplate(w,"")

@@ -5,16 +5,15 @@ import (
 	"strings"
 	"github.com/mkreder/dockerpanel/login"
 	"github.com/mkreder/dockerpanel/templates"
-	"github.com/mkreder/dockerpanel/db"
 	"github.com/mkreder/dockerpanel/model"
 	"strconv"
 )
 
 func RegistroHandler(w http.ResponseWriter, r *http.Request) {
-	userName := login.GetUserName(r)
-	if userName != "" {
+	UsuarioName := login.GetUNombreUsuario(r)
+	if UsuarioName != "" {
 		zonaid := r.URL.Query().Get("id")
-		registros := db.Mgr.GetRegistros(zonaid)
+		registros := model.Mgr.GetRegistros(zonaid)
 		templates.WriteRegistroTemplate(w,registros,zonaid,"")
 	} else {
 		templates.WriteLoginTemplate(w,"")
@@ -23,8 +22,8 @@ func RegistroHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddRegistro(w http.ResponseWriter, r *http.Request) {
-	userName := login.GetUserName(r)
-	if userName != "" {
+	UsuarioName := login.GetUNombreUsuario(r)
+	if UsuarioName != "" {
 		r.ParseForm()
 		tipo := strings.Join(r.Form["tipo"],"")
 		nombre := strings.Join(r.Form["nombre"],"")
@@ -33,12 +32,12 @@ func AddRegistro(w http.ResponseWriter, r *http.Request) {
 		zonaid := strings.Join(r.Form["zonaid"],"")
 		id := strings.Join(r.Form["id"],"")
 
-		if ( len(id) == 0 ) && ( db.Mgr.CheckIfRegistroExists(nombre,tipo,valor,prioridad) ){
-			templates.WriteRegistroTemplate(w, db.Mgr.GetRegistros(zonaid),zonaid,"")
+		if ( len(id) == 0 ) && ( model.Mgr.CheckIfRegistroExists(nombre,tipo,valor,prioridad) ){
+			templates.WriteRegistroTemplate(w, model.Mgr.GetRegistros(zonaid),zonaid,"")
 		} else {
 			var registro model.Registro
 			if len(id) != 0 {
-				registro = db.Mgr.GetRegistro(id)
+				registro = model.Mgr.GetRegistro(id)
 			}
 			registro.Tipo = tipo
 			registro.Nombre = nombre
@@ -49,18 +48,18 @@ func AddRegistro(w http.ResponseWriter, r *http.Request) {
 			registro.ZonaID = uint(z64)
 
 			if len(id) == 0 {
-				err = db.Mgr.AddRegistro(&registro)
+				err = model.Mgr.AddRegistro(&registro)
 				if err != nil {
-					templates.WriteRegistroTemplate(w, db.Mgr.GetRegistros(zonaid),zonaid,"Error al agregar el registro")
+					templates.WriteRegistroTemplate(w, model.Mgr.GetRegistros(zonaid),zonaid,"Error al agregar el registro")
 				} else {
-					templates.WriteRegistroTemplate(w, db.Mgr.GetRegistros(zonaid),zonaid,"")
+					templates.WriteRegistroTemplate(w, model.Mgr.GetRegistros(zonaid),zonaid,"")
 				}
 			} else {
-				err = db.Mgr.UpdateRegistro(&registro)
+				err = model.Mgr.UpdateRegistro(&registro)
 				if err != nil {
-					templates.WriteRegistroTemplate(w, db.Mgr.GetRegistros(zonaid),zonaid,"Error al actualizar el registro")
+					templates.WriteRegistroTemplate(w, model.Mgr.GetRegistros(zonaid),zonaid,"Error al actualizar el registro")
 				} else {
-					templates.WriteRegistroTemplate(w, db.Mgr.GetRegistros(zonaid),zonaid,"")
+					templates.WriteRegistroTemplate(w, model.Mgr.GetRegistros(zonaid),zonaid,"")
 				}
 			}
 		}
@@ -70,15 +69,15 @@ func AddRegistro(w http.ResponseWriter, r *http.Request) {
 }
 
 func RemoveRegistro(w http.ResponseWriter, r *http.Request) {
-	userName := login.GetUserName(r)
-	if userName != "" {
+	UsuarioName := login.GetUNombreUsuario(r)
+	if UsuarioName != "" {
 		id := r.URL.Query().Get("id")
 		zonaid := r.URL.Query().Get("zonaid")
-		err := db.Mgr.RemoveRegistro(id)
+		err := model.Mgr.RemoveRegistro(id)
 		if err != nil {
-			templates.WriteRegistroTemplate(w,db.Mgr.GetRegistros(zonaid),zonaid,"Error al borrar el registro")
+			templates.WriteRegistroTemplate(w,model.Mgr.GetRegistros(zonaid),zonaid,"Error al borrar el registro")
 		} else {
-			templates.WriteRegistroTemplate(w,db.Mgr.GetRegistros(zonaid),zonaid,"")
+			templates.WriteRegistroTemplate(w,model.Mgr.GetRegistros(zonaid),zonaid,"")
 		}
 	} else {
 		templates.WriteLoginTemplate(w,"")

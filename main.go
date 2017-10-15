@@ -21,7 +21,7 @@ import (
 
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	userName := login.GetUserName(r)
+	userName := login.GetUNombreUsuario(r)
 	if userName != "" {
 		templates.WriteHomeTemplate(w)
 	} else {
