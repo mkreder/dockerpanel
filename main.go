@@ -71,6 +71,11 @@ func main() {
 	r.Post("/registros",controller.AddRegistro)
 	r.Get("/removeRegistro",controller.RemoveRegistro)
 
+	r.Get("/ftp", controller.FtpHandler)
+	r.Post("/ftp", controller.AddUsuarioFtp)
+	r.Get("/removeUsuarioFtp",controller.RemoveUsuarioFtp)
+	r.Post("/ftpconfig", controller.FtpConfigHandler)
+
 
 
 	r.Get("/login", login.LoginHandler)

@@ -34,7 +34,15 @@ type Manager interface {
 	RemoveRegistro(id string) (err error)
 
 
-	UpdateFtp(ftp *Ftp) (err error)
+	AddUsuarioFtp(uftp *UsuarioFtp)  (err error)
+	UpdateUsuarioFtp(ftp *UsuarioFtp) (err error)
+	CheckIfUsuarioFtpExists(nombre string, webid string) bool
+	GetAllUsuarioFtps() []UsuarioFtp
+	GetUsuarioFtp(id string) UsuarioFtp
+	RemoveUsuarioFtp(id string) (err error)
+	UpdateFtpConfig(anonWrite int, anonRead int) (err error)
+	GetFtpConfig() FtpConfig
+
 
 	migrate()
 	// Add other methods
@@ -55,20 +63,28 @@ func init() {
 	Mgr = &manager{db: db}
 	Mgr.migrate()
 }
-func (mgr *manager) migrate(){
+
+func (mgr *manager) migrate() {
 	mgr.db.AutoMigrate(&Web{})
 	mgr.db.AutoMigrate(&Usuario{})
 	mgr.db.AutoMigrate(&Zona{})
 	mgr.db.AutoMigrate(&Registro{})
+	mgr.db.AutoMigrate(&UsuarioFtp{})
+	mgr.db.AutoMigrate(&FtpConfig{})
 
 	// Add default Usuario
 	var usr Usuario
 
-	if mgr.db.First(&usr,"email = ?","admin@admin.com").RecordNotFound(){
+	if mgr.db.First(&usr, "email = ?", "admin@admin.com").RecordNotFound() {
 		usr.Email = "admin@admin.com"
 		hash, _ := bcrypt.GenerateFromPassword([]byte("admin"), bcrypt.DefaultCost)
 		usr.Password = string(hash)
 		mgr.db.Create(&usr)
 	}
 
+	var ftpConfig FtpConfig
+	if mgr.db.First(&ftpConfig, "id = 1").RecordNotFound() {
+		mgr.UpdateFtpConfig(0, 0)
+	}
 }
+
