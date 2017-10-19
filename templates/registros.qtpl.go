@@ -192,7 +192,7 @@ func StreamRegistroTemplate(qw422016 *qt422016.Writer, registros []model.Registr
                         <a href="/dns"><i class="fa fa-cloud fa-fw"></i>DNS</a>
                     </li>
                     <li>
-                        <a href="/db"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
+                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
                     </li>
                     <li>
                         <a href="/mail"><i class="fa fa-at fa-fw"></i>E-Mail</a>
@@ -257,7 +257,7 @@ func StreamRegistroTemplate(qw422016 *qt422016.Writer, registros []model.Registr
 		qw422016.N().S(` </td>
 
                                 <td class="center">
-                                    <button type="button" class="btn btn-xs btn-primary" onclick='modifyRegistro(`)
+                                    <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Modificar registro" onclick='modifyRegistro(`)
 		//line templates/registros.qtpl:204
 		qw422016.N().D(int(registro.ID))
 		//line templates/registros.qtpl:204
@@ -278,7 +278,7 @@ func StreamRegistroTemplate(qw422016 *qt422016.Writer, registros []model.Registr
 		qw422016.E().S(registro.Prioridad)
 		//line templates/registros.qtpl:204
 		qw422016.N().S(`" )' ><i class="fa fa-list"></i></button>
-                                    <button class="btn btn-xs btn-danger" onclick="location.href='removeRegistro?id=`)
+                                    <button class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar registro" onclick="location.href='removeRegistro?id=`)
 		//line templates/registros.qtpl:205
 		qw422016.N().D(int(registro.ID))
 		//line templates/registros.qtpl:205
@@ -308,7 +308,7 @@ func StreamRegistroTemplate(qw422016 *qt422016.Writer, registros []model.Registr
         <div id="form" class="col-lg-6" hidden="true" >
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Nuevo Sitio
+                    Configuración del Registro
                 </div>
                 <div class="panel-body">
                     <form id="addregistro" action="/registros" onsubmit="return validateForm()" role=form method="post">

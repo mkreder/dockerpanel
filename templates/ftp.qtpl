@@ -1,5 +1,5 @@
 {% import "github.com/mkreder/dockerpanel/model" %}
-{% func FtpTemplate(uftps []model.UsuarioFtp, webs []model.Web, ftpConfig model.FtpConfig, error string) %}
+{% func FtpTemplate(uftps []model.UsuarioFTP, webs []model.Web, ftpConfig model.FtpConfig, error string) %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -177,7 +177,7 @@
                         <a href="/dns"><i class="fa fa-cloud fa-fw"></i>DNS</a>
                     </li>
                     <li>
-                        <a href="/db"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
+                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
                     </li>
                     <li>
                         <a href="/mail"><i class="fa fa-at fa-fw"></i>E-Mail</a>
@@ -198,7 +198,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading clearfix">
-                        <h4 class="panel-title pull-left" style="padding-top: 7.5px;">Sitios Ftp</h4>
+                        <h4 class="panel-title pull-left" style="padding-top: 7.5px;">Usuarios FTP</h4>
                         <button type="button" class="btn pull-right btn-primary btn-sm" onclick="showDiv()">Agregar</button>
                     </div>
                     <!-- /.panel-heading -->
@@ -242,8 +242,8 @@
 
 
                                 <td class="center">
-                                    <button type="button" class="btn btn-xs btn-primary" onclick='modifyFtp({%d int(uftp.ID) %}, "{%s uftp.Nombre %}", "{%d int(id) %}" )' ><i class="fa fa-list"></i></button>
-                                    <button class="btn btn-xs btn-danger" onclick="location.href='removeUsuarioFtp?id={%d int(uftp.ID) %}';"><i class="fa fa-trash-o"></i></button>
+                                    <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Modificar usuario de FTP" onclick='modifyFtp({%d int(uftp.ID) %}, "{%s uftp.Nombre %}", "{%d int(id) %}" )' ><i class="fa fa-list"></i></button>
+                                    <button class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar usuario de FTP" onclick="location.href='removeUsuarioFtp?id={%d int(uftp.ID) %}';"><i class="fa fa-trash-o"></i></button>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -302,7 +302,7 @@
         <div id="form" class="col-lg-6" hidden="true" >
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Nuevo Sitio
+                    Configuración del Usuario FTP
                 </div>
                 <div class="panel-body">
                     <form id="addftp" action="/ftp" onsubmit="return validateForm()" role=form method="post">

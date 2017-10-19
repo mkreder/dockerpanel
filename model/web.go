@@ -14,7 +14,7 @@ type Web struct {
 	PHPmethod string
 	Webserver string
 	Estado int
-	Ftps []UsuarioFtp
+	Ftps []UsuarioFTP
 }
 
 

@@ -179,7 +179,7 @@ func StreamZonaTemplate(qw422016 *qt422016.Writer, zonas []model.Zona, error str
                         <a href="/dns"><i class="fa fa-cloud fa-fw"></i>DNS</a>
                     </li>
                     <li>
-                        <a href="/db"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
+                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
                     </li>
                     <li>
                         <a href="/mail"><i class="fa fa-at fa-fw"></i>E-Mail</a>
@@ -260,7 +260,7 @@ func StreamZonaTemplate(qw422016 *qt422016.Writer, zonas []model.Zona, error str
 		qw422016.N().S(` </td>
 
                                 <td class="center">
-                                    <button type="button" class="btn btn-xs btn-primary" onclick='modifyZona(`)
+                                    <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Editar zona" onclick='modifyZona(`)
 		//line templates/zona.qtpl:198
 		qw422016.N().D(int(zona.ID))
 		//line templates/zona.qtpl:198
@@ -273,12 +273,12 @@ func StreamZonaTemplate(qw422016 *qt422016.Writer, zonas []model.Zona, error str
 		qw422016.E().S(zona.Email)
 		//line templates/zona.qtpl:198
 		qw422016.N().S(`" )' ><i class="fa fa-list"></i></button>
-                                    <button class="btn btn-xs btn-info" onclick="location.href='editRegistros?id=`)
+                                    <button class="btn btn-xs btn-info"  data-toggle="tooltip" data-placement="top" title="Editar registros" onclick="location.href='editRegistros?id=`)
 		//line templates/zona.qtpl:199
 		qw422016.N().D(int(zona.ID))
 		//line templates/zona.qtpl:199
 		qw422016.N().S(`';"><i class="fa fa-edit"></i></button>
-                                    <button class="btn btn-xs btn-danger" onclick="location.href='removeZona?id=`)
+                                    <button class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar zona" onclick="location.href='removeZona?id=`)
 		//line templates/zona.qtpl:200
 		qw422016.N().D(int(zona.ID))
 		//line templates/zona.qtpl:200
@@ -304,7 +304,7 @@ func StreamZonaTemplate(qw422016 *qt422016.Writer, zonas []model.Zona, error str
         <div id="form" class="col-lg-6" hidden="true" >
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Nuevo Sitio
+                    Configuración de la Zona
                 </div>
                 <div class="panel-body">
                     <form id="addzona" action="/dns" onsubmit="return validateForm()" role=form method="post">

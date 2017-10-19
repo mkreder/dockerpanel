@@ -21,7 +21,7 @@ var (
 )
 
 //line templates/ftp.qtpl:2
-func StreamFtpTemplate(qw422016 *qt422016.Writer, uftps []model.UsuarioFtp, webs []model.Web, ftpConfig model.FtpConfig, error string) {
+func StreamFtpTemplate(qw422016 *qt422016.Writer, uftps []model.UsuarioFTP, webs []model.Web, ftpConfig model.FtpConfig, error string) {
 	//line templates/ftp.qtpl:2
 	qw422016.N().S(`
 
@@ -213,7 +213,7 @@ func StreamFtpTemplate(qw422016 *qt422016.Writer, uftps []model.UsuarioFtp, webs
                         <a href="/dns"><i class="fa fa-cloud fa-fw"></i>DNS</a>
                     </li>
                     <li>
-                        <a href="/db"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
+                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
                     </li>
                     <li>
                         <a href="/mail"><i class="fa fa-at fa-fw"></i>E-Mail</a>
@@ -325,7 +325,7 @@ func StreamFtpTemplate(qw422016 *qt422016.Writer, uftps []model.UsuarioFtp, webs
 
 
                                 <td class="center">
-                                    <button type="button" class="btn btn-xs btn-primary" onclick='modifyFtp(`)
+                                    <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Modificar usuario de FTP" onclick='modifyFtp(`)
 		//line templates/ftp.qtpl:245
 		qw422016.N().D(int(uftp.ID))
 		//line templates/ftp.qtpl:245
@@ -338,7 +338,7 @@ func StreamFtpTemplate(qw422016 *qt422016.Writer, uftps []model.UsuarioFtp, webs
 		qw422016.N().D(int(id))
 		//line templates/ftp.qtpl:245
 		qw422016.N().S(`" )' ><i class="fa fa-list"></i></button>
-                                    <button class="btn btn-xs btn-danger" onclick="location.href='removeUsuarioFtp?id=`)
+                                    <button class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar usuario de FTP" onclick="location.href='removeUsuarioFtp?id=`)
 		//line templates/ftp.qtpl:246
 		qw422016.N().D(int(uftp.ID))
 		//line templates/ftp.qtpl:246
@@ -429,7 +429,7 @@ func StreamFtpTemplate(qw422016 *qt422016.Writer, uftps []model.UsuarioFtp, webs
         <div id="form" class="col-lg-6" hidden="true" >
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Nuevo Sitio
+                    Configuración del Usuario FTP
                 </div>
                 <div class="panel-body">
                     <form id="addftp" action="/ftp" onsubmit="return validateForm()" role=form method="post">
@@ -508,7 +508,7 @@ func StreamFtpTemplate(qw422016 *qt422016.Writer, uftps []model.UsuarioFtp, webs
 }
 
 //line templates/ftp.qtpl:363
-func WriteFtpTemplate(qq422016 qtio422016.Writer, uftps []model.UsuarioFtp, webs []model.Web, ftpConfig model.FtpConfig, error string) {
+func WriteFtpTemplate(qq422016 qtio422016.Writer, uftps []model.UsuarioFTP, webs []model.Web, ftpConfig model.FtpConfig, error string) {
 	//line templates/ftp.qtpl:363
 	qw422016 := qt422016.AcquireWriter(qq422016)
 	//line templates/ftp.qtpl:363
@@ -519,7 +519,7 @@ func WriteFtpTemplate(qq422016 qtio422016.Writer, uftps []model.UsuarioFtp, webs
 }
 
 //line templates/ftp.qtpl:363
-func FtpTemplate(uftps []model.UsuarioFtp, webs []model.Web, ftpConfig model.FtpConfig, error string) string {
+func FtpTemplate(uftps []model.UsuarioFTP, webs []model.Web, ftpConfig model.FtpConfig, error string) string {
 	//line templates/ftp.qtpl:363
 	qb422016 := qt422016.AcquireByteBuffer()
 	//line templates/ftp.qtpl:363

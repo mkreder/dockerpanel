@@ -1,0 +1,593 @@
+{% import "github.com/mkreder/dockerpanel/model" %}
+{% func BDTemplate(bds []model.BD, ubds []model.UsuarioBD, error string) %}
+
+<!DOCTYPE html>
+<html lang="en">
+<script type="text/javascript">
+    function validateFormUsuario() {
+        var y = document.getElementById("nombre").value;
+        if (y == "" ) {
+            alert("Se debe completar el nombre de usuario");
+            return false;
+        }
+
+        var z = document.getElementById("password").value;
+        if ( document.getElementById("password").getAttribute("disabled") == "disabled" ){
+        } else {
+            if (z == "" ) {
+                alert("Se debe completar la contraseña");
+                return false;
+            }
+        }
+
+    }
+
+    function generarPassword() {
+        if ( document.getElementById("password").getAttribute("disabled") == "disabled" ) {
+            document.getElementById("btngenerar").innerHTML="Generar";
+            document.getElementById("password").removeAttribute("disabled")
+            document.getElementById("checkmostrar").removeAttribute("disabled");
+        } else {
+            document.getElementById("password").value = Math.random().toString(36).slice(-8);
+        }
+    }
+
+    function mostrarPassword() {
+        if ( document.getElementById('checkmostrar').checked ) {
+            document.getElementById('password').removeAttribute("type")
+        } else {
+            document.getElementById('password').setAttribute("type","password")
+        }
+
+    }
+
+
+    function showDivUsuario() {
+        var x = document.getElementById('formUsuario');
+        x.style.display = 'block';
+    }
+
+
+    function hideDivUsuario() {
+        var x = document.getElementById('formUsuario');
+        x.style.display = 'none';
+        document.getElementById("nombre").value = "";
+        document.getElementById("password").value = "";
+        if ( document.getElementById("password").getAttribute("disabled") == "disabled" ) {
+            document.getElementById("btngenerar").innerHTML="Generar";
+            document.getElementById("password").removeAttribute("disabled");
+            document.getElementById("checkmostrar").removeAttribute("disabled");
+        }
+    }
+
+    function modifyUsuario(id,nombre) {
+        var x = document.getElementById('formUsuario');
+        document.getElementById("id").value = id;
+        document.getElementById("nombre").value = nombre;
+        document.getElementById("password").setAttribute("disabled","disabled")
+        document.getElementById("btngenerar").innerHTML="Cambiar";
+        document.getElementById("checkmostrar").setAttribute("disabled","disabled")
+
+        x.style.display = 'block';
+    }
+
+
+    function showDivBD() {
+        var x = document.getElementById('formBD');
+        x.style.display = 'block';
+    }
+
+    function hideDivBD() {
+        var x = document.getElementById('formBD');
+        x.style.display = 'none';
+        document.getElementById("nombre").value = "";
+    }
+
+
+    function hideDivRemoveBD(id) {
+        var x = document.getElementById('formRemoveUBD' + id);
+        x.style.display = 'none';
+        document.getElementById("bd" + id).options[0].selected = true;
+    }
+
+    function hideDivAUBD() {
+        var x = document.getElementById('formAddUBD');
+        x.style.display = 'none';
+        document.getElementById("selabd").options[0].selected = true;
+    }
+
+    function validateFormBD() {
+        var y = document.getElementById("nombreBD").value;
+        if (y == "" ) {
+            alert("Se debe completar el nombre de la base de datos");
+            return false;
+        }
+    }
+
+    function validateFormAddUBD() {
+        var y = document.getElementById("selabd").value;
+        if (y == "" ) {
+            alert("Se debe completar el nombre de la base de datos");
+            return false;
+        }
+    }
+
+    function validateFormRemoveUBD(id) {
+        var y = document.getElementById("bd" + id).value;
+        if (y == "" ) {
+            alert("Se debe seleccionar una base de datos");
+            return false;
+        }
+    }
+
+    function validateFormRemoveIP(id) {
+        var y = document.getElementById("ip" + id).value;
+        if (y == "" ) {
+            alert("Se debe seleccionar una IP");
+            return false;
+        }
+    }
+
+
+    function modifyBD(id,nombre) {
+        var x = document.getElementById('formBD');
+        document.getElementById("idBD").value = id;
+        document.getElementById("nombreBD").value = nombre;
+        x.style.display = 'block';
+
+    }
+
+    function addUBD(id){
+        var x = document.getElementById('formAddUBD');
+        document.getElementById("idABD").value = id;
+        x.style.display = 'block';
+    }
+
+    function removeUBD(id){
+        var x = document.getElementById('formRemoveUBD' + id);
+        x.style.display = 'block';
+    }
+
+    function addIP(id){
+        var x = document.getElementById('formAddIP');
+        document.getElementById("idIP").value = id;
+        x.style.display = 'block';
+    }
+
+    function removeIP(id){
+        var x = document.getElementById('formRemoveIP' + id);
+        x.style.display = 'block';
+    }
+
+    function validateFormAddIP(){
+        var y = document.getElementById("ip").value;
+        if (y == "" ) {
+            alert("Se debe completar la IP");
+            return false;
+        }
+
+        if (/^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$|^%$/.test(y)) {
+        }else {
+            alert("IP invalida");
+            return false;
+        }
+    }
+
+    function hideDivAIP(){
+        var x = document.getElementById('formAddIP');
+        x.style.display = 'none';
+        document.getElementById("ip").value = "";
+    }
+
+    function hideDivRemoveIP(id) {
+        var x = document.getElementById('formRemoveIP' + id);
+        x.style.display = 'none';
+        document.getElementById("ip" + id).options[0].selected = true;
+    }
+
+
+
+</script>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Panel Docker</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="../vendor/morrisjs/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+{% if len(error) > 0 %}
+<script type="text/javascript">
+    window.alert("{%s error %}")
+</script>
+{% endif %}
+
+<div id="wrapper">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">Docker Panel</a>
+        </div>
+        <!-- /.navbar-header -->
+
+        <ul class="nav navbar-top-links navbar-right">
+            <!-- /.dropdown -->
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li><a href="/profile"><i class="fa fa-user fa-fw"></i> Configuración</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    </li>
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+            <!-- /.dropdown -->
+        </ul>
+        <!-- /.navbar-top-links -->
+
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li>
+                        <a href="/"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="/web"><i class="fa fa-server fa-fw"></i>Sitios Web</a>
+                    </li>
+                    <li>
+                        <a href="/dns"><i class="fa fa-cloud fa-fw"></i>DNS</a>
+                    </li>
+                    <li>
+                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
+                    </li>
+                    <li>
+                        <a href="/mail"><i class="fa fa-at fa-fw"></i>E-Mail</a>
+                    </li>
+                    <li>
+                        <a href="/ftp"><i class="fa fa-file-archive-o fa-fw"></i>FTP</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.sidebar-collapse -->
+        </div>
+        <!-- /.navbar-static-side -->
+    </nav>
+
+    <div id="page-wrapper">
+        <br>
+        <div class="row">
+            <div class="col-lg-12">
+
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Base de Datos
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#bds" data-toggle="tab">Bases de Datos</a>
+                            </li>
+                            <li><a href="#usuarios" data-toggle="tab">Usuarios</a>
+                            </li>
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div class="tab-pane fade" id="usuarios">
+                                <br>
+                                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Estado</th>
+                                        <th>Bases</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for _, user := range ubds %}
+                                    <tr class="odd gradeX">
+                                        <td> {%s user.Nombre %} </td>
+
+
+                                        {% switch user.Estado %}
+                                        {% case 1 %}
+                                        <td>a configurar</td>
+                                        {% case 2 %}
+                                        <td>configurado</td>
+                                        {% case 3 %}
+                                        <td>corriendo</td>
+                                        {% endswitch %}
+
+                                        <td>
+                                            {% for _, bd := range user.BDs %}
+                                              {%s bd.Nombre %}
+                                            {% endfor %}
+                                        </td>
+
+
+                                        <td class="center">
+                                            <button type="button" class="btn btn-xs btn-success" data-toggle="tooltip" data-placement="top" title="Asociar una base de datos" onclick='addUBD({%d int(user.ID) %})' ><i class="fa fa-plus"></i></button>
+                                            <button type="button" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="top" title="Desacociar una base de datos" onclick='removeUBD({%d int(user.ID) %})' ><i class="fa fa-minus"></i></button>
+                                            <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Editar usuario" onclick='modifyUsuario({%d int(user.ID) %}, "{%s user.Nombre %}"  )' ><i class="fa fa-list"></i></button>
+                                            <button class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar usuario" onclick="location.href='removeUsuarioBD?id={%d int(user.ID) %}';"><i class="fa fa-trash-o"></i></button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                <button type="button" class="btn btn-primary btn-sm" onclick="showDivUsuario()">Agregar</button>
+                            </div>
+                            <div class="tab-pane fade in active" id="bds">
+                                <br>
+                                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Estado</th>
+                                        <th>Remota</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for _, bd := range bds %}
+                                    <tr class="odd gradeX">
+                                        <td> {%s bd.Nombre %} </td>
+
+
+                                        {% switch bd.Estado %}
+                                        {% case 1 %}
+                                        <td>a configurar</td>
+                                        {% case 2 %}
+                                        <td>configurado</td>
+                                        {% case 3 %}
+                                        <td>corriendo</td>
+                                        {% endswitch %}
+
+                                        <td>
+                                            {% if len(bd.IPs) == 0 %}
+                                                no
+                                            {% else %}
+                                                {% for _, ip := range bd.IPs %}
+                                                    {%s ip.Valor %}
+                                                {% endfor %}
+                                            {% endif %}
+                                        </td>
+
+                                        <td class="center">
+                                            <button type="button" class="btn btn-xs btn-success" data-toggle="tooltip" data-placement="top" title="Agregar IP remota" onclick='addIP({%d int(bd.ID) %})' ><i class="fa fa-plus"></i></button>
+                                            <button type="button" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="top" title="Borrar IP remota" onclick='removeIP({%d int(bd.ID) %})' ><i class="fa fa-minus"></i></button>
+                                            <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Editar base de datos" onclick='modifyBD({%d int(bd.ID) %}, "{%s bd.Nombre %}")' ><i class="fa fa-list"></i></button>
+                                           <button class="btn btn-xs btn-danger"data-toggle="tooltip" data-placement="top" title="Borrar base de datos"  onclick="location.href='removeBd?id={%d int(bd.ID) %}';"><i class="fa fa-trash-o"></i></button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                <button type="button" class="btn btn-primary btn-sm" onclick="showDivBD()">Agregar</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+
+
+
+
+
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 -->
+
+
+
+        <div id="formUsuario" class="col-lg-6" hidden="true" >
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Configuración del Usuario
+                </div>
+                <div class="panel-body">
+                    <form id="addubd" action="/ubd" onsubmit="return validateFormUsuario()" role=form method="post">
+                        <input id="id" name="id" hidden="true" >
+                        Nombre de Usuario
+                        <input class="form-control" name="nombre" id="nombre">
+                        <br>
+
+                        Contraseña
+                        <input class="form-control" name="password" id="password" type="password">
+                        <button id="btngenerar" type="button" class="btn btn-default btn-sm" onclick="generarPassword()">Generar</button>
+                        <input id="checkmostrar" name="checkmostrar" type="checkbox" value="true" onclick="mostrarPassword()"> Mostrar Contraseña
+                        <br>
+
+                        <br>
+                        <button type="submit" class="btn btn-default">Guardar</button>
+                        <button type="button" class="btn btn-default" onclick="hideDivUsuario()">Cancelar</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <div id="formBD" class="col-lg-6" hidden="true" >
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Configuración de la Base de Datos
+                </div>
+                <div class="panel-body">
+                    <form id="addbd" action="/bd" onsubmit="return validateFormBD()" role=form method="post">
+                        <input id="idBD" name="idBD" hidden="true" >
+                        Nombre de la Base de Datos
+                        <input class="form-control" name="nombreBD" id="nombreBD">
+                        <br>
+                        <button type="submit" class="btn btn-default">Guardar</button>
+                        <button type="button" class="btn btn-default" onclick="hideDivBD()">Cancelar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="formAddUBD" class="col-lg-6" hidden="true" >
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Asociar usuario a base de datos
+                </div>
+                <div class="panel-body">
+                    <form id="adduubd" action="/addubd" onsubmit="return validateFormAddUBD()" role=form method="post">
+                        <input id="idABD" name="userid" hidden="true" >
+                        Base de Datos
+                        <select  class="form-control"  id="selabd" name="bdid">
+                            <option disabled selected value> -- Elegir base de datos -- </option>
+                            {% for _, bd := range bds %}
+                            <option value="{%d int(bd.ID) %}">{%s bd.Nombre %}</option>
+                            {% endfor %}
+                        </select>
+                        <br>
+                        <button type="submit" class="btn btn-default">Guardar</button>
+                        <button type="button" class="btn btn-default" onclick="hideDivAUBD()">Cancelar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {% for _, user := range ubds %}
+        <div id="formRemoveUBD{%d int(user.ID) %}" class="col-lg-6" hidden="true" >
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Remover permisos de usuario de base de datos
+                </div>
+                <div class="panel-body">
+                    <form id="removeubd" action="/removeubd" onsubmit="return validateFormRemoveUBD({%d int(user.ID) %})" role=form method="post">
+                        <input id="userid" name="userid" value="{%d int(user.ID) %}" hidden="true" >
+                        Base de Datos
+                        <select  class="form-control"  id="bd{%d int(user.ID) %}" name="bdid">
+                            <option disabled selected value> -- Elegir base de datos -- </option>
+                            {% for _, bd := range user.BDs %}
+                            <option value="{%d int(bd.ID) %}">{%s bd.Nombre %}</option>
+                            {% endfor %}
+                        </select>
+                        <br>
+                        <button type="submit" class="btn btn-default">Guardar</button>
+                        <button type="button" class="btn btn-default" onclick="hideDivRemoveBD({%d int(user.ID) %})">Cancelar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <div id="formAddIP" class="col-lg-6" hidden="true" >
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Agregar IP Remota
+                </div>
+                <div class="panel-body">
+                    <form id="addbdip" action="/addbdip" onsubmit="return validateFormAddIP()" role=form method="post">
+                        <input id="idIP" name="bdid" hidden="true" >
+                        IP
+                        <input id="ip" name="ip" class="form-control" >
+                        <br>
+                        <button type="submit" class="btn btn-default">Guardar</button>
+                        <button type="button" class="btn btn-default" onclick="hideDivAIP()">Cancelar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        {% for _, bd := range bds %}
+        <div id="formRemoveIP{%d int(bd.ID) %}" class="col-lg-6" hidden="true" >
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Desasociar IP remota
+                </div>
+                <div class="panel-body">
+                    <form id="removebdip" action="/removebdip" onsubmit="return validateFormRemoveIP({%d int(bd.ID) %})" role=form method="post">
+                        <input id="bd{%d int(bd.ID) %}" name="bdid" value="{%d int(bd.ID) %}" hidden="true" >
+                        IPs
+                        <select  class="form-control"  id="ip{%d int(bd.ID) %}" name="ip">
+                            <option disabled selected value> -- Elegir IP -- </option>
+                            {% for _, ip := range bd.IPs %}
+                            <option value="{%s ip.Valor %}">{%s ip.Valor %}</option>
+                            {% endfor %}
+                        </select>
+                        <br>
+                        <button type="submit" class="btn btn-default">Guardar</button>
+                        <button type="button" class="btn btn-default" onclick="hideDivRemoveIP({%d int(bd.ID) %})">Cancelar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+
+    </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
+
+    <!-- Morris Charts JavaScript -->
+    <!--<script src="../vendor/raphael/raphael.min.js"></script>-->
+    <!--<script src="../vendor/morrisjs/morris.min.js"></script>-->
+    <!--<script src="../data/morris-data.js"></script>-->
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../dist/js/sb-admin-2.js"></script>
+
+</body>
+
+</html>
+
+{% endfunc %}

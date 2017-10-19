@@ -4,7 +4,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type UsuarioFtp struct {
+type UsuarioFTP struct {
 	gorm.Model
 	Nombre  string
 	Password string
@@ -12,34 +12,34 @@ type UsuarioFtp struct {
 	WebID  uint
 }
 
-func (mgr *manager) UpdateUsuarioFtp(uftp *UsuarioFtp) (err error) {
+func (mgr *manager) UpdateUsuarioFtp(uftp *UsuarioFTP) (err error) {
 	return mgr.db.Save(&uftp).Error
 }
 
 
-func (mgr *manager) AddUsuarioFtp(uftp *UsuarioFtp) (err error) {
+func (mgr *manager) AddUsuarioFtp(uftp *UsuarioFTP) (err error) {
 	return mgr.db.Create(uftp).Error
 }
 
 
 func (mgr *manager) CheckIfUsuarioFtpExists(nombre string, webid string) bool{
-	var uftp UsuarioFtp
+	var uftp UsuarioFTP
 	exists := mgr.db.First(&uftp,"nombre = ? AND web_id = ?",nombre,webid).RecordNotFound()
 	return ! exists
 }
 
-func (mgr *manager) GetAllUsuarioFtps() []UsuarioFtp {
-	var uftps []UsuarioFtp
+func (mgr *manager) GetAllUsuarioFtps() []UsuarioFTP {
+	var uftps []UsuarioFTP
 	mgr.db.Find(&uftps)
 	return uftps
 }
 
-func (mgr *manager) GetUsuarioFtp(id string) UsuarioFtp {
-	var uftp UsuarioFtp
+func (mgr *manager) GetUsuarioFtp(id string) UsuarioFTP {
+	var uftp UsuarioFTP
 	mgr.db.First(&uftp,id)
 	return uftp
 }
 
 func (mgr *manager) RemoveUsuarioFtp(id string) (err error) {
-	return mgr.db.Delete(UsuarioFtp{}, "id == ?", id).Error
+	return mgr.db.Delete(UsuarioFTP{}, "id == ?", id).Error
 }

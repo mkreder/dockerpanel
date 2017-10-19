@@ -30,11 +30,9 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 
-// FileServer conveniently sets up a http.FileServer handler to serve
-// static files from a http.FileSystem.
 func FileServer(r chi.Router, path string, root http.FileSystem) {
 	if strings.ContainsAny(path, "{}*") {
-		panic("FileServer does not permit URL parameters.")
+		panic("El servidor de archivos no permite parametros URL.")
 	}
 
 	fs := http.StripPrefix(path, http.FileServer(root))
@@ -76,6 +74,16 @@ func main() {
 	r.Get("/removeUsuarioFtp",controller.RemoveUsuarioFtp)
 	r.Post("/ftpconfig", controller.FtpConfigHandler)
 
+
+	r.Get("/bd", controller.BDHandler)
+	r.Post("/bd",controller.AddBD)
+	r.Get("/removeBd",controller.RemoveBD)
+	r.Post("/ubd",controller.AddUsuarioBD)
+	r.Get("/removeUsuarioBD",controller.RemoveUsuarioBD)
+	r.Post("/addubd",controller.AssociateBD)
+	r.Post("/removeubd",controller.DisassociateBD)
+	r.Post("/addbdip",controller.AddIP)
+	r.Post("/removebdip",controller.RemoveIP)
 
 
 	r.Get("/login", login.LoginHandler)

@@ -143,7 +143,7 @@
                         <a href="/dns"><i class="fa fa-cloud fa-fw"></i>DNS</a>
                     </li>
                     <li>
-                        <a href="/db"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
+                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
                     </li>
                     <li>
                         <a href="/mail"><i class="fa fa-at fa-fw"></i>E-Mail</a>
@@ -195,9 +195,9 @@
                                 <td> {%s zona.Email %} </td>
 
                                 <td class="center">
-                                    <button type="button" class="btn btn-xs btn-primary" onclick='modifyZona({%d int(zona.ID) %}, "{%s zona.Dominio %}",  "{%s zona.Email %}" )' ><i class="fa fa-list"></i></button>
-                                    <button class="btn btn-xs btn-info" onclick="location.href='editRegistros?id={%d int(zona.ID) %}';"><i class="fa fa-edit"></i></button>
-                                    <button class="btn btn-xs btn-danger" onclick="location.href='removeZona?id={%d int(zona.ID) %}';"><i class="fa fa-trash-o"></i></button>
+                                    <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Editar zona" onclick='modifyZona({%d int(zona.ID) %}, "{%s zona.Dominio %}",  "{%s zona.Email %}" )' ><i class="fa fa-list"></i></button>
+                                    <button class="btn btn-xs btn-info"  data-toggle="tooltip" data-placement="top" title="Editar registros" onclick="location.href='editRegistros?id={%d int(zona.ID) %}';"><i class="fa fa-edit"></i></button>
+                                    <button class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar zona" onclick="location.href='removeZona?id={%d int(zona.ID) %}';"><i class="fa fa-trash-o"></i></button>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -215,7 +215,7 @@
         <div id="form" class="col-lg-6" hidden="true" >
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Nuevo Sitio
+                    Configuración de la Zona
                 </div>
                 <div class="panel-body">
                     <form id="addzona" action="/dns" onsubmit="return validateForm()" role=form method="post">

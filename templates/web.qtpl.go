@@ -231,7 +231,7 @@ func StreamWebTemplate(qw422016 *qt422016.Writer, webs []model.Web, error string
                         <a href="/dns"><i class="fa fa-cloud fa-fw"></i>DNS</a>
                     </li>
                     <li>
-                        <a href="/db"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
+                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
                     </li>
                     <li>
                         <a href="/mail"><i class="fa fa-at fa-fw"></i>E-Mail</a>
@@ -373,7 +373,7 @@ func StreamWebTemplate(qw422016 *qt422016.Writer, webs []model.Web, error string
 
 
                                 <td class="center">
-                                    <button type="button" class="btn btn-xs btn-primary" onclick='modifyWeb(`)
+                                    <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Editar sitio Web" onclick='modifyWeb(`)
 		//line templates/web.qtpl:273
 		qw422016.N().D(int(web.ID))
 		//line templates/web.qtpl:273
@@ -406,7 +406,7 @@ func StreamWebTemplate(qw422016 *qt422016.Writer, webs []model.Web, error string
 		qw422016.E().S(web.Webserver)
 		//line templates/web.qtpl:273
 		qw422016.N().S(`" )' ><i class="fa fa-list"></i></button>
-                                    <button class="btn btn-xs btn-danger" onclick="location.href='removeWeb?id=`)
+                                    <button class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar sitio Web" onclick="location.href='removeWeb?id=`)
 		//line templates/web.qtpl:274
 		qw422016.N().D(int(web.ID))
 		//line templates/web.qtpl:274
@@ -432,7 +432,7 @@ func StreamWebTemplate(qw422016 *qt422016.Writer, webs []model.Web, error string
         <div id="form" class="col-lg-6" hidden="true" >
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Nuevo Sitio
+                    Configuración del Sitio
                 </div>
                 <div class="panel-body">
                     <form id="addweb" action="/web" onsubmit="return validateForm()" role=form method="post">

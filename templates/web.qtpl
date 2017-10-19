@@ -193,7 +193,7 @@
                         <a href="/dns"><i class="fa fa-cloud fa-fw"></i>DNS</a>
                     </li>
                     <li>
-                        <a href="/db"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
+                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
                     </li>
                     <li>
                         <a href="/mail"><i class="fa fa-at fa-fw"></i>E-Mail</a>
@@ -270,8 +270,8 @@
 
 
                                 <td class="center">
-                                    <button type="button" class="btn btn-xs btn-primary" onclick='modifyWeb({%d int(web.ID) %}, "{%s web.Dominio %}", {%s strconv.FormatBool(web.SSL) %}, {%s strconv.FormatBool(web.CGI) %}, {%s strconv.FormatBool(web.PHP) %}, "{%s web.PHPversion %}", "{%s web.PHPmethod %}" , "{%s web.Webserver %}" )' ><i class="fa fa-list"></i></button>
-                                    <button class="btn btn-xs btn-danger" onclick="location.href='removeWeb?id={%d int(web.ID) %}';"><i class="fa fa-trash-o"></i></button>
+                                    <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Editar sitio Web" onclick='modifyWeb({%d int(web.ID) %}, "{%s web.Dominio %}", {%s strconv.FormatBool(web.SSL) %}, {%s strconv.FormatBool(web.CGI) %}, {%s strconv.FormatBool(web.PHP) %}, "{%s web.PHPversion %}", "{%s web.PHPmethod %}" , "{%s web.Webserver %}" )' ><i class="fa fa-list"></i></button>
+                                    <button class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar sitio Web" onclick="location.href='removeWeb?id={%d int(web.ID) %}';"><i class="fa fa-trash-o"></i></button>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -289,7 +289,7 @@
         <div id="form" class="col-lg-6" hidden="true" >
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Nuevo Sitio
+                    Configuración del Sitio
                 </div>
                 <div class="panel-body">
                     <form id="addweb" action="/web" onsubmit="return validateForm()" role=form method="post">

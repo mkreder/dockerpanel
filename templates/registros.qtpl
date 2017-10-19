@@ -156,7 +156,7 @@
                         <a href="/dns"><i class="fa fa-cloud fa-fw"></i>DNS</a>
                     </li>
                     <li>
-                        <a href="/db"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
+                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
                     </li>
                     <li>
                         <a href="/mail"><i class="fa fa-at fa-fw"></i>E-Mail</a>
@@ -201,8 +201,8 @@
                                 <td> {%s registro.Prioridad %} </td>
 
                                 <td class="center">
-                                    <button type="button" class="btn btn-xs btn-primary" onclick='modifyRegistro({%d int(registro.ID) %}, "{%s registro.Tipo %}",  "{%s registro.Nombre %}", "{%s registro.Valor %}",  "{%s registro.Prioridad %}" )' ><i class="fa fa-list"></i></button>
-                                    <button class="btn btn-xs btn-danger" onclick="location.href='removeRegistro?id={%d int(registro.ID) %}&zonaid={%s zonaid %}';"><i class="fa fa-trash-o"></i></button>
+                                    <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Modificar registro" onclick='modifyRegistro({%d int(registro.ID) %}, "{%s registro.Tipo %}",  "{%s registro.Nombre %}", "{%s registro.Valor %}",  "{%s registro.Prioridad %}" )' ><i class="fa fa-list"></i></button>
+                                    <button class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar registro" onclick="location.href='removeRegistro?id={%d int(registro.ID) %}&zonaid={%s zonaid %}';"><i class="fa fa-trash-o"></i></button>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -220,7 +220,7 @@
         <div id="form" class="col-lg-6" hidden="true" >
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Nuevo Sitio
+                    Configuración del Registro
                 </div>
                 <div class="panel-body">
                     <form id="addregistro" action="/registros" onsubmit="return validateForm()" role=form method="post">

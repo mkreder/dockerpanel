@@ -33,16 +33,30 @@ type Manager interface {
 	UpdateRegistro(registro *Registro) (err error)
 	RemoveRegistro(id string) (err error)
 
-
-	AddUsuarioFtp(uftp *UsuarioFtp)  (err error)
-	UpdateUsuarioFtp(ftp *UsuarioFtp) (err error)
+	AddUsuarioFtp(uftp *UsuarioFTP)  (err error)
+	UpdateUsuarioFtp(ftp *UsuarioFTP) (err error)
 	CheckIfUsuarioFtpExists(nombre string, webid string) bool
-	GetAllUsuarioFtps() []UsuarioFtp
-	GetUsuarioFtp(id string) UsuarioFtp
+	GetAllUsuarioFtps() []UsuarioFTP
+	GetUsuarioFtp(id string) UsuarioFTP
 	RemoveUsuarioFtp(id string) (err error)
 	UpdateFtpConfig(anonWrite int, anonRead int) (err error)
 	GetFtpConfig() FtpConfig
 
+    AddBD(bd *BD) (err error)
+	UpdateBD(bd *BD) (err error)
+	CheckIfBDExists(nombre string) bool
+	GetAllBDs() []BD
+	GetBD(id string) BD
+	RemoveBD(id string) (err error)
+
+	UpdateUsuarioBD(uftp *UsuarioBD) (err error)
+	AddUsuarioBD(uftp *UsuarioBD) (err error)
+	CheckIfUsuarioBDExists(nombre string) bool
+	GetAllUsuarioBDs() []UsuarioBD
+	GetUsuarioBD(id string) UsuarioBD
+	RemoveUsuarioBD(id string) (err error)
+	RemoveAssociationUBD(usuario *UsuarioBD, bd *BD) (err error)
+	RemoveAssociationIP(bd *BD, ip *IP) (err error)
 
 	migrate()
 	// Add other methods
@@ -69,8 +83,11 @@ func (mgr *manager) migrate() {
 	mgr.db.AutoMigrate(&Usuario{})
 	mgr.db.AutoMigrate(&Zona{})
 	mgr.db.AutoMigrate(&Registro{})
-	mgr.db.AutoMigrate(&UsuarioFtp{})
+	mgr.db.AutoMigrate(&UsuarioFTP{})
 	mgr.db.AutoMigrate(&FtpConfig{})
+	mgr.db.AutoMigrate(&UsuarioBD{})
+	mgr.db.AutoMigrate(&BD{})
+	mgr.db.AutoMigrate(&IP{})
 
 	// Add default Usuario
 	var usr Usuario

@@ -32,7 +32,7 @@ func AddUsuarioFtp(w http.ResponseWriter, r *http.Request) {
 		if ( len(id) == 0 ) && ( model.Mgr.CheckIfUsuarioFtpExists(nombre,dominio) ) {
 			templates.WriteFtpTemplate(w, model.Mgr.GetAllUsuarioFtps(),model.Mgr.GetAllWebs(),model.Mgr.GetFtpConfig(),"El usuario de FTP " + nombre + "@" + dominio +" ya existe")
 		} else {
-			var uftp model.UsuarioFtp
+			var uftp model.UsuarioFTP
 			if (len(id) != 0) {
 				uftp = model.Mgr.GetUsuarioFtp(id)
 			}
