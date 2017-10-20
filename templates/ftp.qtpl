@@ -164,29 +164,32 @@
         </ul>
         <!-- /.navbar-top-links -->
 
+
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
                     <li>
-                        <a href="/"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        <a href="/"><i class="fa fa-dashboard fa-fw"></i>Principal</a>
                     </li>
                     <li>
-                        <a href="/web"><i class="fa fa-server fa-fw"></i>Sitios Web</a>
+                        <a href="/web"><i class="fa fa-server fa-fw"></i>Sitios web</a>
                     </li>
                     <li>
                         <a href="/dns"><i class="fa fa-cloud fa-fw"></i>DNS</a>
                     </li>
                     <li>
-                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
+                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Bases de datos</a>
                     </li>
                     <li>
                         <a href="/mail"><i class="fa fa-at fa-fw"></i>E-Mail</a>
                     </li>
                     <li>
-                        <a href="/ftp"><i class="fa fa-file-archive-o fa-fw"></i>FTP</a>
+                        <a href="/ftp"><i class="fa fa-file-archive-o fa-fw"></i>Usuarios FTP</a>
                     </li>
                 </ul>
             </div>
+            <!-- /.sidebar-collapse -->
+        </div>
             <!-- /.sidebar-collapse -->
         </div>
         <!-- /.navbar-static-side -->
@@ -266,15 +269,15 @@
                                             <br>
                                             <br>
                                             {% if ftpConfig.AnonRead == 1 %}
-                                                <input name="anonRead" type="checkbox" value="1" checked="checked"> Permiso de Lectura
+                                                <input name="anonRead" type="checkbox" value="1" checked="checked"> Permiso de lectura
                                             {% else %}
-                                                <input name="anonRead" type="checkbox" value="1"> Permiso de Lectura
+                                                <input name="anonRead" type="checkbox" value="1"> Permiso de lectura
                                             {% endif %}
                                             <br>
                                             {% if ftpConfig.AnonWrite == 1 %}
-                                                <input name="anonWrite" type="checkbox" value="1" checked="checked"> Permiso de Escritura
+                                                <input name="anonWrite" type="checkbox" value="1" checked="checked"> Permiso de escritura
                                             {% else %}
-                                                <input name="anonWrite" type="checkbox" value="1"> Permiso de Escritura
+                                                <input name="anonWrite" type="checkbox" value="1"> Permiso de escritura
                                             {% endif %}
 
                                         </div>
@@ -309,7 +312,7 @@
                         <input id="id" name="id" hidden="true" >
                         <label>Configuración</label>
                         <br>
-                        Sitio Web
+                        Sitio web
                         <select  class="form-control"  id="dominio" name="dominio">
                             <option disabled selected value> -- Elegir dominio -- </option>
                             {% for _, web := range webs %}
@@ -317,7 +320,7 @@
                             {% endfor %}
                         </select>
                         <br>
-                        Nombre de Usuario
+                        Nombre de usuario
                         <input class="form-control" name="nombre" id="nombre">
                         <br>
 

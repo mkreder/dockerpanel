@@ -264,29 +264,32 @@
         </ul>
         <!-- /.navbar-top-links -->
 
+
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
                     <li>
-                        <a href="/"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        <a href="/"><i class="fa fa-dashboard fa-fw"></i>Principal</a>
                     </li>
                     <li>
-                        <a href="/web"><i class="fa fa-server fa-fw"></i>Sitios Web</a>
+                        <a href="/web"><i class="fa fa-server fa-fw"></i>Sitios web</a>
                     </li>
                     <li>
                         <a href="/dns"><i class="fa fa-cloud fa-fw"></i>DNS</a>
                     </li>
                     <li>
-                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
+                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Bases de datos</a>
                     </li>
                     <li>
                         <a href="/mail"><i class="fa fa-at fa-fw"></i>E-Mail</a>
                     </li>
                     <li>
-                        <a href="/ftp"><i class="fa fa-file-archive-o fa-fw"></i>FTP</a>
+                        <a href="/ftp"><i class="fa fa-file-archive-o fa-fw"></i>Usuarios FTP</a>
                     </li>
                 </ul>
             </div>
+            <!-- /.sidebar-collapse -->
+        </div>
             <!-- /.sidebar-collapse -->
         </div>
         <!-- /.navbar-static-side -->
@@ -300,13 +303,13 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Base de Datos
+                        Bases de datos
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs">
-                            <li class="active"><a href="#bds" data-toggle="tab">Bases de Datos</a>
+                            <li class="active"><a href="#bds" data-toggle="tab">Bases de datos</a>
                             </li>
                             <li><a href="#usuarios" data-toggle="tab">Usuarios</a>
                             </li>
@@ -426,19 +429,19 @@
         <div id="formUsuario" class="col-lg-6" hidden="true" >
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Configuración del Usuario
+                    Configuración del usuario
                 </div>
                 <div class="panel-body">
                     <form id="addubd" action="/ubd" onsubmit="return validateFormUsuario()" role=form method="post">
                         <input id="id" name="id" hidden="true" >
-                        Nombre de Usuario
+                        Nombre de usuario
                         <input class="form-control" name="nombre" id="nombre">
                         <br>
 
                         Contraseña
                         <input class="form-control" name="password" id="password" type="password">
                         <button id="btngenerar" type="button" class="btn btn-default btn-sm" onclick="generarPassword()">Generar</button>
-                        <input id="checkmostrar" name="checkmostrar" type="checkbox" value="true" onclick="mostrarPassword()"> Mostrar Contraseña
+                        <input id="checkmostrar" name="checkmostrar" type="checkbox" value="true" onclick="mostrarPassword()"> Mostrar contraseña
                         <br>
 
                         <br>
@@ -455,12 +458,12 @@
         <div id="formBD" class="col-lg-6" hidden="true" >
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Configuración de la Base de Datos
+                    Configuración de la base de datos
                 </div>
                 <div class="panel-body">
                     <form id="addbd" action="/bd" onsubmit="return validateFormBD()" role=form method="post">
                         <input id="idBD" name="idBD" hidden="true" >
-                        Nombre de la Base de Datos
+                        Nombre de la base de datos
                         <input class="form-control" name="nombreBD" id="nombreBD">
                         <br>
                         <button type="submit" class="btn btn-default">Guardar</button>
@@ -521,7 +524,7 @@
         <div id="formAddIP" class="col-lg-6" hidden="true" >
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Agregar IP Remota
+                    Agregar IP remota
                 </div>
                 <div class="panel-body">
                     <form id="addbdip" action="/addbdip" onsubmit="return validateFormAddIP()" role=form method="post">

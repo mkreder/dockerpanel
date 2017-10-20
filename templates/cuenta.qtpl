@@ -271,29 +271,32 @@
         </ul>
         <!-- /.navbar-top-links -->
 
+
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
                     <li>
-                        <a href="/"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        <a href="/"><i class="fa fa-dashboard fa-fw"></i>Principal</a>
                     </li>
                     <li>
-                        <a href="/web"><i class="fa fa-server fa-fw"></i>Sitios Web</a>
+                        <a href="/web"><i class="fa fa-server fa-fw"></i>Sitios web</a>
                     </li>
                     <li>
                         <a href="/dns"><i class="fa fa-cloud fa-fw"></i>DNS</a>
                     </li>
                     <li>
-                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
+                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Bases de datos</a>
                     </li>
                     <li>
                         <a href="/mail"><i class="fa fa-at fa-fw"></i>E-Mail</a>
                     </li>
                     <li>
-                        <a href="/ftp"><i class="fa fa-file-archive-o fa-fw"></i>FTP</a>
+                        <a href="/ftp"><i class="fa fa-file-archive-o fa-fw"></i>Usuarios FTP</a>
                     </li>
                 </ul>
             </div>
+            <!-- /.sidebar-collapse -->
+        </div>
             <!-- /.sidebar-collapse -->
         </div>
         <!-- /.navbar-static-side -->
@@ -314,12 +317,12 @@
                             <thead>
                             <tr>
                                 <th>Cuenta</th>
-                                <th>Nombre Real</th>
+                                <th>Nombre real</th>
                                 <th>Estado</th>
                                 <th>Cuota</th>
                                 <th>Auto-responder</th>
                                 <th>Cuenta por defecto</th>
-                                <th>Renvio de Correo</th>
+                                <th>Renvio de correo</th>
                                 <th>Acciones</th>
                             </tr>
                             </thead>
@@ -398,11 +401,11 @@
                         <input id="dominioid" name="dominioid" hidden="true" value="{%d int(dominio.ID) %}">
 
                         <ul class="nav nav-tabs">
-                            <li class="active"><a href="#basica" data-toggle="tab">Configuración Básica</a>
+                            <li class="active"><a href="#basica" data-toggle="tab">Configuración básica</a>
                             </li>
-                            <li><a href="#autoresponder" data-toggle="tab">Auto-Responder</a>
+                            <li><a href="#autoresponder" data-toggle="tab">Auto-responder</a>
                             </li>
-                            <li><a href="#renvio" data-toggle="tab">Renvio de Correo</a>
+                            <li><a href="#renvio" data-toggle="tab">Reenvio de correo</a>
                             </li>
                         </ul>
 
@@ -411,14 +414,14 @@
                             <div class="tab-pane fade in active" id="basica">
                                 Nombre de la cuenta
                                 <input class="form-control" name="nombre" id="nombre">
-                                Nombre Real
+                                Nombre real
                                 <input class="form-control" name="nombreReal" id="nombreReal">
                                 <br>
 
                                 Contraseña
                                 <input class="form-control" name="password" id="password" type="password">
                                 <button id="btngenerar" type="button" class="btn btn-default btn-sm" onclick="generarPassword()">Generar</button>
-                                <input id="checkmostrar" name="checkmostrar" type="checkbox" value="true" onclick="mostrarPassword()"> Mostrar Contraseña
+                                <input id="checkmostrar" name="checkmostrar" type="checkbox" value="true" onclick="mostrarPassword()"> Mostrar contraseña
                                 <br>
 
                                 <br>
@@ -440,9 +443,9 @@
                                         <input id="aractivado" name="aractivado" type="checkbox" value="true" onclick="activarAutoresponder()"> Activado
                                     </label>
                                 </div>
-                                Fecha Inicio
+                                Fecha inicio
                                 <input class="form-control" id="fechaInicio" name="fechaInicio" type="date" disabled="disabled">
-                                Fecha Fin
+                                Fecha fin
                                 <input class="form-control" id="fechaFin" name="fechaFin" type="date" disabled="disabled">
                                 <br>
                                 Asunto
@@ -460,7 +463,7 @@
                                         <input id="renvioactivo" name="renvioactivo" type="checkbox" value="true" onclick="activarRenvio()"> Activado
                                     </label>
                                 </div>
-                                Dirección de renvío
+                                Dirección de reenvío
                                 <input class="form-control" name="direccionRenvio" id="direccionRenvio" disabled="disabled">
 
                             </div>
