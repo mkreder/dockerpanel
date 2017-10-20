@@ -94,7 +94,11 @@ func AddUsuarioBD(w http.ResponseWriter, r *http.Request) {
 			}
 
 			ubd.Nombre = nombre
-			ubd.Password = strings.Join(r.Form["password"],"")
+			password := strings.Join(r.Form["password"],"")
+			if len(password) > 0 {
+				ubd.Password = password
+			}
+
 			ubd.Estado = 1
 			if len(id) == 0 {
 				err = model.Mgr.AddUsuarioBD(&ubd)

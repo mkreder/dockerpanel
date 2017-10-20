@@ -9,6 +9,7 @@ type Web struct {
 	Dominio string
 	CGI bool
 	SSL bool
+	CertSSL string
 	PHP bool
 	PHPversion string
 	PHPmethod string

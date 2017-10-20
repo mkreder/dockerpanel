@@ -7,6 +7,8 @@ import (
 	"github.com/mkreder/dockerpanel/model"
 
 	"github.com/mkreder/dockerpanel/login"
+	"bytes"
+	"io"
 )
 
 func WebHandler(w http.ResponseWriter, r *http.Request) {
@@ -23,7 +25,7 @@ func WebHandler(w http.ResponseWriter, r *http.Request) {
 func AddWeb(w http.ResponseWriter, r *http.Request) {
 	UsuarioName := login.GetUNombreUsuario(r)
 	if UsuarioName != "" {
-		r.ParseForm()
+		r.ParseMultipartForm(32  << 20)
 		dominio := strings.Join(r.Form["dominio"],"")
 		id := strings.Join(r.Form["id"],"")
 		var err error
@@ -47,6 +49,13 @@ func AddWeb(w http.ResponseWriter, r *http.Request) {
 			ssl := strings.Join(r.Form["ssl"],"")
 			if len(ssl) != 0 {
 				web.SSL = true
+				pem, _, _ := r.FormFile("pem")
+				if pem != nil {
+					buf := bytes.NewBuffer(nil)
+					io.Copy(buf, pem)
+					pem.Close()
+					web.CertSSL = string(buf.Bytes())
+				}
 			} else {
 				web.SSL = false
 			}
@@ -68,6 +77,8 @@ func AddWeb(w http.ResponseWriter, r *http.Request) {
 
 			webserver := strings.Join(r.Form["webserver"],"")
 			web.Webserver = webserver
+
+
 
 
 			web.Estado = 1

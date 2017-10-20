@@ -35,6 +35,15 @@
 
     }
 
+    function activateFileUpload(){
+        if ( document.getElementById('ssl').checked ) {
+            document.getElementById('files').removeAttribute("disabled");
+        } else {
+            document.getElementById('files').setAttribute("disabled","disabled")
+        }
+
+    }
+
     function hideDiv() {
         var x = document.getElementById('form');
         x.style.display = 'none';
@@ -48,7 +57,7 @@
         document.getElementById("webserver").options[0].selected = true;
         document.getElementById('phpVersion').setAttribute("disabled","disabled")
         document.getElementById('phpMethod').setAttribute("disabled","disabled");
-
+        document.getElementById('files').setAttribute("disabled","disabled")
     }
 
     function modifyWeb(id,dominio,ssl,cgi,php,phpVersion,phpMethod,webserver) {
@@ -57,6 +66,7 @@
 
         if ( ssl == true ){
             document.getElementById("ssl").checked = true;
+            document.getElementById('files').removeAttribute("disabled");
         } else {
             document.getElementById("ssl").checked = false;
         }
@@ -292,7 +302,7 @@
                     Configuración del Sitio
                 </div>
                 <div class="panel-body">
-                    <form id="addweb" action="/web" onsubmit="return validateForm()" role=form method="post">
+                    <form id="addweb" action="/web" enctype="multipart/form-data" onsubmit="return validateForm()" role=form method="post">
                         <label>Dominio</label>
                         <input id="id" name="id" hidden="true" >
                         <input class="form-control" name="dominio" id="dominio">
@@ -306,11 +316,6 @@
                         </select>
                         <div class="checkbox">
                             <label>
-                                <input id="ssl" name="ssl" type="checkbox" value="true"> SSL
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
                                 <input id="cgi" name="cgi" type="checkbox" value="true"> CGI
                             </label>
                         </div>
@@ -319,6 +324,14 @@
                                 <input id="php" name="php" type="checkbox" value="true" onclick="activateSelects()"> PHP
                             </label>
                         </div>
+                        <div class="checkbox">
+                        <label>
+                            <input id="ssl" name="ssl" type="checkbox" value="true" onclick="activateFileUpload()"> SSL
+                        </label>
+                    </div>
+                        <label for="files" class="btn btn-default btn-xs">Subir certificado y llave SSL</label>
+                        <input id="files" style="visibility:hidden;" type="file" name="pem" disabled="disabled">
+
                         Versión de PHP
                         <select  class="form-control"  id="phpVersion" name="phpVersion" disabled>
                             <option value="5.4">5.4</option>

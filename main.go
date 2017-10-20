@@ -86,6 +86,17 @@ func main() {
 	r.Post("/removebdip",controller.RemoveIP)
 
 
+	r.Get("/mail",controller.MailHandler)
+	r.Post("/mail",controller.AddDominio)
+	r.Get("/removeDominio",controller.RemoveDominio)
+	r.Get("/editListas",controller.ListaHandler)
+	r.Post("/addLista",controller.AddLista)
+	r.Get("/removeLista",controller.RemoveLista)
+	r.Get("/editCuentas",controller.CuentaHandler)
+	r.Post("/addCuenta",controller.AddCuenta)
+	r.Get("/removeCuenta",controller.RemoveCuenta)
+
+
 	r.Get("/login", login.LoginHandler)
 	r.Post("/login", login.LoginHandler)
 

@@ -58,6 +58,36 @@ type Manager interface {
 	RemoveAssociationUBD(usuario *UsuarioBD, bd *BD) (err error)
 	RemoveAssociationIP(bd *BD, ip *IP) (err error)
 
+	AddDominio(dominio *Dominio) (err error)
+	UpdateDominio(dominio *Dominio) (err error)
+	CheckIfDominioExists(nombre string) bool
+	GetAllDominios() []Dominio
+	GetDominio(id string) Dominio
+	RemoveDominio(id string) (err error)
+
+	AddCuenta(cuenta *Cuenta) (err error)
+	UpdateCuenta(cuenta *Cuenta) (err error)
+	CheckIfCuentaExists(nombre string, dominioid string) bool
+	GetAllCuentas() []Cuenta
+	GetCuenta(id string) Cuenta
+	RemoveCuenta(id string) (err error)
+	GetCuentas(dominioid string) []Cuenta
+
+	AddLista(lista *Lista) (err error)
+	UpdateLista(lista *Lista) (err error)
+	CheckIfListaExists(nombre string, dominioid string) bool
+	GetAllListas() []Lista
+	GetLista(id string) Lista
+	RemoveLista(id string) (err error)
+	GetListas(dominioid string) []Lista
+
+	AddAutoresponder(aresponder *Autoresponder) (err error)
+	UpdateAutoresponder(aresponder *Autoresponder) (err error)
+	CheckIfAutoresponderExists(cuentaid string) bool
+	GetAllAutoresponders() []Autoresponder
+	GetAutoresponder(id string) Autoresponder
+	RemoveAutoresponder(id string) (err error)
+
 	migrate()
 	// Add other methods
 }
@@ -88,6 +118,10 @@ func (mgr *manager) migrate() {
 	mgr.db.AutoMigrate(&UsuarioBD{})
 	mgr.db.AutoMigrate(&BD{})
 	mgr.db.AutoMigrate(&IP{})
+	mgr.db.AutoMigrate(&Dominio{})
+	mgr.db.AutoMigrate(&Cuenta{})
+	mgr.db.AutoMigrate(&Lista{})
+	mgr.db.AutoMigrate(&Autoresponder{})
 
 	// Add default Usuario
 	var usr Usuario
