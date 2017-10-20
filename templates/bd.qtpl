@@ -481,7 +481,7 @@
                 <div class="panel-body">
                     <form id="adduubd" action="/addubd" onsubmit="return validateFormAddUBD()" role=form method="post">
                         <input id="idABD" name="userid" hidden="true" >
-                        Base de Datos
+                        Base de datos
                         <select  class="form-control"  id="selabd" name="bdid">
                             <option disabled selected value> -- Elegir base de datos -- </option>
                             {% for _, bd := range bds %}
@@ -505,7 +505,7 @@
                 <div class="panel-body">
                     <form id="removeubd" action="/removeubd" onsubmit="return validateFormRemoveUBD({%d int(user.ID) %})" role=form method="post">
                         <input id="userid" name="userid" value="{%d int(user.ID) %}" hidden="true" >
-                        Base de Datos
+                        Base de datos
                         <select  class="form-control"  id="bd{%d int(user.ID) %}" name="bdid">
                             <option disabled selected value> -- Elegir base de datos -- </option>
                             {% for _, bd := range user.BDs %}

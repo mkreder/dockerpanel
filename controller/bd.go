@@ -229,7 +229,7 @@ func RemoveIP(w http.ResponseWriter, r *http.Request){
 			if ip.Valor == rip {
 				err := model.Mgr.RemoveAssociationIP(&bd,&ip)
 				if err != nil {
-					templates.WriteBDTemplate(w, model.Mgr.GetAllBDs(), model.Mgr.GetAllUsuarioBDs(), "Error al borrar la asociacion")
+					templates.WriteBDTemplate(w, model.Mgr.GetAllBDs(), model.Mgr.GetAllUsuarioBDs(), "Error al borrar la asociación")
 				} else {
 					templates.WriteBDTemplate(w, model.Mgr.GetAllBDs(), model.Mgr.GetAllUsuarioBDs(), "")
 				}
