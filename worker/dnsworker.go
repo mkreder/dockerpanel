@@ -3,7 +3,7 @@ package worker
 import (
 	"context"
 	"github.com/mkreder/dockerpanel/model"
-	"github.com/docker/docker/client"
+	"github.com/moby/moby/client"
 	"github.com/docker/docker/api/types"
 	"github.com/jhoonb/archivex"
 	"log"
@@ -23,6 +23,7 @@ func check(e error){
 }
 
 func RunDNSWorker (){
+	log.Printf("Iniciando DNS worker")
 	// Loop para siempre
 	for {
 		for _ , zona := range model.Mgr.GetAllZonas() {
@@ -114,6 +115,7 @@ func RunDNSWorker (){
 
 
 				buildOptions := types.ImageBuildOptions{
+					Context:	dockerBuildContext,
 					CPUSetCPUs:   "2",
 					CPUSetMems:   "12",
 					CPUShares:    20,
@@ -150,24 +152,4 @@ func RunDNSWorker (){
 
 			}
 		}
-		//ctx := context.Background()
-		//cli, err := client.NewEnvClient()
-		//check(err)
-		//
-		//
-		//_, err = cli.ImagePull(ctx, "docker.io/library/alpine", types.ImagePullOptions{})
-		//check(err)
-		//
-		//cli.ImageCreate(ctx)
-		//
-		//resp, err := cli.ContainerCreate(ctx, &container.Config{
-		//	Image: "alpine",
-		//	Cmd:   []string{"echo", "hello world"},
-		//}, nil, nil, "")
-		//check(err)
-		//
-		//
-
-
-
 }
