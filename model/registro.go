@@ -15,10 +15,13 @@ type Registro struct {
 
 
 func (mgr *manager) AddRegistros(registros []Registro) {
+	var zona Zona
 	for  _ , registro := range registros {
 		mgr.db.Create(&registro)
-
 	}
+	mgr.db.First(&zona,registros[0].ZonaID)
+	zona.Estado = 1
+	mgr.db.Save(&zona)
 }
 
 func (mgr *manager) GetRegistros(zonaid string) []Registro{
@@ -40,13 +43,27 @@ func (mgr *manager) GetRegistro(id string) Registro {
 }
 
 func (mgr *manager) AddRegistro(registro *Registro) (err error) {
+	var zona Zona
+	mgr.db.First(&zona,registro.ZonaID)
+	zona.Estado = 1
+	mgr.db.Save(&zona)
 	return mgr.db.Create(registro).Error
 }
 
 func (mgr *manager) UpdateRegistro(registro *Registro) (err error) {
+	var zona Zona
+	mgr.db.First(&zona,registro.ZonaID)
+	zona.Estado = 1
+	mgr.db.Save(&zona)
 	return mgr.db.Save(&registro).Error
 }
 
 func (mgr *manager) RemoveRegistro(id string) (err error) {
+	var zona Zona
+	var registro Registro
+	mgr.db.First(&registro,id)
+	mgr.db.First(&zona,registro.ZonaID)
+	zona.Estado = 1
+	mgr.db.Save(&zona)
 	return mgr.db.Delete(Registro{}, "id == ?", id).Error
 }

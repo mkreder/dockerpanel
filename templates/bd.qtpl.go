@@ -300,29 +300,32 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
         </ul>
         <!-- /.navbar-top-links -->
 
+
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
                     <li>
-                        <a href="/"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        <a href="/"><i class="fa fa-dashboard fa-fw"></i>Principal</a>
                     </li>
                     <li>
-                        <a href="/web"><i class="fa fa-server fa-fw"></i>Sitios Web</a>
+                        <a href="/web"><i class="fa fa-server fa-fw"></i>Sitios web</a>
                     </li>
                     <li>
                         <a href="/dns"><i class="fa fa-cloud fa-fw"></i>DNS</a>
                     </li>
                     <li>
-                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
+                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Bases de datos</a>
                     </li>
                     <li>
                         <a href="/mail"><i class="fa fa-at fa-fw"></i>E-Mail</a>
                     </li>
                     <li>
-                        <a href="/ftp"><i class="fa fa-file-archive-o fa-fw"></i>FTP</a>
+                        <a href="/ftp"><i class="fa fa-file-archive-o fa-fw"></i>Usuarios FTP</a>
                     </li>
                 </ul>
             </div>
+            <!-- /.sidebar-collapse -->
+        </div>
             <!-- /.sidebar-collapse -->
         </div>
         <!-- /.navbar-static-side -->
@@ -336,13 +339,13 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Base de Datos
+                        Bases de datos
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs">
-                            <li class="active"><a href="#bds" data-toggle="tab">Bases de Datos</a>
+                            <li class="active"><a href="#bds" data-toggle="tab">Bases de datos</a>
                             </li>
                             <li><a href="#usuarios" data-toggle="tab">Usuarios</a>
                             </li>
@@ -363,94 +366,94 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
                                     </thead>
                                     <tbody>
                                     `)
-	//line templates/bd.qtpl:329
+	//line templates/bd.qtpl:332
 	for _, user := range ubds {
-		//line templates/bd.qtpl:329
+		//line templates/bd.qtpl:332
 		qw422016.N().S(`
                                     <tr class="odd gradeX">
                                         <td> `)
-		//line templates/bd.qtpl:331
+		//line templates/bd.qtpl:334
 		qw422016.E().S(user.Nombre)
-		//line templates/bd.qtpl:331
+		//line templates/bd.qtpl:334
 		qw422016.N().S(` </td>
 
 
                                         `)
-		//line templates/bd.qtpl:334
+		//line templates/bd.qtpl:337
 		switch user.Estado {
-		//line templates/bd.qtpl:335
+		//line templates/bd.qtpl:338
 		case 1:
-			//line templates/bd.qtpl:335
+			//line templates/bd.qtpl:338
 			qw422016.N().S(`
                                         <td>a configurar</td>
                                         `)
-		//line templates/bd.qtpl:337
+		//line templates/bd.qtpl:340
 		case 2:
-			//line templates/bd.qtpl:337
+			//line templates/bd.qtpl:340
 			qw422016.N().S(`
                                         <td>configurado</td>
                                         `)
-		//line templates/bd.qtpl:339
+		//line templates/bd.qtpl:342
 		case 3:
-			//line templates/bd.qtpl:339
+			//line templates/bd.qtpl:342
 			qw422016.N().S(`
                                         <td>corriendo</td>
                                         `)
-			//line templates/bd.qtpl:341
+			//line templates/bd.qtpl:344
 		}
-		//line templates/bd.qtpl:341
+		//line templates/bd.qtpl:344
 		qw422016.N().S(`
 
                                         <td>
                                             `)
-		//line templates/bd.qtpl:344
+		//line templates/bd.qtpl:347
 		for _, bd := range user.BDs {
-			//line templates/bd.qtpl:344
+			//line templates/bd.qtpl:347
 			qw422016.N().S(`
                                               `)
-			//line templates/bd.qtpl:345
+			//line templates/bd.qtpl:348
 			qw422016.E().S(bd.Nombre)
-			//line templates/bd.qtpl:345
+			//line templates/bd.qtpl:348
 			qw422016.N().S(`
                                             `)
-			//line templates/bd.qtpl:346
+			//line templates/bd.qtpl:349
 		}
-		//line templates/bd.qtpl:346
+		//line templates/bd.qtpl:349
 		qw422016.N().S(`
                                         </td>
 
 
                                         <td class="center">
                                             <button type="button" class="btn btn-xs btn-success" data-toggle="tooltip" data-placement="top" title="Asociar una base de datos" onclick='addUBD(`)
-		//line templates/bd.qtpl:351
+		//line templates/bd.qtpl:354
 		qw422016.N().D(int(user.ID))
-		//line templates/bd.qtpl:351
+		//line templates/bd.qtpl:354
 		qw422016.N().S(`)' ><i class="fa fa-plus"></i></button>
                                             <button type="button" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="top" title="Desacociar una base de datos" onclick='removeUBD(`)
-		//line templates/bd.qtpl:352
+		//line templates/bd.qtpl:355
 		qw422016.N().D(int(user.ID))
-		//line templates/bd.qtpl:352
+		//line templates/bd.qtpl:355
 		qw422016.N().S(`)' ><i class="fa fa-minus"></i></button>
                                             <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Editar usuario" onclick='modifyUsuario(`)
-		//line templates/bd.qtpl:353
+		//line templates/bd.qtpl:356
 		qw422016.N().D(int(user.ID))
-		//line templates/bd.qtpl:353
+		//line templates/bd.qtpl:356
 		qw422016.N().S(`, "`)
-		//line templates/bd.qtpl:353
+		//line templates/bd.qtpl:356
 		qw422016.E().S(user.Nombre)
-		//line templates/bd.qtpl:353
+		//line templates/bd.qtpl:356
 		qw422016.N().S(`"  )' ><i class="fa fa-list"></i></button>
                                             <button class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar usuario" onclick="location.href='removeUsuarioBD?id=`)
-		//line templates/bd.qtpl:354
+		//line templates/bd.qtpl:357
 		qw422016.N().D(int(user.ID))
-		//line templates/bd.qtpl:354
+		//line templates/bd.qtpl:357
 		qw422016.N().S(`';"><i class="fa fa-trash-o"></i></button>
                                         </td>
                                     </tr>
                                     `)
-		//line templates/bd.qtpl:357
+		//line templates/bd.qtpl:360
 	}
-	//line templates/bd.qtpl:357
+	//line templates/bd.qtpl:360
 	qw422016.N().S(`
                                     </tbody>
                                 </table>
@@ -469,109 +472,109 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
                                     </thead>
                                     <tbody>
                                     `)
-	//line templates/bd.qtpl:374
+	//line templates/bd.qtpl:377
 	for _, bd := range bds {
-		//line templates/bd.qtpl:374
+		//line templates/bd.qtpl:377
 		qw422016.N().S(`
                                     <tr class="odd gradeX">
                                         <td> `)
-		//line templates/bd.qtpl:376
+		//line templates/bd.qtpl:379
 		qw422016.E().S(bd.Nombre)
-		//line templates/bd.qtpl:376
+		//line templates/bd.qtpl:379
 		qw422016.N().S(` </td>
 
 
                                         `)
-		//line templates/bd.qtpl:379
+		//line templates/bd.qtpl:382
 		switch bd.Estado {
-		//line templates/bd.qtpl:380
+		//line templates/bd.qtpl:383
 		case 1:
-			//line templates/bd.qtpl:380
+			//line templates/bd.qtpl:383
 			qw422016.N().S(`
                                         <td>a configurar</td>
                                         `)
-		//line templates/bd.qtpl:382
+		//line templates/bd.qtpl:385
 		case 2:
-			//line templates/bd.qtpl:382
+			//line templates/bd.qtpl:385
 			qw422016.N().S(`
                                         <td>configurado</td>
                                         `)
-		//line templates/bd.qtpl:384
+		//line templates/bd.qtpl:387
 		case 3:
-			//line templates/bd.qtpl:384
+			//line templates/bd.qtpl:387
 			qw422016.N().S(`
                                         <td>corriendo</td>
                                         `)
-			//line templates/bd.qtpl:386
+			//line templates/bd.qtpl:389
 		}
-		//line templates/bd.qtpl:386
+		//line templates/bd.qtpl:389
 		qw422016.N().S(`
 
                                         <td>
                                             `)
-		//line templates/bd.qtpl:389
+		//line templates/bd.qtpl:392
 		if len(bd.IPs) == 0 {
-			//line templates/bd.qtpl:389
+			//line templates/bd.qtpl:392
 			qw422016.N().S(`
                                                 no
                                             `)
-			//line templates/bd.qtpl:391
+			//line templates/bd.qtpl:394
 		} else {
-			//line templates/bd.qtpl:391
-			qw422016.N().S(`
-                                                `)
-			//line templates/bd.qtpl:392
-			for _, ip := range bd.IPs {
-				//line templates/bd.qtpl:392
-				qw422016.N().S(`
-                                                    `)
-				//line templates/bd.qtpl:393
-				qw422016.E().S(ip.Valor)
-				//line templates/bd.qtpl:393
-				qw422016.N().S(`
-                                                `)
-				//line templates/bd.qtpl:394
-			}
 			//line templates/bd.qtpl:394
 			qw422016.N().S(`
-                                            `)
+                                                `)
 			//line templates/bd.qtpl:395
+			for _, ip := range bd.IPs {
+				//line templates/bd.qtpl:395
+				qw422016.N().S(`
+                                                    `)
+				//line templates/bd.qtpl:396
+				qw422016.E().S(ip.Valor)
+				//line templates/bd.qtpl:396
+				qw422016.N().S(`
+                                                `)
+				//line templates/bd.qtpl:397
+			}
+			//line templates/bd.qtpl:397
+			qw422016.N().S(`
+                                            `)
+			//line templates/bd.qtpl:398
 		}
-		//line templates/bd.qtpl:395
+		//line templates/bd.qtpl:398
 		qw422016.N().S(`
                                         </td>
 
                                         <td class="center">
                                             <button type="button" class="btn btn-xs btn-success" data-toggle="tooltip" data-placement="top" title="Agregar IP remota" onclick='addIP(`)
-		//line templates/bd.qtpl:399
+		//line templates/bd.qtpl:402
 		qw422016.N().D(int(bd.ID))
-		//line templates/bd.qtpl:399
+		//line templates/bd.qtpl:402
 		qw422016.N().S(`)' ><i class="fa fa-plus"></i></button>
                                             <button type="button" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="top" title="Borrar IP remota" onclick='removeIP(`)
-		//line templates/bd.qtpl:400
+		//line templates/bd.qtpl:403
 		qw422016.N().D(int(bd.ID))
-		//line templates/bd.qtpl:400
+		//line templates/bd.qtpl:403
 		qw422016.N().S(`)' ><i class="fa fa-minus"></i></button>
                                             <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Editar base de datos" onclick='modifyBD(`)
-		//line templates/bd.qtpl:401
+		//line templates/bd.qtpl:404
 		qw422016.N().D(int(bd.ID))
-		//line templates/bd.qtpl:401
+		//line templates/bd.qtpl:404
 		qw422016.N().S(`, "`)
-		//line templates/bd.qtpl:401
+		//line templates/bd.qtpl:404
 		qw422016.E().S(bd.Nombre)
-		//line templates/bd.qtpl:401
+		//line templates/bd.qtpl:404
 		qw422016.N().S(`")' ><i class="fa fa-list"></i></button>
                                            <button class="btn btn-xs btn-danger"data-toggle="tooltip" data-placement="top" title="Borrar base de datos"  onclick="location.href='removeBd?id=`)
-		//line templates/bd.qtpl:402
+		//line templates/bd.qtpl:405
 		qw422016.N().D(int(bd.ID))
-		//line templates/bd.qtpl:402
+		//line templates/bd.qtpl:405
 		qw422016.N().S(`';"><i class="fa fa-trash-o"></i></button>
                                         </td>
                                     </tr>
                                     `)
-		//line templates/bd.qtpl:405
+		//line templates/bd.qtpl:408
 	}
-	//line templates/bd.qtpl:405
+	//line templates/bd.qtpl:408
 	qw422016.N().S(`
                                     </tbody>
                                 </table>
@@ -596,19 +599,19 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
         <div id="formUsuario" class="col-lg-6" hidden="true" >
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Configuración del Usuario
+                    Configuración del usuario
                 </div>
                 <div class="panel-body">
                     <form id="addubd" action="/ubd" onsubmit="return validateFormUsuario()" role=form method="post">
                         <input id="id" name="id" hidden="true" >
-                        Nombre de Usuario
+                        Nombre de usuario
                         <input class="form-control" name="nombre" id="nombre">
                         <br>
 
                         Contraseña
                         <input class="form-control" name="password" id="password" type="password">
                         <button id="btngenerar" type="button" class="btn btn-default btn-sm" onclick="generarPassword()">Generar</button>
-                        <input id="checkmostrar" name="checkmostrar" type="checkbox" value="true" onclick="mostrarPassword()"> Mostrar Contraseña
+                        <input id="checkmostrar" name="checkmostrar" type="checkbox" value="true" onclick="mostrarPassword()"> Mostrar contraseña
                         <br>
 
                         <br>
@@ -625,12 +628,12 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
         <div id="formBD" class="col-lg-6" hidden="true" >
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Configuración de la Base de Datos
+                    Configuración de la base de datos
                 </div>
                 <div class="panel-body">
                     <form id="addbd" action="/bd" onsubmit="return validateFormBD()" role=form method="post">
                         <input id="idBD" name="idBD" hidden="true" >
-                        Nombre de la Base de Datos
+                        Nombre de la base de datos
                         <input class="form-control" name="nombreBD" id="nombreBD">
                         <br>
                         <button type="submit" class="btn btn-default">Guardar</button>
@@ -652,23 +655,23 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
                         <select  class="form-control"  id="selabd" name="bdid">
                             <option disabled selected value> -- Elegir base de datos -- </option>
                             `)
-	//line templates/bd.qtpl:484
+	//line templates/bd.qtpl:487
 	for _, bd := range bds {
-		//line templates/bd.qtpl:484
+		//line templates/bd.qtpl:487
 		qw422016.N().S(`
                             <option value="`)
-		//line templates/bd.qtpl:485
+		//line templates/bd.qtpl:488
 		qw422016.N().D(int(bd.ID))
-		//line templates/bd.qtpl:485
+		//line templates/bd.qtpl:488
 		qw422016.N().S(`">`)
-		//line templates/bd.qtpl:485
+		//line templates/bd.qtpl:488
 		qw422016.E().S(bd.Nombre)
-		//line templates/bd.qtpl:485
+		//line templates/bd.qtpl:488
 		qw422016.N().S(`</option>
                             `)
-		//line templates/bd.qtpl:486
+		//line templates/bd.qtpl:489
 	}
-	//line templates/bd.qtpl:486
+	//line templates/bd.qtpl:489
 	qw422016.N().S(`
                         </select>
                         <br>
@@ -680,14 +683,14 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
         </div>
 
         `)
-	//line templates/bd.qtpl:496
+	//line templates/bd.qtpl:499
 	for _, user := range ubds {
-		//line templates/bd.qtpl:496
+		//line templates/bd.qtpl:499
 		qw422016.N().S(`
         <div id="formRemoveUBD`)
-		//line templates/bd.qtpl:497
+		//line templates/bd.qtpl:500
 		qw422016.N().D(int(user.ID))
-		//line templates/bd.qtpl:497
+		//line templates/bd.qtpl:500
 		qw422016.N().S(`" class="col-lg-6" hidden="true" >
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -695,63 +698,63 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
                 </div>
                 <div class="panel-body">
                     <form id="removeubd" action="/removeubd" onsubmit="return validateFormRemoveUBD(`)
-		//line templates/bd.qtpl:503
+		//line templates/bd.qtpl:506
 		qw422016.N().D(int(user.ID))
-		//line templates/bd.qtpl:503
+		//line templates/bd.qtpl:506
 		qw422016.N().S(`)" role=form method="post">
                         <input id="userid" name="userid" value="`)
-		//line templates/bd.qtpl:504
+		//line templates/bd.qtpl:507
 		qw422016.N().D(int(user.ID))
-		//line templates/bd.qtpl:504
+		//line templates/bd.qtpl:507
 		qw422016.N().S(`" hidden="true" >
                         Base de Datos
                         <select  class="form-control"  id="bd`)
-		//line templates/bd.qtpl:506
+		//line templates/bd.qtpl:509
 		qw422016.N().D(int(user.ID))
-		//line templates/bd.qtpl:506
+		//line templates/bd.qtpl:509
 		qw422016.N().S(`" name="bdid">
                             <option disabled selected value> -- Elegir base de datos -- </option>
                             `)
-		//line templates/bd.qtpl:508
+		//line templates/bd.qtpl:511
 		for _, bd := range user.BDs {
-			//line templates/bd.qtpl:508
+			//line templates/bd.qtpl:511
 			qw422016.N().S(`
                             <option value="`)
-			//line templates/bd.qtpl:509
+			//line templates/bd.qtpl:512
 			qw422016.N().D(int(bd.ID))
-			//line templates/bd.qtpl:509
+			//line templates/bd.qtpl:512
 			qw422016.N().S(`">`)
-			//line templates/bd.qtpl:509
+			//line templates/bd.qtpl:512
 			qw422016.E().S(bd.Nombre)
-			//line templates/bd.qtpl:509
+			//line templates/bd.qtpl:512
 			qw422016.N().S(`</option>
                             `)
-			//line templates/bd.qtpl:510
+			//line templates/bd.qtpl:513
 		}
-		//line templates/bd.qtpl:510
+		//line templates/bd.qtpl:513
 		qw422016.N().S(`
                         </select>
                         <br>
                         <button type="submit" class="btn btn-default">Guardar</button>
                         <button type="button" class="btn btn-default" onclick="hideDivRemoveBD(`)
-		//line templates/bd.qtpl:514
+		//line templates/bd.qtpl:517
 		qw422016.N().D(int(user.ID))
-		//line templates/bd.qtpl:514
+		//line templates/bd.qtpl:517
 		qw422016.N().S(`)">Cancelar</button>
                     </form>
                 </div>
             </div>
         </div>
         `)
-		//line templates/bd.qtpl:519
+		//line templates/bd.qtpl:522
 	}
-	//line templates/bd.qtpl:519
+	//line templates/bd.qtpl:522
 	qw422016.N().S(`
 
         <div id="formAddIP" class="col-lg-6" hidden="true" >
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Agregar IP Remota
+                    Agregar IP remota
                 </div>
                 <div class="panel-body">
                     <form id="addbdip" action="/addbdip" onsubmit="return validateFormAddIP()" role=form method="post">
@@ -768,14 +771,14 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
 
 
         `)
-	//line templates/bd.qtpl:540
+	//line templates/bd.qtpl:543
 	for _, bd := range bds {
-		//line templates/bd.qtpl:540
+		//line templates/bd.qtpl:543
 		qw422016.N().S(`
         <div id="formRemoveIP`)
-		//line templates/bd.qtpl:541
+		//line templates/bd.qtpl:544
 		qw422016.N().D(int(bd.ID))
-		//line templates/bd.qtpl:541
+		//line templates/bd.qtpl:544
 		qw422016.N().S(`" class="col-lg-6" hidden="true" >
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -783,61 +786,61 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
                 </div>
                 <div class="panel-body">
                     <form id="removebdip" action="/removebdip" onsubmit="return validateFormRemoveIP(`)
-		//line templates/bd.qtpl:547
+		//line templates/bd.qtpl:550
 		qw422016.N().D(int(bd.ID))
-		//line templates/bd.qtpl:547
+		//line templates/bd.qtpl:550
 		qw422016.N().S(`)" role=form method="post">
                         <input id="bd`)
-		//line templates/bd.qtpl:548
+		//line templates/bd.qtpl:551
 		qw422016.N().D(int(bd.ID))
-		//line templates/bd.qtpl:548
+		//line templates/bd.qtpl:551
 		qw422016.N().S(`" name="bdid" value="`)
-		//line templates/bd.qtpl:548
+		//line templates/bd.qtpl:551
 		qw422016.N().D(int(bd.ID))
-		//line templates/bd.qtpl:548
+		//line templates/bd.qtpl:551
 		qw422016.N().S(`" hidden="true" >
                         IPs
                         <select  class="form-control"  id="ip`)
-		//line templates/bd.qtpl:550
+		//line templates/bd.qtpl:553
 		qw422016.N().D(int(bd.ID))
-		//line templates/bd.qtpl:550
+		//line templates/bd.qtpl:553
 		qw422016.N().S(`" name="ip">
                             <option disabled selected value> -- Elegir IP -- </option>
                             `)
-		//line templates/bd.qtpl:552
+		//line templates/bd.qtpl:555
 		for _, ip := range bd.IPs {
-			//line templates/bd.qtpl:552
+			//line templates/bd.qtpl:555
 			qw422016.N().S(`
                             <option value="`)
-			//line templates/bd.qtpl:553
+			//line templates/bd.qtpl:556
 			qw422016.E().S(ip.Valor)
-			//line templates/bd.qtpl:553
+			//line templates/bd.qtpl:556
 			qw422016.N().S(`">`)
-			//line templates/bd.qtpl:553
+			//line templates/bd.qtpl:556
 			qw422016.E().S(ip.Valor)
-			//line templates/bd.qtpl:553
+			//line templates/bd.qtpl:556
 			qw422016.N().S(`</option>
                             `)
-			//line templates/bd.qtpl:554
+			//line templates/bd.qtpl:557
 		}
-		//line templates/bd.qtpl:554
+		//line templates/bd.qtpl:557
 		qw422016.N().S(`
                         </select>
                         <br>
                         <button type="submit" class="btn btn-default">Guardar</button>
                         <button type="button" class="btn btn-default" onclick="hideDivRemoveIP(`)
-		//line templates/bd.qtpl:558
+		//line templates/bd.qtpl:561
 		qw422016.N().D(int(bd.ID))
-		//line templates/bd.qtpl:558
+		//line templates/bd.qtpl:561
 		qw422016.N().S(`)">Cancelar</button>
                     </form>
                 </div>
             </div>
         </div>
         `)
-		//line templates/bd.qtpl:563
+		//line templates/bd.qtpl:566
 	}
-	//line templates/bd.qtpl:563
+	//line templates/bd.qtpl:566
 	qw422016.N().S(`
 
 
@@ -869,31 +872,31 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
 </html>
 
 `)
-//line templates/bd.qtpl:593
+//line templates/bd.qtpl:596
 }
 
-//line templates/bd.qtpl:593
+//line templates/bd.qtpl:596
 func WriteBDTemplate(qq422016 qtio422016.Writer, bds []model.BD, ubds []model.UsuarioBD, error string) {
-	//line templates/bd.qtpl:593
+	//line templates/bd.qtpl:596
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line templates/bd.qtpl:593
+	//line templates/bd.qtpl:596
 	StreamBDTemplate(qw422016, bds, ubds, error)
-	//line templates/bd.qtpl:593
+	//line templates/bd.qtpl:596
 	qt422016.ReleaseWriter(qw422016)
-//line templates/bd.qtpl:593
+//line templates/bd.qtpl:596
 }
 
-//line templates/bd.qtpl:593
+//line templates/bd.qtpl:596
 func BDTemplate(bds []model.BD, ubds []model.UsuarioBD, error string) string {
-	//line templates/bd.qtpl:593
+	//line templates/bd.qtpl:596
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line templates/bd.qtpl:593
+	//line templates/bd.qtpl:596
 	WriteBDTemplate(qb422016, bds, ubds, error)
-	//line templates/bd.qtpl:593
+	//line templates/bd.qtpl:596
 	qs422016 := string(qb422016.B)
-	//line templates/bd.qtpl:593
+	//line templates/bd.qtpl:596
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line templates/bd.qtpl:593
+	//line templates/bd.qtpl:596
 	return qs422016
-//line templates/bd.qtpl:593
+//line templates/bd.qtpl:596
 }

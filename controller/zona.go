@@ -43,7 +43,7 @@ func AddRegion(w http.ResponseWriter, r *http.Request) {
 
 				var registroA model.Registro
 				registroA.Tipo = "A"
-				registroA.Nombre = dominio
+				registroA.Nombre = dominio + "."
 				registroA.Valor = ip
 				registroA.Prioridad = "0"
 
@@ -55,14 +55,14 @@ func AddRegion(w http.ResponseWriter, r *http.Request) {
 
 				var registroMx model.Registro
 				registroMx.Tipo = "MX"
-				registroMx.Nombre = dominio
-				registroMx.Valor = "mail." + dominio
+				registroMx.Nombre = dominio + "."
+				registroMx.Valor = "mail." + dominio + "."
 				registroMx.Prioridad = "10"
 
 				var registroNs model.Registro
 				registroNs.Tipo = "NS"
-				registroNs.Nombre = dominio
-				registroNs.Valor = "ns1." + dominio
+				registroNs.Nombre = dominio + "."
+				registroNs.Valor = "ns1." + dominio + "."
 				registroNs.Prioridad = "0"
 
 				var registroANs model.Registro

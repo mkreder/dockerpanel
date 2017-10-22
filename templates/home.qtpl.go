@@ -95,29 +95,32 @@ func StreamHomeTemplate(qw422016 *qt422016.Writer) {
         </ul>
         <!-- /.navbar-top-links -->
 
+
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
                     <li>
-                        <a href="/"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        <a href="/"><i class="fa fa-dashboard fa-fw"></i>Principal</a>
                     </li>
                     <li>
-                        <a href="/web"><i class="fa fa-server fa-fw"></i>Sitios Web</a>
+                        <a href="/web"><i class="fa fa-server fa-fw"></i>Sitios web</a>
                     </li>
                     <li>
                         <a href="/dns"><i class="fa fa-cloud fa-fw"></i>DNS</a>
                     </li>
                     <li>
-                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
+                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Bases de datos</a>
                     </li>
                     <li>
                         <a href="/mail"><i class="fa fa-at fa-fw"></i>E-Mail</a>
                     </li>
                     <li>
-                        <a href="/ftp"><i class="fa fa-file-archive-o fa-fw"></i>FTP</a>
+                        <a href="/ftp"><i class="fa fa-file-archive-o fa-fw"></i>Usuarios FTP</a>
                     </li>
                 </ul>
             </div>
+            <!-- /.sidebar-collapse -->
+        </div>
             <!-- /.sidebar-collapse -->
         </div>
         <!-- /.navbar-static-side -->
@@ -156,31 +159,31 @@ func StreamHomeTemplate(qw422016 *qt422016.Writer) {
 </html>
 
 `)
-//line templates/home.qtpl:136
+//line templates/home.qtpl:139
 }
 
-//line templates/home.qtpl:136
+//line templates/home.qtpl:139
 func WriteHomeTemplate(qq422016 qtio422016.Writer) {
-	//line templates/home.qtpl:136
+	//line templates/home.qtpl:139
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line templates/home.qtpl:136
+	//line templates/home.qtpl:139
 	StreamHomeTemplate(qw422016)
-	//line templates/home.qtpl:136
+	//line templates/home.qtpl:139
 	qt422016.ReleaseWriter(qw422016)
-//line templates/home.qtpl:136
+//line templates/home.qtpl:139
 }
 
-//line templates/home.qtpl:136
+//line templates/home.qtpl:139
 func HomeTemplate() string {
-	//line templates/home.qtpl:136
+	//line templates/home.qtpl:139
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line templates/home.qtpl:136
+	//line templates/home.qtpl:139
 	WriteHomeTemplate(qb422016)
-	//line templates/home.qtpl:136
+	//line templates/home.qtpl:139
 	qs422016 := string(qb422016.B)
-	//line templates/home.qtpl:136
+	//line templates/home.qtpl:139
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line templates/home.qtpl:136
+	//line templates/home.qtpl:139
 	return qs422016
-//line templates/home.qtpl:136
+//line templates/home.qtpl:139
 }

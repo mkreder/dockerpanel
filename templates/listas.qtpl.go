@@ -183,26 +183,27 @@ func StreamListaTemplate(qw422016 *qt422016.Writer, listas []model.Lista, domini
         </ul>
         <!-- /.navbar-top-links -->
 
+
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
                     <li>
-                        <a href="/"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        <a href="/"><i class="fa fa-dashboard fa-fw"></i>Principal</a>
                     </li>
                     <li>
-                        <a href="/web"><i class="fa fa-server fa-fw"></i>Sitios Web</a>
+                        <a href="/web"><i class="fa fa-server fa-fw"></i>Sitios web</a>
                     </li>
                     <li>
                         <a href="/dns"><i class="fa fa-cloud fa-fw"></i>DNS</a>
                     </li>
                     <li>
-                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
+                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Bases de datos</a>
                     </li>
                     <li>
                         <a href="/mail"><i class="fa fa-at fa-fw"></i>E-Mail</a>
                     </li>
                     <li>
-                        <a href="/ftp"><i class="fa fa-file-archive-o fa-fw"></i>FTP</a>
+                        <a href="/ftp"><i class="fa fa-file-archive-o fa-fw"></i>Usuarios FTP</a>
                     </li>
                 </ul>
             </div>
@@ -232,63 +233,63 @@ func StreamListaTemplate(qw422016 *qt422016.Writer, listas []model.Lista, domini
                             </thead>
                             <tbody>
                             `)
-	//line templates/listas.qtpl:198
+	//line templates/listas.qtpl:199
 	for _, lista := range listas {
-		//line templates/listas.qtpl:198
+		//line templates/listas.qtpl:199
 		qw422016.N().S(`
                             <tr class="odd gradeX">
                                 <td> `)
-		//line templates/listas.qtpl:200
+		//line templates/listas.qtpl:201
 		qw422016.E().S(lista.Nombre)
-		//line templates/listas.qtpl:200
+		//line templates/listas.qtpl:201
 		qw422016.N().S(` </td>
 
                                 `)
-		//line templates/listas.qtpl:202
-		switch lista.Estado {
 		//line templates/listas.qtpl:203
+		switch lista.Estado {
+		//line templates/listas.qtpl:204
 		case 1:
-			//line templates/listas.qtpl:203
+			//line templates/listas.qtpl:204
 			qw422016.N().S(`
                                 <td>a configurar</td>
                                 `)
-		//line templates/listas.qtpl:205
+		//line templates/listas.qtpl:206
 		case 2:
-			//line templates/listas.qtpl:205
+			//line templates/listas.qtpl:206
 			qw422016.N().S(`
                                 <td>configurado</td>
                                 `)
-			//line templates/listas.qtpl:207
+			//line templates/listas.qtpl:208
 		}
-		//line templates/listas.qtpl:207
+		//line templates/listas.qtpl:208
 		qw422016.N().S(`
 
 
                                 <td class="center">
                                     <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Modificar lista de correo" onclick='modifyLista(`)
-		//line templates/listas.qtpl:211
+		//line templates/listas.qtpl:212
 		qw422016.N().D(int(lista.ID))
-		//line templates/listas.qtpl:211
+		//line templates/listas.qtpl:212
 		qw422016.N().S(`, "`)
-		//line templates/listas.qtpl:211
+		//line templates/listas.qtpl:212
 		qw422016.E().S(lista.Nombre)
-		//line templates/listas.qtpl:211
+		//line templates/listas.qtpl:212
 		qw422016.N().S(`")' ><i class="fa fa-list"></i></button>
                                     <button class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar lista de correo" onclick="location.href='removeLista?id=`)
-		//line templates/listas.qtpl:212
+		//line templates/listas.qtpl:213
 		qw422016.N().D(int(lista.ID))
-		//line templates/listas.qtpl:212
+		//line templates/listas.qtpl:213
 		qw422016.N().S(`&dominioid=`)
-		//line templates/listas.qtpl:212
+		//line templates/listas.qtpl:213
 		qw422016.E().S(dominioid)
-		//line templates/listas.qtpl:212
+		//line templates/listas.qtpl:213
 		qw422016.N().S(`';"><i class="fa fa-trash-o"></i></button>
                                 </td>
                             </tr>
                             `)
-		//line templates/listas.qtpl:215
+		//line templates/listas.qtpl:216
 	}
-	//line templates/listas.qtpl:215
+	//line templates/listas.qtpl:216
 	qw422016.N().S(`
                             </tbody>
                         </table>
@@ -304,26 +305,26 @@ func StreamListaTemplate(qw422016 *qt422016.Writer, listas []model.Lista, domini
         <div id="form" class="col-lg-6" hidden="true" >
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Configuración de la lista de Correo
+                    Configuración de la lista de correo
                 </div>
                 <div class="panel-body">
                     <form id="addftp" action="/addLista" onsubmit="return validateForm()" role=form method="post">
                         <input id="id" name="id" hidden="true" >
                         <input id="dominioid" name="dominioid" hidden="true" value="`)
-	//line templates/listas.qtpl:235
+	//line templates/listas.qtpl:236
 	qw422016.E().S(dominioid)
-	//line templates/listas.qtpl:235
+	//line templates/listas.qtpl:236
 	qw422016.N().S(`">
                         <label>Configuración</label>
                         <br>
-                        Nombre de la Lista
+                        Nombre de la lista
                         <input class="form-control" name="nombre" id="nombre">
                         <br>
 
                         Contraseña
                         <input class="form-control" name="password" id="password" type="password">
                         <button id="btngenerar" type="button" class="btn btn-default btn-sm" onclick="generarPassword()">Generar</button>
-                        <input id="checkmostrar" name="checkmostrar" type="checkbox" value="true" onclick="mostrarPassword()"> Mostrar Contraseña
+                        <input id="checkmostrar" name="checkmostrar" type="checkbox" value="true" onclick="mostrarPassword()"> Mostrar contraseña
                         <br>
                         <br>
                         <button type="submit" class="btn btn-default">Guardar</button>
@@ -360,31 +361,31 @@ func StreamListaTemplate(qw422016 *qt422016.Writer, listas []model.Lista, domini
 </html>
 
 `)
-//line templates/listas.qtpl:281
+//line templates/listas.qtpl:282
 }
 
-//line templates/listas.qtpl:281
+//line templates/listas.qtpl:282
 func WriteListaTemplate(qq422016 qtio422016.Writer, listas []model.Lista, dominioid string, error string) {
-	//line templates/listas.qtpl:281
+	//line templates/listas.qtpl:282
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line templates/listas.qtpl:281
+	//line templates/listas.qtpl:282
 	StreamListaTemplate(qw422016, listas, dominioid, error)
-	//line templates/listas.qtpl:281
+	//line templates/listas.qtpl:282
 	qt422016.ReleaseWriter(qw422016)
-//line templates/listas.qtpl:281
+//line templates/listas.qtpl:282
 }
 
-//line templates/listas.qtpl:281
+//line templates/listas.qtpl:282
 func ListaTemplate(listas []model.Lista, dominioid string, error string) string {
-	//line templates/listas.qtpl:281
+	//line templates/listas.qtpl:282
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line templates/listas.qtpl:281
+	//line templates/listas.qtpl:282
 	WriteListaTemplate(qb422016, listas, dominioid, error)
-	//line templates/listas.qtpl:281
+	//line templates/listas.qtpl:282
 	qs422016 := string(qb422016.B)
-	//line templates/listas.qtpl:281
+	//line templates/listas.qtpl:282
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line templates/listas.qtpl:281
+	//line templates/listas.qtpl:282
 	return qs422016
-//line templates/listas.qtpl:281
+//line templates/listas.qtpl:282
 }

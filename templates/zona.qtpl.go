@@ -166,29 +166,32 @@ func StreamZonaTemplate(qw422016 *qt422016.Writer, zonas []model.Zona, error str
         </ul>
         <!-- /.navbar-top-links -->
 
+
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
                     <li>
-                        <a href="/"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        <a href="/"><i class="fa fa-dashboard fa-fw"></i>Principal</a>
                     </li>
                     <li>
-                        <a href="/web"><i class="fa fa-server fa-fw"></i>Sitios Web</a>
+                        <a href="/web"><i class="fa fa-server fa-fw"></i>Sitios web</a>
                     </li>
                     <li>
                         <a href="/dns"><i class="fa fa-cloud fa-fw"></i>DNS</a>
                     </li>
                     <li>
-                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
+                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Bases de datos</a>
                     </li>
                     <li>
                         <a href="/mail"><i class="fa fa-at fa-fw"></i>E-Mail</a>
                     </li>
                     <li>
-                        <a href="/ftp"><i class="fa fa-file-archive-o fa-fw"></i>FTP</a>
+                        <a href="/ftp"><i class="fa fa-file-archive-o fa-fw"></i>Usuarios FTP</a>
                     </li>
                 </ul>
             </div>
+            <!-- /.sidebar-collapse -->
+        </div>
             <!-- /.sidebar-collapse -->
         </div>
         <!-- /.navbar-static-side -->
@@ -216,79 +219,79 @@ func StreamZonaTemplate(qw422016 *qt422016.Writer, zonas []model.Zona, error str
                             </thead>
                             <tbody>
                             `)
-	//line templates/zona.qtpl:182
+	//line templates/zona.qtpl:185
 	for _, zona := range zonas {
-		//line templates/zona.qtpl:182
+		//line templates/zona.qtpl:185
 		qw422016.N().S(`
                             <tr class="odd gradeX">
                                 <td> `)
-		//line templates/zona.qtpl:184
+		//line templates/zona.qtpl:187
 		qw422016.E().S(zona.Dominio)
-		//line templates/zona.qtpl:184
+		//line templates/zona.qtpl:187
 		qw422016.N().S(` </td>
 
                                 `)
-		//line templates/zona.qtpl:186
+		//line templates/zona.qtpl:189
 		switch zona.Estado {
-		//line templates/zona.qtpl:187
+		//line templates/zona.qtpl:190
 		case 1:
-			//line templates/zona.qtpl:187
+			//line templates/zona.qtpl:190
 			qw422016.N().S(`
                                 <td>a configurar</td>
                                 `)
-		//line templates/zona.qtpl:189
+		//line templates/zona.qtpl:192
 		case 2:
-			//line templates/zona.qtpl:189
+			//line templates/zona.qtpl:192
 			qw422016.N().S(`
                                 <td>configurado</td>
                                 `)
-		//line templates/zona.qtpl:191
+		//line templates/zona.qtpl:194
 		case 3:
-			//line templates/zona.qtpl:191
+			//line templates/zona.qtpl:194
 			qw422016.N().S(`
                                 <td>corriendo</td>
                                 `)
-			//line templates/zona.qtpl:193
+			//line templates/zona.qtpl:196
 		}
-		//line templates/zona.qtpl:193
+		//line templates/zona.qtpl:196
 		qw422016.N().S(`
 
                                 <td> `)
-		//line templates/zona.qtpl:195
+		//line templates/zona.qtpl:198
 		qw422016.E().S(zona.Email)
-		//line templates/zona.qtpl:195
+		//line templates/zona.qtpl:198
 		qw422016.N().S(` </td>
 
                                 <td class="center">
                                     <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Editar zona" onclick='modifyZona(`)
-		//line templates/zona.qtpl:198
+		//line templates/zona.qtpl:201
 		qw422016.N().D(int(zona.ID))
-		//line templates/zona.qtpl:198
+		//line templates/zona.qtpl:201
 		qw422016.N().S(`, "`)
-		//line templates/zona.qtpl:198
+		//line templates/zona.qtpl:201
 		qw422016.E().S(zona.Dominio)
-		//line templates/zona.qtpl:198
+		//line templates/zona.qtpl:201
 		qw422016.N().S(`",  "`)
-		//line templates/zona.qtpl:198
+		//line templates/zona.qtpl:201
 		qw422016.E().S(zona.Email)
-		//line templates/zona.qtpl:198
+		//line templates/zona.qtpl:201
 		qw422016.N().S(`" )' ><i class="fa fa-list"></i></button>
                                     <button class="btn btn-xs btn-info"  data-toggle="tooltip" data-placement="top" title="Editar registros" onclick="location.href='editRegistros?id=`)
-		//line templates/zona.qtpl:199
+		//line templates/zona.qtpl:202
 		qw422016.N().D(int(zona.ID))
-		//line templates/zona.qtpl:199
+		//line templates/zona.qtpl:202
 		qw422016.N().S(`';"><i class="fa fa-edit"></i></button>
                                     <button class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar zona" onclick="location.href='removeZona?id=`)
-		//line templates/zona.qtpl:200
+		//line templates/zona.qtpl:203
 		qw422016.N().D(int(zona.ID))
-		//line templates/zona.qtpl:200
+		//line templates/zona.qtpl:203
 		qw422016.N().S(`';"><i class="fa fa-trash-o"></i></button>
                                 </td>
                             </tr>
                             `)
-		//line templates/zona.qtpl:203
+		//line templates/zona.qtpl:206
 	}
-	//line templates/zona.qtpl:203
+	//line templates/zona.qtpl:206
 	qw422016.N().S(`
                             </tbody>
                         </table>
@@ -304,7 +307,7 @@ func StreamZonaTemplate(qw422016 *qt422016.Writer, zonas []model.Zona, error str
         <div id="form" class="col-lg-6" hidden="true" >
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Configuración de la Zona
+                    Configuración de la zona
                 </div>
                 <div class="panel-body">
                     <form id="addzona" action="/dns" onsubmit="return validateForm()" role=form method="post">
@@ -349,31 +352,31 @@ func StreamZonaTemplate(qw422016 *qt422016.Writer, zonas []model.Zona, error str
 </html>
 
 `)
-//line templates/zona.qtpl:262
+//line templates/zona.qtpl:265
 }
 
-//line templates/zona.qtpl:262
+//line templates/zona.qtpl:265
 func WriteZonaTemplate(qq422016 qtio422016.Writer, zonas []model.Zona, error string) {
-	//line templates/zona.qtpl:262
+	//line templates/zona.qtpl:265
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line templates/zona.qtpl:262
+	//line templates/zona.qtpl:265
 	StreamZonaTemplate(qw422016, zonas, error)
-	//line templates/zona.qtpl:262
+	//line templates/zona.qtpl:265
 	qt422016.ReleaseWriter(qw422016)
-//line templates/zona.qtpl:262
+//line templates/zona.qtpl:265
 }
 
-//line templates/zona.qtpl:262
+//line templates/zona.qtpl:265
 func ZonaTemplate(zonas []model.Zona, error string) string {
-	//line templates/zona.qtpl:262
+	//line templates/zona.qtpl:265
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line templates/zona.qtpl:262
+	//line templates/zona.qtpl:265
 	WriteZonaTemplate(qb422016, zonas, error)
-	//line templates/zona.qtpl:262
+	//line templates/zona.qtpl:265
 	qs422016 := string(qb422016.B)
-	//line templates/zona.qtpl:262
+	//line templates/zona.qtpl:265
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line templates/zona.qtpl:262
+	//line templates/zona.qtpl:265
 	return qs422016
-//line templates/zona.qtpl:262
+//line templates/zona.qtpl:265
 }

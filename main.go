@@ -16,6 +16,7 @@ import (
 	"github.com/mkreder/dockerpanel/controller"
 	"github.com/mkreder/dockerpanel/templates"
 	"github.com/mkreder/dockerpanel/login"
+	"github.com/mkreder/dockerpanel/worker"
 
 )
 
@@ -122,6 +123,7 @@ func main() {
 	FileServer(r, "/js", http.Dir(jsDir))
 	FileServer(r, "/vendor", http.Dir(vendorDir))
 
+	go worker.RunDNSWorker()
 	log.Printf("Running on %s\n", srv.Addr)
 	log.Fatal(srv.ListenAndServe())
 

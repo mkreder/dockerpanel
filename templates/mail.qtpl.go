@@ -171,25 +171,27 @@ func StreamMailTemplate(qw422016 *qt422016.Writer, dominios []model.Dominio, err
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
                     <li>
-                        <a href="/"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        <a href="/"><i class="fa fa-dashboard fa-fw"></i>Principal</a>
                     </li>
                     <li>
-                        <a href="/web"><i class="fa fa-server fa-fw"></i>Sitios Web</a>
+                        <a href="/web"><i class="fa fa-server fa-fw"></i>Sitios web</a>
                     </li>
                     <li>
                         <a href="/dns"><i class="fa fa-cloud fa-fw"></i>DNS</a>
                     </li>
                     <li>
-                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
+                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Bases de datos</a>
                     </li>
                     <li>
                         <a href="/mail"><i class="fa fa-at fa-fw"></i>E-Mail</a>
                     </li>
                     <li>
-                        <a href="/ftp"><i class="fa fa-file-archive-o fa-fw"></i>FTP</a>
+                        <a href="/ftp"><i class="fa fa-file-archive-o fa-fw"></i>Usuarios FTP</a>
                     </li>
                 </ul>
             </div>
+            <!-- /.sidebar-collapse -->
+        </div>
             <!-- /.sidebar-collapse -->
         </div>
         <!-- /.navbar-static-side -->
@@ -201,7 +203,7 @@ func StreamMailTemplate(qw422016 *qt422016.Writer, dominios []model.Dominio, err
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading clearfix">
-                        <h4 class="panel-title pull-left" style="padding-top: 7.5px;">Dominios de Correo Electrónico</h4>
+                        <h4 class="panel-title pull-left" style="padding-top: 7.5px;">Dominios de correo electrónico</h4>
                         <button type="button" class="btn pull-right btn-primary btn-sm" onclick="showDiv()">Agregar</button>
                     </div>
                     <!-- /.panel-heading -->
@@ -211,90 +213,90 @@ func StreamMailTemplate(qw422016 *qt422016.Writer, dominios []model.Dominio, err
                             <tr>
                                 <th>Dominio</th>
                                 <th>Estado</th>
-                                <th>Filtro Correo Basura</th>
+                                <th>Filtro correo basura</th>
                                 <th>Acciones</th>
                             </tr>
                             </thead>
                             <tbody>
                             `)
-	//line templates/mail.qtpl:183
+	//line templates/mail.qtpl:185
 	for _, dominio := range dominios {
-		//line templates/mail.qtpl:183
+		//line templates/mail.qtpl:185
 		qw422016.N().S(`
                             <tr class="odd gradeX">
                                 <td> `)
-		//line templates/mail.qtpl:185
+		//line templates/mail.qtpl:187
 		qw422016.E().S(dominio.Nombre)
-		//line templates/mail.qtpl:185
+		//line templates/mail.qtpl:187
 		qw422016.N().S(` </td>
 
                                 `)
-		//line templates/mail.qtpl:187
+		//line templates/mail.qtpl:189
 		switch dominio.Estado {
-		//line templates/mail.qtpl:188
+		//line templates/mail.qtpl:190
 		case 1:
-			//line templates/mail.qtpl:188
+			//line templates/mail.qtpl:190
 			qw422016.N().S(`
                                 <td>a configurar</td>
                                 `)
-		//line templates/mail.qtpl:190
+		//line templates/mail.qtpl:192
 		case 2:
-			//line templates/mail.qtpl:190
+			//line templates/mail.qtpl:192
 			qw422016.N().S(`
                                 <td>configurado</td>
                                 `)
-		//line templates/mail.qtpl:192
+		//line templates/mail.qtpl:194
 		case 3:
-			//line templates/mail.qtpl:192
+			//line templates/mail.qtpl:194
 			qw422016.N().S(`
                                 <td>corriendo</td>
                                 `)
-			//line templates/mail.qtpl:194
+			//line templates/mail.qtpl:196
 		}
-		//line templates/mail.qtpl:194
+		//line templates/mail.qtpl:196
 		qw422016.N().S(`
 
                                 <td> `)
-		//line templates/mail.qtpl:196
+		//line templates/mail.qtpl:198
 		qw422016.E().S(dominio.FiltroSpam)
-		//line templates/mail.qtpl:196
+		//line templates/mail.qtpl:198
 		qw422016.N().S(` </td>
 
                                 <td class="center">
                                     <button class="btn btn-xs btn-success"  data-toggle="tooltip" data-placement="top" title="Editar cuentas" onclick="location.href='editCuentas?dominioid=`)
-		//line templates/mail.qtpl:199
+		//line templates/mail.qtpl:201
 		qw422016.N().D(int(dominio.ID))
-		//line templates/mail.qtpl:199
+		//line templates/mail.qtpl:201
 		qw422016.N().S(`';"><i class="fa fa-user"></i></button>
                                     <button class="btn btn-xs btn-info"  data-toggle="tooltip" data-placement="top" title="Editar listas de correo" onclick="location.href='editListas?dominioid=`)
-		//line templates/mail.qtpl:200
+		//line templates/mail.qtpl:202
 		qw422016.N().D(int(dominio.ID))
-		//line templates/mail.qtpl:200
+		//line templates/mail.qtpl:202
 		qw422016.N().S(`';"><i class="fa fa-users"></i></button>
                                     <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Editar dominio" onclick='modifyDominio(`)
-		//line templates/mail.qtpl:201
+		//line templates/mail.qtpl:203
 		qw422016.N().D(int(dominio.ID))
-		//line templates/mail.qtpl:201
+		//line templates/mail.qtpl:203
 		qw422016.N().S(`, "`)
-		//line templates/mail.qtpl:201
+		//line templates/mail.qtpl:203
 		qw422016.E().S(dominio.Nombre)
-		//line templates/mail.qtpl:201
+		//line templates/mail.qtpl:203
 		qw422016.N().S(`",  "`)
-		//line templates/mail.qtpl:201
+		//line templates/mail.qtpl:203
 		qw422016.E().S(dominio.FiltroSpam)
-		//line templates/mail.qtpl:201
+		//line templates/mail.qtpl:203
 		qw422016.N().S(`" )' ><i class="fa fa-list"></i></button>
                                     <button class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar dominio" onclick="location.href='removeDominio?id=`)
-		//line templates/mail.qtpl:202
+		//line templates/mail.qtpl:204
 		qw422016.N().D(int(dominio.ID))
-		//line templates/mail.qtpl:202
+		//line templates/mail.qtpl:204
 		qw422016.N().S(`';"><i class="fa fa-trash-o"></i></button>
                                 </td>
                             </tr>
                             `)
-		//line templates/mail.qtpl:205
+		//line templates/mail.qtpl:207
 	}
-	//line templates/mail.qtpl:205
+	//line templates/mail.qtpl:207
 	qw422016.N().S(`
                             </tbody>
                         </table>
@@ -310,7 +312,7 @@ func StreamMailTemplate(qw422016 *qt422016.Writer, dominios []model.Dominio, err
         <div id="form" class="col-lg-6" hidden="true" >
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Configuración del Dominio de Mail
+                    Configuración del dominio de correo electrónico
                 </div>
                 <div class="panel-body">
                     <form id="adddominio" action="/mail" onsubmit="return validateForm()" role=form method="post">
@@ -318,7 +320,7 @@ func StreamMailTemplate(qw422016 *qt422016.Writer, dominios []model.Dominio, err
                         <input id="id" name="id" id="id" hidden="true" >
                         <input class="form-control" name="nombre" id="nombre">
                         <br>
-                        Filtro de Correo Basura
+                        Filtro de correo basura
                         <select class="form-control" id="filtro" name="filtro">
                             <option disabled selected value> -- Elegir tipo de filtro -- </option>
                             <option value="alto">Alto</option>
@@ -361,31 +363,31 @@ func StreamMailTemplate(qw422016 *qt422016.Writer, dominios []model.Dominio, err
 </html>
 
 `)
-//line templates/mail.qtpl:270
+//line templates/mail.qtpl:272
 }
 
-//line templates/mail.qtpl:270
+//line templates/mail.qtpl:272
 func WriteMailTemplate(qq422016 qtio422016.Writer, dominios []model.Dominio, error string) {
-	//line templates/mail.qtpl:270
+	//line templates/mail.qtpl:272
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line templates/mail.qtpl:270
+	//line templates/mail.qtpl:272
 	StreamMailTemplate(qw422016, dominios, error)
-	//line templates/mail.qtpl:270
+	//line templates/mail.qtpl:272
 	qt422016.ReleaseWriter(qw422016)
-//line templates/mail.qtpl:270
+//line templates/mail.qtpl:272
 }
 
-//line templates/mail.qtpl:270
+//line templates/mail.qtpl:272
 func MailTemplate(dominios []model.Dominio, error string) string {
-	//line templates/mail.qtpl:270
+	//line templates/mail.qtpl:272
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line templates/mail.qtpl:270
+	//line templates/mail.qtpl:272
 	WriteMailTemplate(qb422016, dominios, error)
-	//line templates/mail.qtpl:270
+	//line templates/mail.qtpl:272
 	qs422016 := string(qb422016.B)
-	//line templates/mail.qtpl:270
+	//line templates/mail.qtpl:272
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line templates/mail.qtpl:270
+	//line templates/mail.qtpl:272
 	return qs422016
-//line templates/mail.qtpl:270
+//line templates/mail.qtpl:272
 }

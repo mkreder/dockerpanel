@@ -29,13 +29,13 @@ func (mgr *manager) CheckIfZonaExists(dominio string) bool{
 
 func (mgr *manager) GetAllZonas() []Zona {
 	var zonas []Zona
-	mgr.db.Find(&zonas)
+	mgr.db.Preload("Registros").Find(&zonas)
 	return zonas
 }
 
 func (mgr *manager) GetZona(id string) Zona {
 	var zona Zona
-	mgr.db.First(&zona,id)
+	mgr.db.Preload("Registros").First(&zona,id)
 	return zona
 }
 
