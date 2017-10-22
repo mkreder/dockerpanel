@@ -442,7 +442,7 @@ func StreamWebTemplate(qw422016 *qt422016.Writer, webs []model.Web, error string
         <div id="form" class="col-lg-6" hidden="true" >
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Configuración del Sitio
+                    Configuración del sitio
                 </div>
                 <div class="panel-body">
                     <form id="addweb" action="/web" enctype="multipart/form-data" onsubmit="return validateForm()" role=form method="post">

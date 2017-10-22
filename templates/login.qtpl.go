@@ -100,7 +100,7 @@ func StreamLoginTemplate(qw422016 *qt422016.Writer, error string) {
         <div class="col-md-4 col-md-offset-4">
             <div class="login-panel panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Please Sign In</h3>
+                    <h3 class="panel-title">Inicio de sesión</h3>
                 </div>
                 <div class="panel-body">
                     <form id="login" action="/login" onsubmit="return validateForm()" role=form method="post">

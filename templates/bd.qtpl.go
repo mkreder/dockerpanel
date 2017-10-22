@@ -651,7 +651,7 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
                 <div class="panel-body">
                     <form id="adduubd" action="/addubd" onsubmit="return validateFormAddUBD()" role=form method="post">
                         <input id="idABD" name="userid" hidden="true" >
-                        Base de Datos
+                        Base de datos
                         <select  class="form-control"  id="selabd" name="bdid">
                             <option disabled selected value> -- Elegir base de datos -- </option>
                             `)
@@ -707,7 +707,7 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
 		qw422016.N().D(int(user.ID))
 		//line templates/bd.qtpl:507
 		qw422016.N().S(`" hidden="true" >
-                        Base de Datos
+                        Base de datos
                         <select  class="form-control"  id="bd`)
 		//line templates/bd.qtpl:509
 		qw422016.N().D(int(user.ID))

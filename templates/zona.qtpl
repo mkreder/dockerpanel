@@ -193,6 +193,8 @@
                                 <td>configurado</td>
                                 {% case 3 %}
                                 <td>corriendo</td>
+                                {% case 4 %}
+                                <td>parado</td>
                                 {% endswitch %}
 
                                 <td> {%s zona.Email %} </td>
