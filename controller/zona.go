@@ -114,7 +114,9 @@ func RemoveZona(w http.ResponseWriter, r *http.Request) {
 	UsuarioName := login.GetUNombreUsuario(r)
 	if UsuarioName != "" {
 		id := r.URL.Query().Get("id")
-		err := model.Mgr.RemoveZona(id)
+		zona := model.Mgr.GetZona(id)
+		zona.Estado = 5
+		err := model.Mgr.UpdateZona(&zona)
 		if err != nil {
 			templates.WriteZonaTemplate(w,model.Mgr.GetAllZonas(),"Error al borrar la zona")
 		} else {

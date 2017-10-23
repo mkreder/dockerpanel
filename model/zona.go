@@ -2,6 +2,7 @@ package model
 
 import (
 	"github.com/jinzhu/gorm"
+	"strconv"
 )
 
 type Zona struct {
@@ -40,8 +41,8 @@ func (mgr *manager) GetZona(id string) Zona {
 }
 
 func (mgr *manager) RemoveZona(id string) (err error) {
-	for _ , registro := range Mgr.GetZona(id).Registros {
-		Mgr.RemoveRegistro(string(registro.ID))
+	for _ , registro := range mgr.GetZona(id).Registros {
+		mgr.RemoveRegistro(strconv.Itoa(int(registro.ID)))
 	}
 	return mgr.db.Delete(Zona{}, "id == ?", id).Error
 }

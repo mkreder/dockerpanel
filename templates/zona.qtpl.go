@@ -249,49 +249,61 @@ func StreamZonaTemplate(qw422016 *qt422016.Writer, zonas []model.Zona, error str
 		case 3:
 			//line templates/zona.qtpl:194
 			qw422016.N().S(`
-                                <td>corriendo</td>
+                                <td>activo</td>
                                 `)
-			//line templates/zona.qtpl:196
-		}
 		//line templates/zona.qtpl:196
+		case 4:
+			//line templates/zona.qtpl:196
+			qw422016.N().S(`
+                                <td>apagado</td>
+                                `)
+		//line templates/zona.qtpl:198
+		case 5:
+			//line templates/zona.qtpl:198
+			qw422016.N().S(`
+                                <td>eliminando</td>
+                                `)
+			//line templates/zona.qtpl:200
+		}
+		//line templates/zona.qtpl:200
 		qw422016.N().S(`
 
                                 <td> `)
-		//line templates/zona.qtpl:198
+		//line templates/zona.qtpl:202
 		qw422016.E().S(zona.Email)
-		//line templates/zona.qtpl:198
+		//line templates/zona.qtpl:202
 		qw422016.N().S(` </td>
 
                                 <td class="center">
                                     <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Editar zona" onclick='modifyZona(`)
-		//line templates/zona.qtpl:201
+		//line templates/zona.qtpl:205
 		qw422016.N().D(int(zona.ID))
-		//line templates/zona.qtpl:201
+		//line templates/zona.qtpl:205
 		qw422016.N().S(`, "`)
-		//line templates/zona.qtpl:201
+		//line templates/zona.qtpl:205
 		qw422016.E().S(zona.Dominio)
-		//line templates/zona.qtpl:201
+		//line templates/zona.qtpl:205
 		qw422016.N().S(`",  "`)
-		//line templates/zona.qtpl:201
+		//line templates/zona.qtpl:205
 		qw422016.E().S(zona.Email)
-		//line templates/zona.qtpl:201
+		//line templates/zona.qtpl:205
 		qw422016.N().S(`" )' ><i class="fa fa-list"></i></button>
                                     <button class="btn btn-xs btn-info"  data-toggle="tooltip" data-placement="top" title="Editar registros" onclick="location.href='editRegistros?id=`)
-		//line templates/zona.qtpl:202
+		//line templates/zona.qtpl:206
 		qw422016.N().D(int(zona.ID))
-		//line templates/zona.qtpl:202
+		//line templates/zona.qtpl:206
 		qw422016.N().S(`';"><i class="fa fa-edit"></i></button>
                                     <button class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar zona" onclick="location.href='removeZona?id=`)
-		//line templates/zona.qtpl:203
+		//line templates/zona.qtpl:207
 		qw422016.N().D(int(zona.ID))
-		//line templates/zona.qtpl:203
+		//line templates/zona.qtpl:207
 		qw422016.N().S(`';"><i class="fa fa-trash-o"></i></button>
                                 </td>
                             </tr>
                             `)
-		//line templates/zona.qtpl:206
+		//line templates/zona.qtpl:210
 	}
-	//line templates/zona.qtpl:206
+	//line templates/zona.qtpl:210
 	qw422016.N().S(`
                             </tbody>
                         </table>
@@ -352,31 +364,31 @@ func StreamZonaTemplate(qw422016 *qt422016.Writer, zonas []model.Zona, error str
 </html>
 
 `)
-//line templates/zona.qtpl:265
+//line templates/zona.qtpl:269
 }
 
-//line templates/zona.qtpl:265
+//line templates/zona.qtpl:269
 func WriteZonaTemplate(qq422016 qtio422016.Writer, zonas []model.Zona, error string) {
-	//line templates/zona.qtpl:265
+	//line templates/zona.qtpl:269
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line templates/zona.qtpl:265
+	//line templates/zona.qtpl:269
 	StreamZonaTemplate(qw422016, zonas, error)
-	//line templates/zona.qtpl:265
+	//line templates/zona.qtpl:269
 	qt422016.ReleaseWriter(qw422016)
-//line templates/zona.qtpl:265
+//line templates/zona.qtpl:269
 }
 
-//line templates/zona.qtpl:265
+//line templates/zona.qtpl:269
 func ZonaTemplate(zonas []model.Zona, error string) string {
-	//line templates/zona.qtpl:265
+	//line templates/zona.qtpl:269
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line templates/zona.qtpl:265
+	//line templates/zona.qtpl:269
 	WriteZonaTemplate(qb422016, zonas, error)
-	//line templates/zona.qtpl:265
+	//line templates/zona.qtpl:269
 	qs422016 := string(qb422016.B)
-	//line templates/zona.qtpl:265
+	//line templates/zona.qtpl:269
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line templates/zona.qtpl:265
+	//line templates/zona.qtpl:269
 	return qs422016
-//line templates/zona.qtpl:265
+//line templates/zona.qtpl:269
 }
