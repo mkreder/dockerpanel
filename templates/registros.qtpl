@@ -23,13 +23,15 @@
                 alert("Se debe completar la prioridad");
                 return false;
             }
+
+            if (/^[0-9]*$/.test(z)) {
+            } else {
+                alert("Prioridad debe ser un valor numerico");
+                return false;
+            }
+
         }
 
-        if (/^[0-9]*$/.test(z)) {
-        } else {
-            alert("Prioridad debe ser un valor numerico");
-            return false;
-        }
 
 
     }

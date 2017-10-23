@@ -43,19 +43,19 @@ func AddRegistro(w http.ResponseWriter, r *http.Request) {
 			registro.Nombre = nombre
 			registro.Valor = valor
 			registro.Prioridad = prioridad
-			z64, err := strconv.ParseUint(zonaid,10,32)
 
-			registro.ZonaID = uint(z64)
+			zid, _ := strconv.Atoi(zonaid)
+			registro.ZonaID = uint(zid)
 
 			if len(id) == 0 {
-				err = model.Mgr.AddRegistro(&registro)
+				err := model.Mgr.AddRegistro(&registro)
 				if err != nil {
 					templates.WriteRegistroTemplate(w, model.Mgr.GetRegistros(zonaid),zonaid,"Error al agregar el registro")
 				} else {
 					templates.WriteRegistroTemplate(w, model.Mgr.GetRegistros(zonaid),zonaid,"")
 				}
 			} else {
-				err = model.Mgr.UpdateRegistro(&registro)
+				err := model.Mgr.UpdateRegistro(&registro)
 				if err != nil {
 					templates.WriteRegistroTemplate(w, model.Mgr.GetRegistros(zonaid),zonaid,"Error al actualizar el registro")
 				} else {

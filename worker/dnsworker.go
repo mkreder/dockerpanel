@@ -115,18 +115,29 @@ func procesarRegistros(zona model.Zona){
 
 
 func buildearContenedor(){
-	log.Printf("Construyendo el contenedor")
-	cmdString := "cd configs/dns/; docker build -t dp-dnsimage ."
-	tarCmd := exec.Command("/bin/sh" , "-c", cmdString)
-	var out bytes.Buffer
+	cmdString := "docker images -q dp-dnsimage"
+	imgCmd := exec.Command("/bin/sh" , "-c", cmdString)
 	var stderr bytes.Buffer
-	tarCmd.Stdout = &out
-	tarCmd.Stderr = &stderr
-	err := tarCmd.Run()
-	log.Printf(out.String())
+	var out bytes.Buffer
+	imgCmd.Stderr = &stderr
+	imgCmd.Stdout = &out
+	err := imgCmd.Run()
 	checkCmd(err,stderr)
-	log.Printf("Contenedor construido")
-
+	if len(out.String()) == 0 {
+		log.Printf("Construyendo la imagen")
+		cmdString := "cd configs/dns/; docker build -t dp-dnsimage ."
+		buildCmd := exec.Command("/bin/sh" , "-c", cmdString)
+		var out2 bytes.Buffer
+		var stderr2 bytes.Buffer
+		buildCmd.Stdout = &out2
+		buildCmd.Stderr = &stderr2
+		err := buildCmd.Run()
+		log.Printf(out2.String())
+		checkCmd(err,stderr2)
+		log.Printf("Imagen creada")
+	} else {
+		log.Printf("La imagen ya existe, salteando paso.")
+	}
 }
 
 func correrContenedor(nombre string){
