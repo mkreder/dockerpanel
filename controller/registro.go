@@ -32,8 +32,8 @@ func AddRegistro(w http.ResponseWriter, r *http.Request) {
 		zonaid := strings.Join(r.Form["zonaid"],"")
 		id := strings.Join(r.Form["id"],"")
 
-		if ( len(id) == 0 ) && ( model.Mgr.CheckIfRegistroExists(nombre,tipo,valor,prioridad) ){
-			templates.WriteRegistroTemplate(w, model.Mgr.GetRegistros(zonaid),zonaid,"")
+		if ( len(id) == 0 ) && ( model.Mgr.CheckIfRegistroExists(nombre,tipo,valor,prioridad,zonaid) ){
+			templates.WriteRegistroTemplate(w, model.Mgr.GetRegistros(zonaid),zonaid,"El registro ya existe")
 		} else {
 			var registro model.Registro
 			if len(id) != 0 {

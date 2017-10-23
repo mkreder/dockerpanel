@@ -27,7 +27,7 @@ type Manager interface {
 
 	AddRegistros(registros []Registro)
 	GetRegistros(zonaid string) []Registro
-	CheckIfRegistroExists(nombre string,tipo string, valor string, prioridad string) bool
+	CheckIfRegistroExists(nombre string,tipo string, valor string, prioridad string, zonaid string ) bool
 	GetRegistro(id string) Registro
 	AddRegistro(registro *Registro) (err error)
 	UpdateRegistro(registro *Registro) (err error)

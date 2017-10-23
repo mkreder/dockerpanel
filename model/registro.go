@@ -30,9 +30,9 @@ func (mgr *manager) GetRegistros(zonaid string) []Registro{
 	return registros
 }
 
-func (mgr *manager) CheckIfRegistroExists(nombre string,tipo string, valor string, prioridad string) bool{
+func (mgr *manager) CheckIfRegistroExists(nombre string,tipo string, valor string, prioridad string, zonaid string) bool{
 	var registro Registro
-	exists := mgr.db.First(&registro,"nombre = ? AND tipo = ? AND valor = ? AND prioridad = ? ",nombre,tipo,valor,prioridad).RecordNotFound()
+	exists := mgr.db.First(&registro,"nombre = ? AND tipo = ? AND valor = ? AND prioridad = ? AND zona_id = ?",nombre,tipo,valor,prioridad,zonaid).RecordNotFound()
 	return ! exists
 }
 
