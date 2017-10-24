@@ -17,7 +17,7 @@ func reiniciarContenedor(nombre string){
 }
 
 func isRunning(nombre string) bool{
-	cmdString := "docker ps -q -f  name=" + nombre
+	cmdString := "docker ps -q -f  name=" + nombre + "$"
 	psCmd := exec.Command("/bin/sh" , "-c", cmdString)
 	var stderr bytes.Buffer
 	var out bytes.Buffer

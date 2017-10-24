@@ -154,11 +154,11 @@ func AssociateBD(w http.ResponseWriter, r *http.Request){
 		if exists != 1 {
 			user.BDs = append(user.BDs,newbd)
 			newbd.Estado = 1
-			model.Mgr.UpdateBD(&newbd)
 			err := model.Mgr.UpdateUsuarioBD(&user)
 			if err != nil {
 				templates.WriteBDTemplate(w,model.Mgr.GetAllBDs(),model.Mgr.GetAllUsuarioBDs(),"Error al actualizar el usuario de base de datos")
 			} else {
+				model.Mgr.UpdateBD(&newbd)
 				templates.WriteBDTemplate(w,model.Mgr.GetAllBDs(),model.Mgr.GetAllUsuarioBDs(),"")
 			}
 		}

@@ -25,22 +25,15 @@ func calcularPuerto(id uint) string{
 	return ""
 }
 
-func crearDirectorioConfigBD(nombre string, id uint){
-	if _ , err := os.Stat("configs/bd/" + nombre + "/Dockerfile"); os.IsNotExist(err){
+func crearDirectorioConfigBD(nombre string){
+	if _ , err := os.Stat("configs/bd/Dockerfile"); os.IsNotExist(err){
 		log.Printf("Creando archivos de configuración")
 		srcFolder := "defaults/bd"
 		os.MkdirAll("configs/bd",0755)
-		destFolder := "configs/bd/" + nombre
+		destFolder := "configs/"
 		cpCmd := exec.Command("cp", "-rf", srcFolder, destFolder)
 		err := cpCmd.Run()
 		check(err)
-		dockerf, err := os.OpenFile("configs/bd/" + nombre + "/Dockerfile", os.O_APPEND|os.O_WRONLY, 0600)
-		if err != nil {
-			panic(err)
-		}
-		dockerf.WriteString("EXPOSE " + calcularPuerto(id))
-		dockerf.Sync()
-		dockerf.Close()
 		os.MkdirAll("data/bd/" + nombre,0755)
 	}
 }
@@ -54,7 +47,6 @@ func crearSQL(bd model.BD){
 		// Red de contenedores
 		ip := "172.17.0.0/255.255.255.0"
 		sql = sql + "GRANT ALL ON *.* TO '" + usuario.Nombre + "'@'" + ip + "' IDENTIFIED BY '" + usuario.Password + "' ;\n"
-
 	}
 	sql = sql + "FLUSH PRIVILEGES; \n"
 	os.MkdirAll("configs/bd/" + bd.Nombre + "/conf",0755)
@@ -62,8 +54,8 @@ func crearSQL(bd model.BD){
 	check(err)
 }
 
-func buildearContenedorBD(nombre string){
-	cmdString := "docker images -q dp-img-bd-" + nombre
+func construirImagenBD(){
+	cmdString := "docker images -q dp-img-bd"
 	imgCmd := exec.Command("/bin/sh" , "-c", cmdString)
 	var stderr bytes.Buffer
 	var out bytes.Buffer
@@ -73,7 +65,7 @@ func buildearContenedorBD(nombre string){
 	checkCmd(err,stderr)
 	if len(out.String()) == 0 {
 		log.Printf("Construyendo la imagen")
-		cmdString := "cd configs/bd/" + nombre + "; docker build -t dp-img-bd-" + nombre + " ."
+		cmdString := "cd configs/bd/" + "; docker build -t dp-img-bd" + " ."
 		buildCmd := exec.Command("/bin/sh" , "-c", cmdString)
 		var out2 bytes.Buffer
 		var stderr2 bytes.Buffer
@@ -90,17 +82,28 @@ func buildearContenedorBD(nombre string){
 
 func correrContenedorBD(bd model.BD){
 	wd, _ := os.Getwd()
-	cmdString := "cd configs/bd/" + bd.Nombre + "; docker stop dp-bd-" + bd.Nombre + "; docker rm dp-bd-"+ bd.Nombre +"; docker run -d -p " + calcularPuerto(bd.ID) + ":" + calcularPuerto(bd.ID)  +   " -v " + wd + "/configs/bd/" + bd.Nombre + "/conf:/conf:ro"  + " -v " + wd + "/data/bd/" + bd.Nombre + ":/var/lib/mysql" + " --name dp-bd-" + bd.Nombre + " dp-img-bd-" + bd.Nombre
-	tarCmd := exec.Command("/bin/sh" , "-c", cmdString)
+	cmdString := "cd configs/bd/" + bd.Nombre + "; docker stop dp-bd-" + bd.Nombre + "; docker rm dp-bd-"+ bd.Nombre +"; docker run -d -p " + calcularPuerto(bd.ID) + ":3306"   +   " -v " + wd + "/configs/bd/" + bd.Nombre + "/conf:/conf:ro"  + " -v " + wd + "/data/bd/" + bd.Nombre + ":/var/lib/mysql" + " --name dp-bd-" + bd.Nombre + " dp-img-bd"
+	runCmd := exec.Command("/bin/sh" , "-c", cmdString)
 	var stderr bytes.Buffer
 	var out bytes.Buffer
-	tarCmd.Stdout = &out
-	tarCmd.Stderr = &stderr
-	err := tarCmd.Run()
+	runCmd.Stdout = &out
+	runCmd.Stderr = &stderr
+	err := runCmd.Run()
 	checkCmd(err,stderr)
 	log.Printf("Contenedor iniciado dp-bd-" + bd.Nombre + " " + out.String() )
 }
 
+func ejecutarSQL(bd model.BD){
+	cmdString := "docker exec dp-bd-" + bd.Nombre + " /scripts/loadconf.sh"
+	execCmd := exec.Command("/bin/sh" , "-c", cmdString)
+	var stderr bytes.Buffer
+	var out bytes.Buffer
+	execCmd.Stdout = &out
+	execCmd.Stderr = &stderr
+	err := execCmd.Run()
+	checkCmd(err,stderr)
+	log.Printf("SQL ejecutado dp-bd-" + bd.Nombre + " " + out.String() )
+}
 func RunBDWorker() {
 	log.Printf("Iniciando BD worker")
 	// Loop para siempre
@@ -109,11 +112,15 @@ func RunBDWorker() {
 			if bd.Estado == 1 {
 				log.Printf("Trabajando en la BD " + bd.Nombre )
 
-				// TODO: si esta corriendo tirar un reload
-				crearDirectorioConfigBD(bd.Nombre,bd.ID)
+				if ! isRunning("dp-bd-" + bd.Nombre){
+					crearDirectorioConfigBD(bd.Nombre)
+				}
 				crearSQL(bd)
-				buildearContenedorBD(bd.Nombre)
-
+				if ! isRunning("dp-bd-" + bd.Nombre) {
+					construirImagenBD()
+				} else {
+					ejecutarSQL(bd)
+				}
 				bd.Estado = 2
 				model.Mgr.UpdateBD(&bd)
 			} else if bd.Estado == 2 || bd.Estado == 4 {
