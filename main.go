@@ -124,6 +124,7 @@ func main() {
 	FileServer(r, "/vendor", http.Dir(vendorDir))
 
 	go worker.RunDNSWorker()
+	go worker.RunBDWorker()
 	log.Printf("Running on %s\n", srv.Addr)
 	log.Fatal(srv.ListenAndServe())
 

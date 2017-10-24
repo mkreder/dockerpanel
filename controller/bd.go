@@ -99,7 +99,6 @@ func AddUsuarioBD(w http.ResponseWriter, r *http.Request) {
 				ubd.Password = password
 			}
 
-			ubd.Estado = 1
 			if len(id) == 0 {
 				err = model.Mgr.AddUsuarioBD(&ubd)
 				if err != nil {
@@ -154,6 +153,8 @@ func AssociateBD(w http.ResponseWriter, r *http.Request){
 		}
 		if exists != 1 {
 			user.BDs = append(user.BDs,newbd)
+			newbd.Estado = 1
+			model.Mgr.UpdateBD(&newbd)
 			err := model.Mgr.UpdateUsuarioBD(&user)
 			if err != nil {
 				templates.WriteBDTemplate(w,model.Mgr.GetAllBDs(),model.Mgr.GetAllUsuarioBDs(),"Error al actualizar el usuario de base de datos")
@@ -171,7 +172,11 @@ func DisassociateBD(w http.ResponseWriter, r *http.Request){
 	if UsuarioName != "" {
 		r.ParseForm()
 		userid := strings.Join(r.Form["userid"],"")
-		bdid, _ := strconv.Atoi(strings.Join(r.Form["bdid"],""))
+		bdidstr := strings.Join(r.Form["bdid"],"")
+		bdid, _ := strconv.Atoi(bdidstr)
+		bd := model.Mgr.GetBD(bdidstr)
+		bd.Estado = 1
+		model.Mgr.UpdateBD(&bd)
 		user := model.Mgr.GetUsuarioBD(userid)
 		for _ , bd := range user.BDs {
 			if int(bd.ID) == bdid {
@@ -205,6 +210,7 @@ func AddIP(w http.ResponseWriter, r *http.Request){
 		if exists != 1 {
 			var ip model.IP
 			ip.Valor = newip
+			bd.Estado = 1
 			bd.IPs = append(bd.IPs,ip)
 			err := model.Mgr.UpdateBD(&bd)
 			if err != nil {
@@ -227,6 +233,8 @@ func RemoveIP(w http.ResponseWriter, r *http.Request){
 		bd := model.Mgr.GetBD(bdid)
 		for _ , ip := range bd.IPs {
 			if ip.Valor == rip {
+				bd.Estado = 1
+				model.Mgr.UpdateBD(&bd)
 				err := model.Mgr.RemoveAssociationIP(&bd,&ip)
 				if err != nil {
 					templates.WriteBDTemplate(w, model.Mgr.GetAllBDs(), model.Mgr.GetAllUsuarioBDs(), "Error al borrar la asociación")

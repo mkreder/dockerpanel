@@ -8,7 +8,6 @@ type UsuarioBD struct {
 	gorm.Model
 	Nombre  string
 	Password string
-	Estado int
 	BDs []BD `gorm:"many2many:usuariobd_bds;"`
 }
 

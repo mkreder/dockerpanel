@@ -27,7 +27,7 @@ func checkCmd(e error, stderr bytes.Buffer){
 	}
 }
 
-func crearDirectorioConfig(zona model.Zona){
+func crearDirectorioConfigDNS(zona model.Zona){
 	if _ , err := os.Stat("configs/dns/Dockerfile"); os.IsNotExist(err){
 		log.Printf("Creando archivos de configuración")
 		// No hay un Dockerfile creado
@@ -114,8 +114,8 @@ func procesarRegistros(zona model.Zona){
 }
 
 
-func buildearContenedor(){
-	cmdString := "docker images -q dp-dnsimage"
+func buildearContenedorDNS(){
+	cmdString := "docker images -q dp-img-dns"
 	imgCmd := exec.Command("/bin/sh" , "-c", cmdString)
 	var stderr bytes.Buffer
 	var out bytes.Buffer
@@ -125,7 +125,7 @@ func buildearContenedor(){
 	checkCmd(err,stderr)
 	if len(out.String()) == 0 {
 		log.Printf("Construyendo la imagen")
-		cmdString := "cd configs/dns/; docker build -t dp-dnsimage ."
+		cmdString := "cd configs/dns/; docker build -t dp-img-dns ."
 		buildCmd := exec.Command("/bin/sh" , "-c", cmdString)
 		var out2 bytes.Buffer
 		var stderr2 bytes.Buffer
@@ -140,42 +140,20 @@ func buildearContenedor(){
 	}
 }
 
-func correrContenedor(nombre string){
+func correrContenedorDNS(nombre string){
 	wd, _ := os.Getwd()
-	cmdString := "cd configs/dns/; docker stop dp-dns; docker rm dp-dns; docker run -d -p 53:53/udp -v " + wd + "/configs/dns/bind:/etc/bind:ro" + " --name " + nombre + " dp-dnsimage"
+	cmdString := "cd configs/dns/; docker stop dp-dns; docker rm dp-dns; docker run -d -p 53:53/udp -v " + wd + "/configs/dns/bind:/etc/bind:ro" + " --name " + nombre + " dp-img-dns"
 	tarCmd := exec.Command("/bin/sh" , "-c", cmdString)
-	var stderr bytes.Buffer
-	tarCmd.Stderr = &stderr
-	err := tarCmd.Run()
-	checkCmd(err,stderr)
-	log.Printf("Corriendo contenedor " + nombre)
-}
-
-func reiniciarContenedor(nombre string){
-	cmdString := "docker restart -t 1 " + nombre
-	tarCmd := exec.Command("/bin/sh" , "-c", cmdString)
-	var stderr bytes.Buffer
-	tarCmd.Stderr = &stderr
-	err := tarCmd.Run()
-	checkCmd(err,stderr)
-	log.Printf("Contenedor reiniciado " + nombre)
-}
-
-func isRunning(nombre string) bool{
-	cmdString := "docker ps -q -f  name=" + nombre
-	psCmd := exec.Command("/bin/sh" , "-c", cmdString)
 	var stderr bytes.Buffer
 	var out bytes.Buffer
-	psCmd.Stderr = &stderr
-	psCmd.Stdout = &out
-	err := psCmd.Run()
+	tarCmd.Stderr = &stderr
+	tarCmd.Stdout = &out
+	err := tarCmd.Run()
 	checkCmd(err,stderr)
-	if len(out.String()) != 0 {
-		return true
-	} else {
-		return false
-	}
+	log.Printf("Contenedor iniciado " + nombre + " " + out.String() )
 }
+
+
 
 func removerZona(zona model.Zona){
 	os.Remove("configs/dns/bind/conf.d/" + zona.Dominio + ".conf")
@@ -205,15 +183,15 @@ func RunDNSWorker (){
 			if zona.Estado == 1 {
 				log.Printf("Trabajando en la zona " + zona.Dominio )
 
-				crearDirectorioConfig(zona)
+				crearDirectorioConfigDNS(zona)
 				procesarRegistros(zona)
-				buildearContenedor()
+				buildearContenedorDNS()
 
 				zona.Estado = 2
 				model.Mgr.UpdateZona(&zona)
 			} else if zona.Estado == 2 || zona.Estado == 4 {
 				if ! isRunning("dp-dns"){
-					correrContenedor("dp-dns")
+					correrContenedorDNS("dp-dns")
 				} else {
 					reiniciarContenedor("dp-dns")
 				}

@@ -323,7 +323,6 @@
                                     <thead>
                                     <tr>
                                         <th>Nombre</th>
-                                        <th>Estado</th>
                                         <th>Bases</th>
                                         <th>Acciones</th>
                                     </tr>
@@ -332,16 +331,6 @@
                                     {% for _, user := range ubds %}
                                     <tr class="odd gradeX">
                                         <td> {%s user.Nombre %} </td>
-
-
-                                        {% switch user.Estado %}
-                                        {% case 1 %}
-                                        <td>a configurar</td>
-                                        {% case 2 %}
-                                        <td>configurado</td>
-                                        {% case 3 %}
-                                        <td>corriendo</td>
-                                        {% endswitch %}
 
                                         <td>
                                             {% for _, bd := range user.BDs %}
@@ -369,6 +358,7 @@
                                     <tr>
                                         <th>Nombre</th>
                                         <th>Estado</th>
+                                        <th>Puerto</th>
                                         <th>Remota</th>
                                         <th>Acciones</th>
                                     </tr>
@@ -385,9 +375,23 @@
                                         {% case 2 %}
                                         <td>configurado</td>
                                         {% case 3 %}
-                                        <td>corriendo</td>
+                                        <td>activo</td>
+                                        {% case 4 %}
+                                        <td>apagado</td>
+                                        {% case 5 %}
+                                        <td>eliminando</td>
                                         {% endswitch %}
 
+                                        <td>
+                                            {% if bd.ID < 10 %}
+                                                300{%d int(bd.ID) %}
+                                            {% elseif bd.ID < 100 %}
+                                                30{%d int(bd.ID) %}
+                                            {% else %}
+                                                3{%d int(bd.ID) %}
+                                            {% endif %}
+
+                                        </td>
                                         <td>
                                             {% if len(bd.IPs) == 0 %}
                                                 no
