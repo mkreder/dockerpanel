@@ -40,16 +40,54 @@ func crearDirectorioConfigBD(nombre string){
 
 func crearSQL(bd model.BD){
 	sql := ""
-	for _ , usuario := range bd.Usuarios {
-		for _, ip := range bd.IPs {
-			sql = sql + "GRANT ALL ON *.* TO '" + usuario.Nombre + "'@'" + ip.Valor + "' IDENTIFIED BY '" + usuario.Password + "' ;\n"
+	var usuario model.UsuarioBD
+	abds := model.Mgr.GetAllAsociacionBDs()
+	for _ , abd := range abds {
+		if abd.BDID == bd.ID && ( abd.Estado == 1 || abd.Estado == 3) {
+			usuario = model.Mgr.GetUsuarioBD(strconv.Itoa(int(abd.UsuarioBDID)))
+			for _, ip := range bd.IPs {
+				if usuario.Estado == 1 && ip.Estado == 1 && abd.Estado == 1 {
+					sql = sql + "GRANT ALL ON *.* TO '" + usuario.Nombre + "'@'" + ip.Valor + "' IDENTIFIED BY '" + usuario.Password + "' ;\n"
+				} else {
+					sql = sql + "REVOKE ALL ON *.* FROM '" + usuario.Nombre + "'@'" + ip.Valor + "' ;\n"
+				}
+			}
+			ip := "172.17.0.0/255.255.255.0"
+			if usuario.Estado == 1 && abd.Estado == 1 {
+				sql = sql + "GRANT ALL ON *.* TO '" + usuario.Nombre + "'@'" + ip + "' IDENTIFIED BY '" + usuario.Password + "' ;\n"
+			} else {
+				sql = sql + "REVOKE ALL ON *.* FROM '" + usuario.Nombre + "'@'" + ip + "' ;\n"
+			}
+
+			if abd.Estado == 1 {
+				abd.Estado = 2
+				model.Mgr.UpdateAsociacionBD(&abd)
+			}
+
+
+			if abd.Estado == 3 {
+				model.Mgr.RemoveAsociacionBD(abd)
+			}
+
 		}
-		// Red de contenedores
-		ip := "172.17.0.0/255.255.255.0"
-		sql = sql + "GRANT ALL ON *.* TO '" + usuario.Nombre + "'@'" + ip + "' IDENTIFIED BY '" + usuario.Password + "' ;\n"
+
 	}
+
+	for _, ubd := range model.Mgr.GetUsuariosDeBD(strconv.Itoa(int(bd.ID))){
+		if ubd.Estado == 2 {
+			model.Mgr.RemoveUsuarioBD(strconv.Itoa(int(ubd.ID)))
+		}
+	}
+
+	for _, ip := range bd.IPs {
+		if ip.Estado == 2 {
+			model.Mgr.RemoveAssociationIP(&bd,&ip)
+		}
+	}
+
 	sql = sql + "FLUSH PRIVILEGES; \n"
 	os.MkdirAll("configs/bd/" + bd.Nombre + "/conf",0755)
+	log.Printf(sql)
 	err := ioutil.WriteFile("configs/bd/" + bd.Nombre + "/conf/userdata.sql", []byte(sql), 0644)
 	check(err)
 }
@@ -104,6 +142,20 @@ func ejecutarSQL(bd model.BD){
 	checkCmd(err,stderr)
 	log.Printf("SQL ejecutado dp-bd-" + bd.Nombre + " " + out.String() )
 }
+
+func borrarBD(bd model.BD){
+	cmdString := "docker stop dp-bd-" + bd.Nombre + " ; docker rm dp-bd-" + bd.Nombre
+	execCmd := exec.Command("/bin/sh" , "-c", cmdString)
+	var stderr bytes.Buffer
+	var out bytes.Buffer
+	execCmd.Stdout = &out
+	execCmd.Stderr = &stderr
+	err := execCmd.Run()
+	checkCmd(err,stderr)
+	model.Mgr.RemoveBD(strconv.Itoa(int(bd.ID)))
+	log.Printf("BD dp-bd-" + bd.Nombre + " borrada ")
+}
+
 func RunBDWorker() {
 	log.Printf("Iniciando BD worker")
 	// Loop para siempre
@@ -123,24 +175,35 @@ func RunBDWorker() {
 				}
 				bd.Estado = 2
 				model.Mgr.UpdateBD(&bd)
+
 			} else if bd.Estado == 2 || bd.Estado == 4 {
 				if ! isRunning("dp-bd-" + bd.Nombre){
 					correrContenedorBD(bd)
-				} else {
-					reiniciarContenedor("dp-bd-" + bd.Nombre)
 				}
 				bd.Estado = 3
 				model.Mgr.UpdateBD(&bd)
+				time.Sleep(10*time.Second)
 			} else if bd.Estado == 3 {
 				if ! isRunning("dp-bd-" + bd.Nombre){
 					bd.Estado = 4
 					model.Mgr.UpdateBD(&bd)
 				}
-			} //else if bd.Estado == 5 {
-			//	removeBD(bd)
-			//	reiniciarContenedor("dp-bd-" + bd.Nombre)
-			//}
-
+			} else if bd.Estado == 5 {
+				borrarBD(bd)
+			}
+		}
+		for _ , user := range model.Mgr.GetAllUsuarioBDs() {
+			if user.Estado == 2 {
+				count := 0
+				for _, abd := range model.Mgr.GetAllAsociacionBDs(){
+					if ( abd.UsuarioBDID == user.ID ){
+						count = count + 1;
+					}
+				}
+				if count == 0 {
+					model.Mgr.RemoveUsuarioBD(strconv.Itoa(int(user.ID)))
+				}
+			}
 		}
 		time.Sleep(2 * time.Second)
 	}

@@ -8,9 +8,8 @@ type BD struct {
 	gorm.Model
 	Nombre  string
 	Estado int
-	Usuarios []UsuarioBD `gorm:"many2many:usuariobd_bds;"`
+	AsociacionBDs []AsociacionBD
 	IPs []IP
-
 }
 
 
@@ -30,13 +29,13 @@ func (mgr *manager) CheckIfBDExists(nombre string) bool{
 
 func (mgr *manager) GetAllBDs() []BD {
 	var bds []BD
-	mgr.db.Preload("Usuarios").Preload("IPs").Find(&bds)
+	mgr.db.Preload("AsociacionBDs").Preload("IPs").Find(&bds)
 	return bds
 }
 
 func (mgr *manager) GetBD(id string) BD {
 	var bd BD
-	mgr.db.Preload("Usuarios").Preload("IPs").First(&bd,id)
+	mgr.db.Preload("AsociacionBDs").Preload("IPs").First(&bd,id)
 	return bd
 }
 

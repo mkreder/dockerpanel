@@ -1,5 +1,5 @@
 {% import "github.com/mkreder/dockerpanel/model" %}
-{% func BDTemplate(bds []model.BD, ubds []model.UsuarioBD, error string) %}
+{% func BDTemplate(bds []model.BD, ubds []model.UsuarioBD, abds []model.AsociacionBD, error string) %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -333,8 +333,14 @@
                                         <td> {%s user.Nombre %} </td>
 
                                         <td>
-                                            {% for _, bd := range user.BDs %}
-                                              {%s bd.Nombre %}
+                                            {% for _, abd := range abds %}
+                                                {% if user.ID == abd.UsuarioBDID %}
+                                                    {% for _, bd := range bds %}
+                                                        {% if abd.BDID == bd.ID %}
+                                                            {%s bd.Nombre %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
                                             {% endfor %}
                                         </td>
 
@@ -512,8 +518,14 @@
                         Base de datos
                         <select  class="form-control"  id="bd{%d int(user.ID) %}" name="bdid">
                             <option disabled selected value> -- Elegir base de datos -- </option>
-                            {% for _, bd := range user.BDs %}
-                            <option value="{%d int(bd.ID) %}">{%s bd.Nombre %}</option>
+                            {% for _, abd := range abds %}
+                                {% if user.ID == abd.UsuarioBDID %}
+                                    {% for _, bd := range bds %}
+                                        {% if abd.BDID == bd.ID %}
+                                            <option value="{%d int(bd.ID) %}">{%s bd.Nombre %}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
                             {% endfor %}
                         </select>
                         <br>

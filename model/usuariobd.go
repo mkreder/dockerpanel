@@ -8,16 +8,18 @@ type UsuarioBD struct {
 	gorm.Model
 	Nombre  string
 	Password string
-	BDs []BD `gorm:"many2many:usuariobd_bds;"`
+	AsociacionBDs []AsociacionBD
+	// 1: activado 2: desactivado
+	Estado int
 }
 
-func (mgr *manager) UpdateUsuarioBD(uftp *UsuarioBD) (err error) {
-	return mgr.db.Save(&uftp).Error
+func (mgr *manager) UpdateUsuarioBD(ubd *UsuarioBD) (err error) {
+	return mgr.db.Save(&ubd).Error
 }
 
 
-func (mgr *manager) AddUsuarioBD(uftp *UsuarioBD) (err error) {
-	return mgr.db.Create(uftp).Error
+func (mgr *manager) AddUsuarioBD(ubd *UsuarioBD) (err error) {
+	return mgr.db.Create(ubd).Error
 }
 
 
@@ -29,13 +31,13 @@ func (mgr *manager) CheckIfUsuarioBDExists(nombre string) bool{
 
 func (mgr *manager) GetAllUsuarioBDs() []UsuarioBD {
 	var uftps []UsuarioBD
-	mgr.db.Preload("BDs").Find(&uftps)
+	mgr.db.Preload("AsociacionBDs").Find(&uftps)
 	return uftps
 }
 
 func (mgr *manager) GetUsuarioBD(id string) UsuarioBD {
 	var uftp UsuarioBD
-	mgr.db.Preload("BDs").First(&uftp,id)
+	mgr.db.Preload("AsociacionBDs").First(&uftp,id)
 	return uftp
 }
 
@@ -43,6 +45,9 @@ func (mgr *manager) RemoveUsuarioBD(id string) (err error) {
 	return mgr.db.Delete(UsuarioBD{}, "id == ?", id).Error
 }
 
-func (mgr *manager) RemoveAssociationUBD(usuario *UsuarioBD, bd *BD) (err error){
-	return mgr.db.Model(&usuario).Association("BDs").Delete(&bd).Error
+
+func (mgr *manager) GetUsuariosDeBD(bdid string) []UsuarioBD{
+	var ubds []UsuarioBD
+	mgr.db.Joins("left join asociacion_bds on asociacion_bds.usuario_bd_id = usuario_bds.id").Where("asociacion_bds.bd_id = ?", bdid).Find(&ubds)
+	return ubds
 }

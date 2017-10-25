@@ -48,15 +48,24 @@ type Manager interface {
 	GetAllBDs() []BD
 	GetBD(id string) BD
 	RemoveBD(id string) (err error)
+	UpdateIP(ip IP,bd BD)
 
-	UpdateUsuarioBD(uftp *UsuarioBD) (err error)
-	AddUsuarioBD(uftp *UsuarioBD) (err error)
+
+UpdateUsuarioBD(ubd *UsuarioBD) (err error)
+	AddUsuarioBD(ubd *UsuarioBD) (err error)
 	CheckIfUsuarioBDExists(nombre string) bool
 	GetAllUsuarioBDs() []UsuarioBD
 	GetUsuarioBD(id string) UsuarioBD
 	RemoveUsuarioBD(id string) (err error)
-	RemoveAssociationUBD(usuario *UsuarioBD, bd *BD) (err error)
 	RemoveAssociationIP(bd *BD, ip *IP) (err error)
+	GetUsuariosDeBD(bdid string) []UsuarioBD
+
+	AddAsociacionBD(adb *AsociacionBD) (err error)
+	UpdateAsociacionBD(adb *AsociacionBD) (err error)
+	CheckIfAsociacionBDExists(bdid string, usuariobdid string) bool
+	GetAllAsociacionBDs() []AsociacionBD
+	GetAsociacionBD(bdid string, usuariobdid string) AsociacionBD
+	RemoveAsociacionBD(adb AsociacionBD)
 
 	AddDominio(dominio *Dominio) (err error)
 	UpdateDominio(dominio *Dominio) (err error)
@@ -116,6 +125,7 @@ func (mgr *manager) migrate() {
 	mgr.db.AutoMigrate(&UsuarioFTP{})
 	mgr.db.AutoMigrate(&FtpConfig{})
 	mgr.db.AutoMigrate(&UsuarioBD{})
+	mgr.db.AutoMigrate(&AsociacionBD{})
 	mgr.db.AutoMigrate(&BD{})
 	mgr.db.AutoMigrate(&IP{})
 	mgr.db.AutoMigrate(&Dominio{})
