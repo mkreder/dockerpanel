@@ -192,7 +192,11 @@
                                 {% case 2 %}
                                 <td>configurado</td>
                                 {% case 3 %}
-                                <td>corriendo</td>
+                                <td>activo</td>
+                                {% case 4 %}
+                                <td>apagado</td>
+                                {% case 5 %}
+                                <td>eliminando</td>
                                 {% endswitch %}
 
                                 <td> {%s dominio.FiltroSpam %} </td>

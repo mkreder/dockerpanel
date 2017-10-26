@@ -3,6 +3,8 @@ package tools
 import (
 	"net"
 	"log"
+	"crypto/md5"
+	"encoding/hex"
 )
 
 
@@ -18,3 +20,8 @@ func GetIPAddress() string {
 	return localAddr.IP.String()
 }
 
+
+func GetMD5Hash(text string) string {
+	hash := md5.Sum([]byte(text))
+	return hex.EncodeToString(hash[:])
+}

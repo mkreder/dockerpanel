@@ -8,6 +8,7 @@ import (
 	"github.com/mkreder/dockerpanel/login"
 	"strconv"
 	"strings"
+	"github.com/mkreder/dockerpanel/tools"
 )
 
 func CuentaHandler(w http.ResponseWriter, r *http.Request) {
@@ -38,6 +39,8 @@ func AddCuenta(w http.ResponseWriter, r *http.Request) {
 			if (len(id) != 0) {
 				cuenta = model.Mgr.GetCuenta(id)
 			}
+			dominio := model.Mgr.GetDominio(dominioid)
+
 			cuenta.Nombre = nombre
 			cuenta.NombreReal = strings.Join(r.Form["nombreReal"],"")
 			cuota, _ := strconv.Atoi(strings.Join(r.Form["cuota"],""))
@@ -45,7 +48,7 @@ func AddCuenta(w http.ResponseWriter, r *http.Request) {
 
 			password := strings.Join(r.Form["password"],"")
 			if len(password) > 0 {
-				cuenta.Password = password
+				cuenta.Password = tools.GetMD5Hash(nombre + ":" + dominio.Nombre + ":" + password)
 			}
 
 			cuentadefecto := strings.Join(r.Form["cuentadefecto"],"")
@@ -97,6 +100,9 @@ func AddCuenta(w http.ResponseWriter, r *http.Request) {
 			}
 			cuenta.Estado = 1
 
+			dominio.Estado = 1
+			model.Mgr.UpdateDominio(&dominio)
+
 			d64, err := strconv.ParseUint(dominioid,10,32)
 			cuenta.DominioID = uint(d64)
 
@@ -126,6 +132,9 @@ func RemoveCuenta(w http.ResponseWriter, r *http.Request) {
 	if UsuarioName != "" {
 		id := r.URL.Query().Get("id")
 		dominioid := r.URL.Query().Get("dominioid")
+		dominio := model.Mgr.GetDominio(dominioid)
+		dominio.Estado = 1
+		model.Mgr.UpdateDominio(&dominio)
 		err := model.Mgr.RemoveCuenta(id)
 		if err != nil {
 			templates.WriteCuentaTemplate(w, model.Mgr.GetCuentas(dominioid),model.Mgr.GetDominio(dominioid), "Error al borrar cuenta de correo")
