@@ -38,6 +38,23 @@ func crearDirectorioConfigBD(nombre string){
 	}
 }
 
+func crearConfigPMA(){
+	config := "<?php \n$cfg['blowfish_secret'] = 'abcdkfj2dsfsdfdfasjlkdjlkdsjfkdsjfadslkfajdkfjkldsjfdaflkdsafdx83kx';\n$i = 0;\n"
+	for _, bd := range model.Mgr.GetAllBDs(){
+		config = config + "$i++; \n" +
+			"$cfg['Servers'][$i]['verbose'] = '"+ bd.Nombre  +  "';\n" +
+			"$cfg['Servers'][$i]['host'] = 'dp-bd-" + bd.Nombre + "';\n" +
+		    "$cfg['Servers'][$i]['port'] = '3306';\n" +
+		    "$cfg['Servers'][$i]['connect_type'] = 'tcp';\n" +
+		    "$cfg['Servers'][$i]['extension'] = 'mysqli';\n" +
+			"$cfg['Servers'][$i]['auth_type'] = 'cookie';\n" +
+			"$cfg['Servers'][$i]['AllowNoPassword'] = false;\n"
+	}
+
+	err := ioutil.WriteFile("configs/bd/phpmyadmin/config.inc.php", []byte(config), 0644)
+	check(err)
+}
+
 func crearSQL(bd model.BD){
 	sql := ""
 	var usuario model.UsuarioBD
@@ -92,6 +109,22 @@ func crearSQL(bd model.BD){
 	check(err)
 }
 
+
+func construirImagenPMA(){
+	crearConfigPMA()
+	log.Printf("Construyendo la imagen")
+	cmdString := "cd configs/bd/phpmyadmin" + "; docker stop dp-bd-phpmyadmin ; docker rm dp-bd-phpmyadmin;  docker rmi dp-img-bd-phpmyadmin; docker build -t dp-img-bd-phpmyadmin" + " ."
+	buildCmd := exec.Command("/bin/sh" , "-c", cmdString)
+	var out2 bytes.Buffer
+	var stderr2 bytes.Buffer
+	buildCmd.Stdout = &out2
+	buildCmd.Stderr = &stderr2
+	err := buildCmd.Run()
+	log.Printf(out2.String())
+	checkCmd(err,stderr2)
+	log.Printf("Imagen creada")
+}
+
 func construirImagenBD(){
 	cmdString := "docker images -q dp-img-bd"
 	imgCmd := exec.Command("/bin/sh" , "-c", cmdString)
@@ -116,6 +149,22 @@ func construirImagenBD(){
 	} else {
 		log.Printf("La imagen ya existe, salteando paso.")
 	}
+}
+
+func correrContenedorPMA(){
+	link := ""
+	for _ , bd := range model.Mgr.GetAllBDs(){
+		link = link + " --link dp-bd-" + bd.Nombre + ":dp-bd-" + bd.Nombre
+	}
+	cmdString := "cd configs/bd/phpmyadmin; docker stop dp-bd-phpmyadmin; docker rm dp-bd-phpmyadmin; docker run -d -p 58080:8080 " + link + " --name dp-bd-phpmyadmin dp-img-bd-phpmyadmin"
+	runCmd := exec.Command("/bin/sh" , "-c", cmdString)
+	var stderr bytes.Buffer
+	var out bytes.Buffer
+	runCmd.Stdout = &out
+	runCmd.Stderr = &stderr
+	err := runCmd.Run()
+	checkCmd(err,stderr)
+	log.Printf("Contenedor iniciado dp-bd-phpmyadmin "  + out.String() )
 }
 
 func correrContenedorBD(bd model.BD){
@@ -170,6 +219,7 @@ func RunBDWorker() {
 				crearSQL(bd)
 				if ! isRunning("dp-bd-" + bd.Nombre) {
 					construirImagenBD()
+					construirImagenPMA()
 				} else {
 					ejecutarSQL(bd)
 				}
@@ -179,6 +229,9 @@ func RunBDWorker() {
 			} else if bd.Estado == 2 || bd.Estado == 4 {
 				if ! isRunning("dp-bd-" + bd.Nombre){
 					correrContenedorBD(bd)
+				}
+				if ! isRunning("dp-bd-phpmyadmin"){
+					correrContenedorPMA()
 				}
 				bd.Estado = 3
 				model.Mgr.UpdateBD(&bd)
