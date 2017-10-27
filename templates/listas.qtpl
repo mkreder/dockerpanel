@@ -11,6 +11,12 @@
             return false;
         }
 
+        var x = document.getElementById("emailAdmin").value;
+        if (x == "" ) {
+            alert("Se debe completar el correo electronico del administrador");
+            return false;
+        }
+
         var z = document.getElementById("password").value;
         if ( document.getElementById("password").getAttribute("disabled") == "disabled" ){
             } else {
@@ -191,6 +197,7 @@
                             <thead>
                             <tr>
                                 <th>Nombre</th>
+                                <th>Correo del administrador</th>
                                 <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
@@ -199,7 +206,7 @@
                             {% for _, lista := range listas %}
                             <tr class="odd gradeX">
                                 <td> {%s lista.Nombre %} </td>
-
+                                <td> {%s lista.EmailAdmin %} </td>
                                 {% switch lista.Estado %}
                                 {% case 1 %}
                                 <td>a configurar</td>
@@ -238,6 +245,11 @@
                         <br>
                         Nombre de la lista
                         <input class="form-control" name="nombre" id="nombre">
+                        <br>
+                        Correo electronico del administrador
+                        <input class="form-control" name="emailAdmin" id="emailAdmin">
+
+
                         <br>
 
                         Contraseña

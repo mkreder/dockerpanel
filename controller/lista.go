@@ -37,7 +37,9 @@ func AddLista(w http.ResponseWriter, r *http.Request) {
 			if (len(id) != 0) {
 				lista = model.Mgr.GetLista(id)
 			}
+			emailAdmin := strings.Join(r.Form["emailAdmin"],"")
 			lista.Nombre = nombre
+			lista.EmailAdmin = emailAdmin
 			password := strings.Join(r.Form["password"],"")
 			if len(password) > 0 {
 				lista.Password = password

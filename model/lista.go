@@ -5,6 +5,7 @@ import "github.com/jinzhu/gorm"
 type Lista struct {
 	gorm.Model
 	Nombre  string
+	EmailAdmin string
 	Password string
 	Estado int
 	DominioID uint

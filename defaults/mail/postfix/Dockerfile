@@ -1,6 +1,6 @@
 FROM alpine:latest
 RUN apk update
-RUN apk add postfix rsyslog
+RUN apk add postfix rsyslog spamassassin amavisd-new perl-socket6 perl-io-socket-inet6
 RUN mkdir /scripts
 COPY start.sh /scripts/start.sh
 RUN chmod +x /scripts/start.sh

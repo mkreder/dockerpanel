@@ -7,6 +7,7 @@ for dominio in *; do
     fi
     cp -rf $dominio/passwd  /var/mail/vhosts/$dominio/
     cp -rf $dominio/shadow  /var/mail/vhosts/$dominio/
+    cp -rf $dominio/autoreply.sieve  /var/mail/vhosts/$dominio/
 done
 chown -R 101:104 /var/mail/vhosts/
 

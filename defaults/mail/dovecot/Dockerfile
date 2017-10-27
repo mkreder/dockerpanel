@@ -8,5 +8,5 @@ RUN mkdir /var/mail
 RUN addgroup -g 104 vmail
 RUN adduser -h /var/mail -G vmail -u 101 -H vmail -D
 VOLUME	[ "/var/mail", "/etc/dovecot" ]
-EXPOSE 110 143 12345
+EXPOSE 110 143 12345 12340
 ENTRYPOINT ["/scripts/start.sh"]

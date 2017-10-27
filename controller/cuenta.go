@@ -51,12 +51,7 @@ func AddCuenta(w http.ResponseWriter, r *http.Request) {
 				cuenta.Password = tools.GetMD5Hash(nombre + ":" + dominio.Nombre + ":" + password)
 			}
 
-			cuentadefecto := strings.Join(r.Form["cuentadefecto"],"")
-			if len(cuentadefecto) != 0 {
-				dominio := model.Mgr.GetDominio(dominioid)
-				dominio.CuentaDefecto = cuenta.Nombre
-				model.Mgr.UpdateDominio(&dominio)
-			}
+
 
 			aractivado := strings.Join(r.Form["aractivado"],"")
 			if len(aractivado) != 0 {
@@ -99,8 +94,13 @@ func AddCuenta(w http.ResponseWriter, r *http.Request) {
 				cuenta.Renvio = ""
 			}
 			cuenta.Estado = 1
-
 			dominio.Estado = 1
+
+			cuentadefecto := strings.Join(r.Form["cuentadefecto"],"")
+			if len(cuentadefecto) != 0 {
+				dominio.CuentaDefecto = cuenta.Nombre
+			}
+
 			model.Mgr.UpdateDominio(&dominio)
 
 			d64, err := strconv.ParseUint(dominioid,10,32)
