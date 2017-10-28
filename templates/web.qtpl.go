@@ -84,6 +84,7 @@ func StreamWebTemplate(qw422016 *qt422016.Writer, webs []model.Web, error string
         document.getElementById('phpVersion').setAttribute("disabled","disabled")
         document.getElementById('phpMethod').setAttribute("disabled","disabled");
         document.getElementById('files').setAttribute("disabled","disabled")
+        document.getElementById("phpMethod").options[1].disabled = false
     }
 
     function modifyWeb(id,dominio,ssl,cgi,php,phpVersion,phpMethod,webserver) {
@@ -134,9 +135,18 @@ func StreamWebTemplate(qw422016 *qt422016.Writer, webs []model.Web, error string
                 selwebserver.options[i].selected = true;
             }
         }
-
-
         x.style.display = 'block';
+    }
+
+    function opcionesPhp() {
+        var selphpMethod = document.getElementById("phpMethod")
+        var x = document.getElementById("webserver").value
+        if ( x == "nginx" ){
+            selphpMethod.options[1].disabled = true
+        } else {
+            selphpMethod.options[1].disabled = false
+        }
+
     }
 
 </script>
@@ -177,21 +187,21 @@ func StreamWebTemplate(qw422016 *qt422016.Writer, webs []model.Web, error string
 <body>
 
 `)
-	//line templates/web.qtpl:153
+	//line templates/web.qtpl:163
 	if len(error) > 0 {
-		//line templates/web.qtpl:153
+		//line templates/web.qtpl:163
 		qw422016.N().S(`
 <script type="text/javascript">
     window.alert("`)
-		//line templates/web.qtpl:155
+		//line templates/web.qtpl:165
 		qw422016.E().S(error)
-		//line templates/web.qtpl:155
+		//line templates/web.qtpl:165
 		qw422016.N().S(`")
 </script>
 `)
-		//line templates/web.qtpl:157
+		//line templates/web.qtpl:167
 	}
-	//line templates/web.qtpl:157
+	//line templates/web.qtpl:167
 	qw422016.N().S(`
 
 <div id="wrapper">
@@ -281,152 +291,163 @@ func StreamWebTemplate(qw422016 *qt422016.Writer, webs []model.Web, error string
                             </thead>
                             <tbody>
                             `)
-	//line templates/web.qtpl:245
+	//line templates/web.qtpl:255
 	for _, web := range webs {
-		//line templates/web.qtpl:245
+		//line templates/web.qtpl:255
 		qw422016.N().S(`
                             <tr class="odd gradeX">
                                 <td> `)
-		//line templates/web.qtpl:247
+		//line templates/web.qtpl:257
 		qw422016.E().S(web.Dominio)
-		//line templates/web.qtpl:247
+		//line templates/web.qtpl:257
 		qw422016.N().S(` </td>
 
 
                                 `)
-		//line templates/web.qtpl:250
+		//line templates/web.qtpl:260
 		switch web.Estado {
-		//line templates/web.qtpl:251
+		//line templates/web.qtpl:261
 		case 1:
-			//line templates/web.qtpl:251
+			//line templates/web.qtpl:261
 			qw422016.N().S(`
                                 <td>a configurar</td>
                                 `)
-		//line templates/web.qtpl:253
+		//line templates/web.qtpl:263
 		case 2:
-			//line templates/web.qtpl:253
+			//line templates/web.qtpl:263
 			qw422016.N().S(`
                                 <td>configurado</td>
                                 `)
-		//line templates/web.qtpl:255
+		//line templates/web.qtpl:265
 		case 3:
-			//line templates/web.qtpl:255
+			//line templates/web.qtpl:265
 			qw422016.N().S(`
-                                <td>corriendo</td>
+                                <td>activo</td>
                                 `)
-			//line templates/web.qtpl:257
+		//line templates/web.qtpl:267
+		case 4:
+			//line templates/web.qtpl:267
+			qw422016.N().S(`
+                                <td>apagado</td>
+                                `)
+		//line templates/web.qtpl:269
+		case 5:
+			//line templates/web.qtpl:269
+			qw422016.N().S(`
+                                <td>eliminando</td>
+                                `)
+			//line templates/web.qtpl:271
 		}
-		//line templates/web.qtpl:257
+		//line templates/web.qtpl:271
 		qw422016.N().S(`
-
                                 <td> `)
-		//line templates/web.qtpl:259
+		//line templates/web.qtpl:272
 		qw422016.E().S(web.Webserver)
-		//line templates/web.qtpl:259
+		//line templates/web.qtpl:272
 		qw422016.N().S(` </td>
 
 
                                 `)
-		//line templates/web.qtpl:262
+		//line templates/web.qtpl:275
 		if web.SSL {
-			//line templates/web.qtpl:262
+			//line templates/web.qtpl:275
 			qw422016.N().S(`
                                 <td class="center">si</td>
                                 `)
-			//line templates/web.qtpl:264
+			//line templates/web.qtpl:277
 		} else {
-			//line templates/web.qtpl:264
+			//line templates/web.qtpl:277
 			qw422016.N().S(`
                                 <td class="center">no</td>
                                 `)
-			//line templates/web.qtpl:266
+			//line templates/web.qtpl:279
 		}
-		//line templates/web.qtpl:266
+		//line templates/web.qtpl:279
 		qw422016.N().S(`
 
                                 `)
-		//line templates/web.qtpl:268
+		//line templates/web.qtpl:281
 		if web.PHP {
-			//line templates/web.qtpl:268
+			//line templates/web.qtpl:281
 			qw422016.N().S(`
                                 <td class="center">si</td>
                                 `)
-			//line templates/web.qtpl:270
+			//line templates/web.qtpl:283
 		} else {
-			//line templates/web.qtpl:270
+			//line templates/web.qtpl:283
 			qw422016.N().S(`
                                 <td class="center">no</td>
                                 `)
-			//line templates/web.qtpl:272
+			//line templates/web.qtpl:285
 		}
-		//line templates/web.qtpl:272
+		//line templates/web.qtpl:285
 		qw422016.N().S(`
 
                                 `)
-		//line templates/web.qtpl:274
+		//line templates/web.qtpl:287
 		if web.CGI {
-			//line templates/web.qtpl:274
+			//line templates/web.qtpl:287
 			qw422016.N().S(`
                                 <td class="center">si</td>
                                 `)
-			//line templates/web.qtpl:276
+			//line templates/web.qtpl:289
 		} else {
-			//line templates/web.qtpl:276
+			//line templates/web.qtpl:289
 			qw422016.N().S(`
                                 <td class="center">no</td>
                                 `)
-			//line templates/web.qtpl:278
+			//line templates/web.qtpl:291
 		}
-		//line templates/web.qtpl:278
+		//line templates/web.qtpl:291
 		qw422016.N().S(`
 
 
 
                                 <td class="center">
                                     <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Editar sitio Web" onclick='modifyWeb(`)
-		//line templates/web.qtpl:283
+		//line templates/web.qtpl:296
 		qw422016.N().D(int(web.ID))
-		//line templates/web.qtpl:283
+		//line templates/web.qtpl:296
 		qw422016.N().S(`, "`)
-		//line templates/web.qtpl:283
+		//line templates/web.qtpl:296
 		qw422016.E().S(web.Dominio)
-		//line templates/web.qtpl:283
+		//line templates/web.qtpl:296
 		qw422016.N().S(`", `)
-		//line templates/web.qtpl:283
+		//line templates/web.qtpl:296
 		qw422016.E().S(strconv.FormatBool(web.SSL))
-		//line templates/web.qtpl:283
+		//line templates/web.qtpl:296
 		qw422016.N().S(`, `)
-		//line templates/web.qtpl:283
+		//line templates/web.qtpl:296
 		qw422016.E().S(strconv.FormatBool(web.CGI))
-		//line templates/web.qtpl:283
+		//line templates/web.qtpl:296
 		qw422016.N().S(`, `)
-		//line templates/web.qtpl:283
+		//line templates/web.qtpl:296
 		qw422016.E().S(strconv.FormatBool(web.PHP))
-		//line templates/web.qtpl:283
+		//line templates/web.qtpl:296
 		qw422016.N().S(`, "`)
-		//line templates/web.qtpl:283
+		//line templates/web.qtpl:296
 		qw422016.E().S(web.PHPversion)
-		//line templates/web.qtpl:283
+		//line templates/web.qtpl:296
 		qw422016.N().S(`", "`)
-		//line templates/web.qtpl:283
+		//line templates/web.qtpl:296
 		qw422016.E().S(web.PHPmethod)
-		//line templates/web.qtpl:283
+		//line templates/web.qtpl:296
 		qw422016.N().S(`" , "`)
-		//line templates/web.qtpl:283
+		//line templates/web.qtpl:296
 		qw422016.E().S(web.Webserver)
-		//line templates/web.qtpl:283
+		//line templates/web.qtpl:296
 		qw422016.N().S(`" )' ><i class="fa fa-list"></i></button>
                                     <button class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar sitio Web" onclick="location.href='removeWeb?id=`)
-		//line templates/web.qtpl:284
+		//line templates/web.qtpl:297
 		qw422016.N().D(int(web.ID))
-		//line templates/web.qtpl:284
+		//line templates/web.qtpl:297
 		qw422016.N().S(`';"><i class="fa fa-trash-o"></i></button>
                                 </td>
                             </tr>
                             `)
-		//line templates/web.qtpl:287
+		//line templates/web.qtpl:300
 	}
-	//line templates/web.qtpl:287
+	//line templates/web.qtpl:300
 	qw422016.N().S(`
                             </tbody>
                         </table>
@@ -453,7 +474,7 @@ func StreamWebTemplate(qw422016 *qt422016.Writer, webs []model.Web, error string
                         <label>Configuración</label>
                         <br>
                         Servidor web
-                        <select  class="form-control"  id="webserver" name="webserver">
+                        <select  class="form-control"  id="webserver" name="webserver" onchange="opcionesPhp()">
                             <option value="apache">Apache</option>
                             <option value="nginx">Nginx</option>
                         </select>
@@ -477,7 +498,7 @@ func StreamWebTemplate(qw422016 *qt422016.Writer, webs []model.Web, error string
 
                         Versión de PHP
                         <select  class="form-control"  id="phpVersion" name="phpVersion" disabled>
-                            <option value="5.4">5.4</option>
+                            <option value="5.5">5.5</option>
                             <option value="5.6">5.6</option>
                             <option value="7.0">7.0</option>
                             <option value="7.1">7.1</option>
@@ -525,31 +546,31 @@ func StreamWebTemplate(qw422016 *qt422016.Writer, webs []model.Web, error string
 </html>
 
 `)
-//line templates/web.qtpl:384
+//line templates/web.qtpl:397
 }
 
-//line templates/web.qtpl:384
+//line templates/web.qtpl:397
 func WriteWebTemplate(qq422016 qtio422016.Writer, webs []model.Web, error string) {
-	//line templates/web.qtpl:384
+	//line templates/web.qtpl:397
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line templates/web.qtpl:384
+	//line templates/web.qtpl:397
 	StreamWebTemplate(qw422016, webs, error)
-	//line templates/web.qtpl:384
+	//line templates/web.qtpl:397
 	qt422016.ReleaseWriter(qw422016)
-//line templates/web.qtpl:384
+//line templates/web.qtpl:397
 }
 
-//line templates/web.qtpl:384
+//line templates/web.qtpl:397
 func WebTemplate(webs []model.Web, error string) string {
-	//line templates/web.qtpl:384
+	//line templates/web.qtpl:397
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line templates/web.qtpl:384
+	//line templates/web.qtpl:397
 	WriteWebTemplate(qb422016, webs, error)
-	//line templates/web.qtpl:384
+	//line templates/web.qtpl:397
 	qs422016 := string(qb422016.B)
-	//line templates/web.qtpl:384
+	//line templates/web.qtpl:397
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line templates/web.qtpl:384
+	//line templates/web.qtpl:397
 	return qs422016
-//line templates/web.qtpl:384
+//line templates/web.qtpl:397
 }

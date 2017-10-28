@@ -128,6 +128,8 @@ func generarConfig() {
 						"\"" + strings.Replace(cuenta.Autoresponder.Mensaje, ",", "\n", -1) + "\";\n"
 				}
 			}
+			cuenta.Estado = 2
+			model.Mgr.UpdateCuenta(&cuenta)
 		}
 		err := ioutil.WriteFile("configs/mail/dovecot/conf/auth/"+dominio.Nombre+"/passwd", []byte(passwd), 0644)
 		if err != nil {
@@ -159,6 +161,11 @@ func generarConfig() {
 		for _, lista := range dominio.Listas {
 			if lista.Estado == 1 {
 				mmrun = mmrun + "newlist --emailhost=listas." + dominio.Nombre + " -a  " + lista.Nombre + " " + lista.EmailAdmin + " " + lista.Password + "\n"
+				lista.Estado = 2
+				model.Mgr.UpdateLista(&lista)
+			} else if lista.Estado == 3 {
+				mmrun = mmrun + "rmlist " + lista.Nombre
+				model.Mgr.RemoveLista(strconv.Itoa(int(lista.ID)))
 			}
 
 		}
@@ -172,6 +179,16 @@ func generarConfig() {
 	mmcfgf.WriteString(mmcfg)
 	mmcfgf.Sync()
 	mmcfgf.Close()
+
+	mmrunf, err := os.OpenFile("configs/mail/mailman/conf/add_lists.sh", os.O_APPEND|os.O_WRONLY, 0600)
+	if err != nil {
+		panic(err)
+	}
+
+	mmrunf.WriteString(mmrun)
+	mmrunf.Sync()
+	mmrunf.Close()
+
 
 	srcFolder = "defaults/mail/postfix/conf/amavisd.conf"
 	destFolder = "configs/mail/postfix/conf/amavisd.conf"
@@ -433,7 +450,6 @@ func RunMailWorker() {
 
 
 			}
-			time.Sleep(2 * time.Second)
 
 			if (time.Now().Hour() == 0) && (time.Now().Minute() == 0 ) {
 				//Reconfiguro cuando sean las 00:00 para configurar los mensajes de vacaciones
@@ -442,7 +458,7 @@ func RunMailWorker() {
 				time.Sleep(60 * time.Second)
 			}
 		}
-
+		time.Sleep(2 * time.Second)
 	}
 
 }

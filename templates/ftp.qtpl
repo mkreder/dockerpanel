@@ -241,6 +241,8 @@
                                 <td>a configurar</td>
                                 {% case 2 %}
                                 <td>configurado</td>
+                                {% case 3 %}
+                                <td>eliminando</td>
                                 {% endswitch %}
 
 

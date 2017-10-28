@@ -8,4 +8,4 @@ chown -R nobody:nobody /usr/share/webapps/roundcube/config \
 
 while true; do
  sleep 1000
- done
+done

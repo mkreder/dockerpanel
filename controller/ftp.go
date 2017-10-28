@@ -71,7 +71,9 @@ func RemoveUsuarioFtp(w http.ResponseWriter, r *http.Request) {
 	UsuarioName := login.GetUNombreUsuario(r)
 	if UsuarioName != "" {
 		id := r.URL.Query().Get("id")
-		err := model.Mgr.RemoveUsuarioFtp(id)
+		usuario := model.Mgr.GetUsuarioFtp(id)
+		usuario.Estado = 3
+		err := model.Mgr.UpdateUsuarioFtp(&usuario)
 		if err != nil {
 			templates.WriteFtpTemplate(w,model.Mgr.GetAllUsuarioFtps(),model.Mgr.GetAllWebs(),model.Mgr.GetFtpConfig(),"Error al borrar el usuario FTP")
 		} else {
@@ -90,7 +92,7 @@ func FtpConfigHandler(w http.ResponseWriter, r *http.Request){
 		write, _ := strconv.Atoi(strings.Join(r.Form["anonWrite"],""))
 		read, _ := strconv.Atoi(strings.Join(r.Form["anonRead"],""))
 
-		err := model.Mgr.UpdateFtpConfig(write,read)
+		err := model.Mgr.UpdateFtpConfig(write,read,1)
 		if err != nil {
 			templates.WriteFtpTemplate(w,model.Mgr.GetAllUsuarioFtps(),model.Mgr.GetAllWebs(), model.Mgr.GetFtpConfig(), "Error al guardar configuración FTP")
 		} else {

@@ -50,6 +50,10 @@ func AddLista(w http.ResponseWriter, r *http.Request) {
 
 			lista.DominioID = uint(d64)
 
+			dominio := model.Mgr.GetDominio(dominioid)
+			dominio.Estado = 1
+			model.Mgr.UpdateDominio(&dominio)
+
 			if len(id) == 0 {
 				err = model.Mgr.AddLista(&lista)
 				if err != nil {
@@ -76,7 +80,12 @@ func RemoveLista(w http.ResponseWriter, r *http.Request) {
 	if UsuarioName != "" {
 		id := r.URL.Query().Get("id")
 		dominioid := r.URL.Query().Get("dominioid")
-		err := model.Mgr.RemoveLista(id)
+		dominio := model.Mgr.GetDominio(dominioid)
+		dominio.Estado = 1
+		model.Mgr.UpdateDominio(&dominio)
+		lista := model.Mgr.GetLista(id)
+		lista.Estado = 3
+		err := model.Mgr.UpdateLista(&lista)
 		if err != nil {
 			templates.WriteListaTemplate(w, model.Mgr.GetListas(dominioid),dominioid,"Error al borrar la lista de correo")
 		} else {

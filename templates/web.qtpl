@@ -58,6 +58,7 @@
         document.getElementById('phpVersion').setAttribute("disabled","disabled")
         document.getElementById('phpMethod').setAttribute("disabled","disabled");
         document.getElementById('files').setAttribute("disabled","disabled")
+        document.getElementById("phpMethod").options[1].disabled = false
     }
 
     function modifyWeb(id,dominio,ssl,cgi,php,phpVersion,phpMethod,webserver) {
@@ -108,9 +109,18 @@
                 selwebserver.options[i].selected = true;
             }
         }
-
-
         x.style.display = 'block';
+    }
+
+    function opcionesPhp() {
+        var selphpMethod = document.getElementById("phpMethod")
+        var x = document.getElementById("webserver").value
+        if ( x == "nginx" ){
+            selphpMethod.options[1].disabled = true
+        } else {
+            selphpMethod.options[1].disabled = false
+        }
+
     }
 
 </script>
@@ -253,9 +263,12 @@
                                 {% case 2 %}
                                 <td>configurado</td>
                                 {% case 3 %}
-                                <td>corriendo</td>
+                                <td>activo</td>
+                                {% case 4 %}
+                                <td>apagado</td>
+                                {% case 5 %}
+                                <td>eliminando</td>
                                 {% endswitch %}
-
                                 <td> {%s web.Webserver %} </td>
 
 
@@ -310,7 +323,7 @@
                         <label>Configuración</label>
                         <br>
                         Servidor web
-                        <select  class="form-control"  id="webserver" name="webserver">
+                        <select  class="form-control"  id="webserver" name="webserver" onchange="opcionesPhp()">
                             <option value="apache">Apache</option>
                             <option value="nginx">Nginx</option>
                         </select>
@@ -334,7 +347,7 @@
 
                         Versión de PHP
                         <select  class="form-control"  id="phpVersion" name="phpVersion" disabled>
-                            <option value="5.4">5.4</option>
+                            <option value="5.5">5.5</option>
                             <option value="5.6">5.6</option>
                             <option value="7.0">7.0</option>
                             <option value="7.1">7.1</option>

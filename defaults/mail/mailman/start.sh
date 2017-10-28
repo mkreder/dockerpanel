@@ -10,6 +10,8 @@ if ! [ -d /var/lib/mailman/Mailman ]; then
 fi
 
 /etc/init.d/rsyslog start
+chmod +x /etc/mailman/add_lists.sh
+/etc/mailman/add_lists.sh
 /usr/lib/mailman/bin/genaliases  > /var/lib/mailman/data/virtual-mailman
 /usr/lib/mailman/bin/mailmanctl start
 chmod +x /etc/mailman/run.sh

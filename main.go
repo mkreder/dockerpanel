@@ -126,6 +126,9 @@ func main() {
 	go worker.RunDNSWorker()
 	go worker.RunBDWorker()
 	go worker.RunMailWorker()
+	go worker.RunWebWorker()
+	go worker.RunFTPWorker()
+
 	log.Printf("Running on %s\n", srv.Addr)
 	log.Fatal(srv.ListenAndServe())
 

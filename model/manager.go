@@ -39,7 +39,7 @@ type Manager interface {
 	GetAllUsuarioFtps() []UsuarioFTP
 	GetUsuarioFtp(id string) UsuarioFTP
 	RemoveUsuarioFtp(id string) (err error)
-	UpdateFtpConfig(anonWrite int, anonRead int) (err error)
+	UpdateFtpConfig(anonWrite int, anonRead int, estado int) (err error)
 	GetFtpConfig() FtpConfig
 
     AddBD(bd *BD) (err error)
@@ -145,7 +145,7 @@ func (mgr *manager) migrate() {
 
 	var ftpConfig FtpConfig
 	if mgr.db.First(&ftpConfig, "id = 1").RecordNotFound() {
-		mgr.UpdateFtpConfig(0, 0)
+		mgr.UpdateFtpConfig(0, 0,1)
 	}
 }
 

@@ -54,6 +54,10 @@
         x.style.display = 'block';
     }
 
+    function setHref() {
+        document.getElementById('webmail').href = window.location.protocol + "//" + window.location.hostname + ":9080/";
+    }
+
 </script>
 <head>
 
@@ -89,7 +93,7 @@
 
 </head>
 
-<body>
+<body onload="setHref()">
 
 {% if len(error) > 0 %}
 <script type="text/javascript">
@@ -168,7 +172,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading clearfix">
                         <h4 class="panel-title pull-left" style="padding-top: 7.5px;">Dominios de correo electrónico</h4>
-                        <button type="button" class="btn pull-right btn-primary btn-sm" onclick="showDiv()">Agregar</button>
+                        <button type="button" class="btn pull-right btn-primary btn-sm btn-space" onclick="showDiv()">Agregar</button>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
@@ -211,6 +215,7 @@
                             {% endfor %}
                             </tbody>
                         </table>
+                        <a class="btn btn-info btn-sm" href="/" id="webmail">Webmail</a>
                     </div>
                     <!-- /.panel-body -->
                 </div>
