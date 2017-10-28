@@ -153,7 +153,8 @@ func generarConfLLB(web model.Web){
 		conf = conf + " ssl_certificate /etc/nginx/conf.d/ssl/" + web.Dominio + ".pem\n"
 		conf = conf + " ssl_certificate_key /etc/nginx/conf.d/ssl/" + web.Dominio + ".pem\n"
 	}
-	conf = conf + " location / {  nproxy_pass http://dp-web-" + web.Dominio +";\n }\n}\n"
+	conf = conf + " server_name " + web.Dominio + " www." + web.Dominio + ";\n"
+	conf = conf + " location / {  proxy_pass http://dp-web-" + web.Dominio +";\n }\n}\n"
 	f, err := os.Create("configs/web/loadbalancer/conf/" + web.Dominio + ".conf")
 	check(err)
 	_, _ = f.WriteString (conf)
@@ -230,9 +231,11 @@ func correrContenedorLB(){
 	wd, _ := os.Getwd()
 	link := ""
 	for _ , web := range model.Mgr.GetAllWebs(){
-		link = link + " --link dp-web-" + web.Dominio + ":dp-web-" + web.Dominio
+		if web.Estado == 3 {
+			link = link + " --link dp-web-" + web.Dominio + ":dp-web-" + web.Dominio
+		}
 	}
-	cmdString := "docker stop dp-web-loadbalancer; docker rm dp-web-loadbalancer; docker run -d  -v " + wd + "/configs/web/loadbalancer/conf:/etc/nginx/conf.d:ro" + link + " --name dp-web-loadbalancer dp-img-web-loadbalancer"
+	cmdString := "docker stop dp-web-loadbalancer; docker rm dp-web-loadbalancer; docker run -d  -p 80:80 -p 443:443  -v" + wd + "/configs/web/loadbalancer/conf:/etc/nginx/conf.d:ro" + link + " --name dp-web-loadbalancer dp-img-web-loadbalancer"
 	tarCmd := exec.Command("/bin/sh" , "-c", cmdString)
 	var stderr bytes.Buffer
 	var out bytes.Buffer
@@ -278,9 +281,10 @@ func RunWebWorker (){
 				} else {
 					reiniciarContenedor("dp-web-" + web.Dominio)
 				}
-				correrContenedorLB()
 				web.Estado = 3
 				model.Mgr.UpdateWeb(&web)
+				generarConfLLB(web)
+				correrContenedorLB()
 			} else if web.Estado == 3 {
 				if ! isRunning("dp-web-" + web.Dominio){
 					web.Estado = 4
@@ -288,6 +292,10 @@ func RunWebWorker (){
 				}
 			} else if web.Estado == 5 {
 				removerWeb(web)
+				generarConfLLB(web)
+				correrContenedorLB()
+			}
+			if ! isRunning("dp-web-loadbalancer"){
 				correrContenedorLB()
 			}
 

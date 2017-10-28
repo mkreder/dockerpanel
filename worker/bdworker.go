@@ -154,7 +154,9 @@ func construirImagenBD(){
 func correrContenedorPMA(){
 	link := ""
 	for _ , bd := range model.Mgr.GetAllBDs(){
-		link = link + " --link dp-bd-" + bd.Nombre + ":dp-bd-" + bd.Nombre
+		if bd.Estado == 3 {
+			link = link + " --link dp-bd-" + bd.Nombre + ":dp-bd-" + bd.Nombre
+		}
 	}
 	cmdString := "cd configs/bd/phpmyadmin; docker stop dp-bd-phpmyadmin; docker rm dp-bd-phpmyadmin; docker run -d -p 58080:8080 " + link + " --name dp-bd-phpmyadmin dp-img-bd-phpmyadmin"
 	runCmd := exec.Command("/bin/sh" , "-c", cmdString)
