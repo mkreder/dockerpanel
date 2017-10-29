@@ -31,7 +31,9 @@ func generarDockerFile(web model.Web){
 		dockerfile = dockerfile + "RUN apt-get --assume-yes true install " + phppkg + " " + phppkg + "-mysql" + "\n"
 	}
 	if web.Webserver == "nginx"{
-		dockerfile = dockerfile + "RUN service apache2 stop && update-rc.d -f apache2 remove && apt-get remove apache\n"
+		if  web.PHP == true {
+			dockerfile = dockerfile + "RUN service apache2 stop && update-rc.d -f apache2 remove && apt-get remove apache\n"
+		}
 		dockerfile = dockerfile + "RUN apt-get --asume-yes true install nginx \n"
 	} else {
 		dockerfile = dockerfile + "RUN apt-get --asume-yes true install apache2 \n"
@@ -150,8 +152,8 @@ func generarConfLLB(web model.Web){
 		_, _ = f.WriteString (web.CertSSL)
 		f.Sync()
 		f.Close()
-		conf = conf + " ssl_certificate /etc/nginx/conf.d/ssl/" + web.Dominio + ".pem\n"
-		conf = conf + " ssl_certificate_key /etc/nginx/conf.d/ssl/" + web.Dominio + ".pem\n"
+		conf = conf + " ssl_certificate /etc/nginx/conf.d/ssl/" + web.Dominio + ".pem;\n"
+		conf = conf + " ssl_certificate_key /etc/nginx/conf.d/ssl/" + web.Dominio + ".pem;\n"
 	}
 	conf = conf + " server_name " + web.Dominio + " www." + web.Dominio + ";\n"
 	conf = conf + " location / {  proxy_pass http://dp-web-" + web.Dominio +";\n }\n}\n"
