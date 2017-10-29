@@ -129,7 +129,7 @@ func main() {
 	go worker.RunWebWorker()
 	go worker.RunFTPWorker()
 
-	log.Printf("Running on %s\n", srv.Addr)
+	log.Printf("Aplicación iniciada en el puerto %s\n", srv.Addr)
 	log.Fatal(srv.ListenAndServe())
 
 }
