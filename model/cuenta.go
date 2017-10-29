@@ -33,7 +33,7 @@ func (mgr *manager) CheckIfCuentaExists(nombre string, dominioid string) bool{
 
 func (mgr *manager) GetAllCuentas() []Cuenta {
 	var cuentas []Cuenta
-	mgr.db.Preload("Autore.schesponder").Find(&cuentas)
+	mgr.db.Preload("Autoresponder").Find(&cuentas)
 	return cuentas
 }
 

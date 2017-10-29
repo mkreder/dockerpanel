@@ -109,7 +109,7 @@ func generarConfig() {
 		passwd := ""
 		shadow := ""
 		sieve := "require [\"vacation\"]; \n"
-		for _, cuenta := range dominio.Cuentas {
+		for _, cuenta := range model.Mgr.GetCuentas(strconv.Itoa(int(dominio.ID))) {
 			passwd = passwd + cuenta.Nombre + "@" + dominio.Nombre + "::101:104:\"" + cuenta.NombreReal + "\":/var/mail/vhosts/" + dominio.Nombre + "/" + cuenta.Nombre
 			if cuenta.Cuota != 0 {
 				passwd = passwd + "::userdb_quota_rule=*:bytes=" + strconv.Itoa(cuenta.Cuota) + "M \n"
@@ -117,13 +117,12 @@ func generarConfig() {
 				passwd = passwd + "::\n"
 			}
 			shadow = shadow + cuenta.Nombre + "@" + dominio.Nombre + ":{DIGEST-MD5}" + cuenta.Password + "\n"
-
 			if cuenta.Autoresponder.Activado == true {
-				inicio, _ := time.Parse("2016-01-02", cuenta.Autoresponder.FechaIncio)
-				fin, _ := time.Parse("2016-01-02", cuenta.Autoresponder.FechaFin)
+				inicio, _ := time.Parse("2006-01-02", cuenta.Autoresponder.FechaIncio)
+				fin, _ := time.Parse("2006-01-02", cuenta.Autoresponder.FechaFin)
 				if time.Now().After(inicio) && time.Now().Before(fin) {
 					// days define cada cuanto volver a repsonder a las mismas direcciones
-					sieve = "vacation \n:days 1 \n:subject " + cuenta.Autoresponder.Asunto +
+					sieve = sieve + "vacation \n:days 1 \n:subject " + cuenta.Autoresponder.Asunto +
 						"\n" + ":addresses [\"" + cuenta.Nombre + "@" + dominio.Nombre + "\"]\n" +
 						"\"" + strings.Replace(cuenta.Autoresponder.Mensaje, ",", "\n", -1) + "\";\n"
 				}
