@@ -64,8 +64,9 @@ func generarConfigFTP(){
 
 		wd, _ := os.Getwd()
 		destFolder := wd + "/data/web/" + web.Dominio
-		cpCmd := exec.Command("chown", calcularUid(user.ID) + ":1001 " , destFolder)
-		err := cpCmd.Run()
+		uid, err := strconv.Atoi(calcularUid(user.ID))
+		os.Chown(destFolder,uid,1001)
+		err = cpCmd.Run()
 		check(err)
 	}
 
