@@ -10,6 +10,19 @@ import (
 	"strconv"
 )
 
+func calcularUid(id uint) string{
+	idstr := strconv.Itoa(int(id))
+	if (id < 10){
+		return "100" + idstr
+	} else if (id < 100 ){
+		return "10" + idstr
+	} else if (id < 1000 ){
+		return "1" + idstr
+	} else {
+		return "5000"
+	}
+}
+
 func crearDirectorioConfigFTP(){
 	if _ , err := os.Stat("configs/ftp/Dockerfile"); os.IsNotExist(err){
 		os.MkdirAll("configs/ftp",0755)
@@ -46,8 +59,14 @@ func generarConfigFTP(){
 	for _, user := range model.Mgr.GetAllUsuarioFtps(){
 		web := model.Mgr.GetWeb(strconv.Itoa(int(user.WebID)))
 		conf = conf + "RUN mkdir -p /data/" + web.Dominio + "\n"
-		conf = conf + "RUN useradd -d /data/" + web.Dominio +" " + user.Nombre + "\n"
+		conf = conf + "RUN useradd -g 1001 -u " + calcularUid(user.ID) +  " -d /data/" + web.Dominio +" " + user.Nombre + "\n"
 		conf = conf + "RUN echo " + user.Nombre + ":" + user.Password + " | chpasswd \n"
+
+		wd, _ := os.Getwd()
+		destFolder := wd + "/data/web/" + web.Dominio
+		cpCmd := exec.Command("chowm", calcularUid(user.ID) + ":1001 " , destFolder)
+		err := cpCmd.Run()
+		check(err)
 	}
 
 	dockerfile.WriteString(conf)

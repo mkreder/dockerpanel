@@ -6,6 +6,7 @@ RUN sed -i "/write_enable/s/#write/write/" /etc/vsftpd.conf
 RUN echo "seccomp_sandbox=NO" >> /etc/vsftpd.conf
 RUN sed -i "/xferlog_file/s/#xferlog_file/xferlog_file/g" /etc/vsftpd.conf
 RUN mkdir -p /var/run/vsftpd/empty
+RUN groupadd usuariosftp -g 1001
 RUN echo "pam_service_name=ftp" >> /etc/vsftpd.conf
 ENTRYPOINT ["/usr/sbin/vsftpd"]
 EXPOSE 20 21
