@@ -46,7 +46,7 @@ func generarConfigFTP(){
 	for _, user := range model.Mgr.GetAllUsuarioFtps(){
 		web := model.Mgr.GetWeb(strconv.Itoa(int(user.WebID)))
 		conf = conf + "RUN mkdir -p /data/" + web.Dominio + "\n"
-		conf = conf + "RUN useradd -b /data/" + web.Dominio +" " + user.Nombre + "\n"
+		conf = conf + "RUN useradd -d /data/" + web.Dominio +" " + user.Nombre + "\n"
 		conf = conf + "RUN echo " + user.Nombre + ":" + user.Password + " | chpasswd \n"
 	}
 
