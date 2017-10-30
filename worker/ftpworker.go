@@ -30,15 +30,15 @@ func generarConfigFTP(){
 	conf := ""
 	ftpConfig := model.Mgr.GetFtpConfig()
 	if ftpConfig.AnonRead == 0 && ftpConfig.AnonWrite == 0 {
-		conf = "RUN sed -i \"s/anonymous_enable=YES/anonymous_enable=NO/g\" /etc/vsftpd/vsftpd.conf\n"
+		conf = "RUN sed -i \"s/anonymous_enable=YES/anonymous_enable=NO/g\" /etc/vsftpd.conf\n"
 	} else {
 		if ftpConfig.AnonRead == 0 {
 			// Permito escribir pero no leer
 			conf = "RUN chmod 2733 /var/lib/ftp\n"
 		}
 		if ftpConfig.AnonWrite == 1 {
-			conf = conf + "RUN sed -i \"s/#anon_upload_enable=YES/anon_upload_enable=YES/g\" /etc/vsftpd/vsftpd.conf\n"
-			conf = conf + "RUN sed -i \"s/#anon_mkdir_write_enable=YES/#anon_mkdir_write_enable=YES/g\" /etc/vsftpd/vsftpd.conf\n"
+			conf = conf + "RUN sed -i \"s/#anon_upload_enable=YES/anon_upload_enable=YES/g\" /etc/vsftpd.conf\n"
+			conf = conf + "RUN sed -i \"s/#anon_mkdir_write_enable=YES/#anon_mkdir_write_enable=YES/g\" /etc/vsftpd.conf\n"
 		}
 	}
 	model.Mgr.UpdateFtpConfig(ftpConfig.AnonWrite,ftpConfig.AnonRead,2)
@@ -46,7 +46,7 @@ func generarConfigFTP(){
 	for _, user := range model.Mgr.GetAllUsuarioFtps(){
 		web := model.Mgr.GetWeb(strconv.Itoa(int(user.WebID)))
 		conf = conf + "RUN mkdir -p /data/" + web.Dominio + "\n"
-		conf = conf + "RUN adduser " + user.Nombre + " -D -h /data/" + web.Dominio + "\n"
+		conf = conf + "RUN useradd -b /data/" + web.Dominio +" " + user.Nombre
 		conf = conf + "RUN echo " + user.Nombre + ":" + user.Password + " | chpasswd \n"
 	}
 
