@@ -146,7 +146,7 @@ func crearDirectorioConfigWeb(web model.Web) {
 func generarConfLLB(web model.Web){
 	conf := "server { \n listen 80;\n"
 	if web.SSL == true {
-		conf = conf + " listen 443;\n"
+		conf = conf + " listen 443 ssl;\n"
 		f, err := os.Create("configs/web/loadbalancer/conf/ssl/" + web.Dominio + ".pem")
 		check(err)
 		_, _ = f.WriteString (web.CertSSL)

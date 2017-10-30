@@ -13,15 +13,15 @@ import (
 func crearDirectorioConfigFTP(){
 	if _ , err := os.Stat("configs/ftp/Dockerfile"); os.IsNotExist(err){
 		os.MkdirAll("configs/ftp",0755)
-		srcFolder := "defaults/ftp/Dockerfile"
-		destFolder := "configs/ftp/"
-		cpCmd := exec.Command("cp", "-rf", srcFolder, destFolder)
-		err := cpCmd.Run()
-		check(err)
 	}
 }
 
 func generarConfigFTP(){
+	srcFolder := "defaults/ftp/Dockerfile"
+	destFolder := "configs/ftp/Dockerfile"
+	cpCmd := exec.Command("cp", "-rf", srcFolder, destFolder)
+	err := cpCmd.Run()
+	check(err)
 	dockerfile, err := os.OpenFile("configs/ftp/Dockerfile", os.O_APPEND|os.O_WRONLY, 0600)
 	if err != nil {
 		panic(err)
@@ -46,7 +46,7 @@ func generarConfigFTP(){
 	for _, user := range model.Mgr.GetAllUsuarioFtps(){
 		web := model.Mgr.GetWeb(strconv.Itoa(int(user.WebID)))
 		conf = conf + "RUN mkdir -p /data/" + web.Dominio + "\n"
-		conf = conf + "RUN adduser " + user.Nombre + "-D -h /data/" + web.Dominio + "\n"
+		conf = conf + "RUN adduser " + user.Nombre + " -D -h /data/" + web.Dominio + "\n"
 		conf = conf + "RUN echo " + user.Nombre + ":" + user.Password + " | chpasswd \n"
 	}
 
