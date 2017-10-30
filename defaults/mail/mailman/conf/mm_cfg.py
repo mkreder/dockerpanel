@@ -107,4 +107,4 @@ DEFAULT_SEND_REMINDERS = 0
 DEFAULT_EMAIL_HOST = 'ejemplo.com'
 DEFAULT_URL_HOST = 'mail.ejemplo.com'
 add_virtualhost(DEFAULT_URL_HOST, DEFAULT_EMAIL_HOST)
-MTA='None'
+MTA=None

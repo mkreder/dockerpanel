@@ -12,11 +12,9 @@ fi
 /etc/init.d/rsyslog start
 chmod +x /etc/mailman/add_lists.sh
 /etc/mailman/add_lists.sh
+rm -rf /etc/mailman/add_lists.sh
 /usr/lib/mailman/bin/genaliases  > /var/lib/mailman/data/virtual-mailman
 /usr/lib/mailman/bin/mailmanctl start
-chmod +x /etc/mailman/run.sh
-/etc/mailman/run.sh
-rm -rf /etc/mailman/run.sh
 
 
 while true ; do

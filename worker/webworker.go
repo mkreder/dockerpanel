@@ -156,7 +156,7 @@ func generarConfLLB(web model.Web){
 		conf = conf + " ssl_certificate_key /etc/nginx/conf.d/ssl/" + web.Dominio + ".pem;\n"
 	}
 	conf = conf + " server_name " + web.Dominio + " www." + web.Dominio + ";\n"
-	conf = conf + " location / {  proxy_pass http://dp-web-" + web.Dominio +";\n }\n}\n"
+	conf = conf + " location / { \n  proxy_pass http://dp-web-" + web.Dominio +";\n }\n}\n"
 	f, err := os.Create("configs/web/loadbalancer/conf/" + web.Dominio + ".conf")
 	check(err)
 	_, _ = f.WriteString (conf)

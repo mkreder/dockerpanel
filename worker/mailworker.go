@@ -209,7 +209,7 @@ func generarConfig() {
 		}
 	}
 
-	amavisconf = amavisconf + "'.' => '6.3, \n}; \n$sa_tag2_level_defl = $sa_kill_level_deflt; \n"
+	amavisconf = amavisconf + "'.' => '6.3,' \n}; \n \n"
 
 	amaviscfg, err := os.OpenFile("configs/mail/postfix/conf/amavisd.conf", os.O_APPEND|os.O_WRONLY, 0600)
 	if err != nil {
@@ -329,7 +329,7 @@ func prepararImagenDovecot() {
 
 func correrContenedorMailman() {
 	wd, _ := os.Getwd()
-	cmdString := "cd configs/mail/mailman; docker stop dp-mail-mailman; docker rm dp-mail-mailman; docker run -d -p 3880:80 -v " + wd + "/configs/mail/mailman/conf:/etc/mailman:ro -v " + wd + "/data/mail/varmailman:/var/lib/mailman -v" + wd + "/data/mail/libmailman:/usr/lib/mailman" + " --name dp-mail-mailman dp-img-mail-mailman"
+	cmdString := "cd configs/mail/mailman; docker stop dp-mail-mailman; docker rm dp-mail-mailman; docker run -d -p 3880:80 -v " + wd + "/configs/mail/mailman/conf:/etc/mailman -v " + wd + "/data/mail/varmailman:/var/lib/mailman -v" + wd + "/data/mail/libmailman:/usr/lib/mailman" + " --name dp-mail-mailman dp-img-mail-mailman"
 	tarCmd := exec.Command("/bin/sh", "-c", cmdString)
 	var stderr bytes.Buffer
 	var out bytes.Buffer
