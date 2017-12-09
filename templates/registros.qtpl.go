@@ -172,7 +172,7 @@ func StreamRegistroTemplate(qw422016 *qt422016.Writer, registros []model.Registr
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.html">Docker Panel</a>
+            <a class="navbar-brand" >Docker Panel</a>
         </div>
         <!-- /.navbar-header -->
 

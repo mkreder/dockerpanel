@@ -72,7 +72,7 @@ func RemoveBD(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			templates.WriteBDTemplate(w,model.Mgr.GetAllBDs(),model.Mgr.GetAllUsuarioBDs(),model.Mgr.GetAllAsociacionBDs(),"Error al borrar base de datos")
 		} else {
-			templates.WriteBDTemplate(w,model.Mgr.GetAllBDs(),model.Mgr.GetAllUsuarioBDs(),model.Mgr.GetAllAsociacionBDs(),"")
+			http.Redirect(w,r,"/bd",http.StatusSeeOther)
 		}
 	} else {
 		templates.WriteLoginTemplate(w,"")
@@ -84,9 +84,14 @@ func AddUsuarioBD(w http.ResponseWriter, r *http.Request) {
 	UsuarioName := login.GetUNombreUsuario(r)
 	if UsuarioName != "" {
 		r.ParseForm()
-		nombre := strings.Join(r.Form["nombre"],"")
-		id := strings.Join(r.Form["id"],"")
+		nombre := strings.Join(r.Form["nombre"], "")
+		id := strings.Join(r.Form["id"], "")
 		var err error
+
+		if len(nombre) == 0 {
+			templates.WriteBDTemplate(w, model.Mgr.GetAllBDs(), model.Mgr.GetAllUsuarioBDs(), model.Mgr.GetAllAsociacionBDs(), "")
+			return
+		}
 
 		if ( len(id) == 0 ) && ( model.Mgr.CheckIfUsuarioBDExists(nombre) ){
 			templates.WriteBDTemplate(w, model.Mgr.GetAllBDs(),model.Mgr.GetAllUsuarioBDs(),model.Mgr.GetAllAsociacionBDs(),"El usuario " + nombre + " ya existe")
@@ -108,14 +113,14 @@ func AddUsuarioBD(w http.ResponseWriter, r *http.Request) {
 				if err != nil {
 					templates.WriteBDTemplate(w,model.Mgr.GetAllBDs(),model.Mgr.GetAllUsuarioBDs(),model.Mgr.GetAllAsociacionBDs(),"Error al crear usuario de base de datos")
 				} else {
-					templates.WriteBDTemplate(w,model.Mgr.GetAllBDs(),model.Mgr.GetAllUsuarioBDs(),model.Mgr.GetAllAsociacionBDs(),"")
+					http.Redirect(w,r,"/bd",http.StatusSeeOther)
 				}
 			} else {
 				err = model.Mgr.UpdateUsuarioBD(&ubd)
 				if err != nil {
 					templates.WriteBDTemplate(w,model.Mgr.GetAllBDs(),model.Mgr.GetAllUsuarioBDs(),model.Mgr.GetAllAsociacionBDs(),"Error al actualizar el usuario de base de datos")
 				} else {
-					templates.WriteBDTemplate(w,model.Mgr.GetAllBDs(),model.Mgr.GetAllUsuarioBDs(),model.Mgr.GetAllAsociacionBDs(),"")
+					http.Redirect(w,r,"/bd",http.StatusSeeOther)
 				}
 			}
 		}
@@ -128,13 +133,17 @@ func RemoveUsuarioBD(w http.ResponseWriter, r *http.Request) {
 	UsuarioName := login.GetUNombreUsuario(r)
 	if UsuarioName != "" {
 		id := r.URL.Query().Get("id")
+		if len(id) == 0 {
+			templates.WriteBDTemplate(w, model.Mgr.GetAllBDs(), model.Mgr.GetAllUsuarioBDs(), model.Mgr.GetAllAsociacionBDs(), "")
+			return
+		}
 		usuario := model.Mgr.GetUsuarioBD(id)
 		usuario.Estado = 2
 		err := model.Mgr.UpdateUsuarioBD(&usuario)
 		if err != nil {
 			templates.WriteBDTemplate(w,model.Mgr.GetAllBDs(),model.Mgr.GetAllUsuarioBDs(),model.Mgr.GetAllAsociacionBDs(),"Error al borrar usuario de base de datos")
 		} else {
-			templates.WriteBDTemplate(w,model.Mgr.GetAllBDs(),model.Mgr.GetAllUsuarioBDs(),model.Mgr.GetAllAsociacionBDs(),"")
+			http.Redirect(w,r,"/bd",http.StatusSeeOther)
 		}
 	} else {
 		templates.WriteLoginTemplate(w,"")
@@ -148,6 +157,10 @@ func AssociateBD(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
 		userid := strings.Join(r.Form["userid"], "")
 		bdid := strings.Join(r.Form["bdid"], "")
+		if len(userid) == 0 {
+			templates.WriteBDTemplate(w, model.Mgr.GetAllBDs(), model.Mgr.GetAllUsuarioBDs(), model.Mgr.GetAllAsociacionBDs(), "")
+			return
+		}
 		newbd := model.Mgr.GetBD(bdid)
 		if model.Mgr.CheckIfAsociacionBDExists(bdid, userid) {
 			templates.WriteBDTemplate(w, model.Mgr.GetAllBDs(), model.Mgr.GetAllUsuarioBDs(), model.Mgr.GetAllAsociacionBDs(), "La base seleccionada ya esta asociada al usuario")
@@ -164,7 +177,7 @@ func AssociateBD(w http.ResponseWriter, r *http.Request) {
 				templates.WriteBDTemplate(w, model.Mgr.GetAllBDs(), model.Mgr.GetAllUsuarioBDs(),model.Mgr.GetAllAsociacionBDs(), "Error al actualizar el usuario de base de datos")
 			} else {
 				model.Mgr.UpdateBD(&newbd)
-				templates.WriteBDTemplate(w, model.Mgr.GetAllBDs(), model.Mgr.GetAllUsuarioBDs(), model.Mgr.GetAllAsociacionBDs(),"")
+				http.Redirect(w,r,"/bd",http.StatusSeeOther)
 			}
 		}
 	} else {
@@ -179,6 +192,10 @@ func DisassociateBD(w http.ResponseWriter, r *http.Request){
 		r.ParseForm()
 		userid := strings.Join(r.Form["userid"],"")
 		bdid := strings.Join(r.Form["bdid"],"")
+		if len(userid) == 0 {
+			http.Redirect(w,r,"/bd",http.StatusSeeOther)
+			return
+		}
 		bd := model.Mgr.GetBD(bdid)
 		abd := model.Mgr.GetAsociacionBD(bdid,userid)
 		abd.Estado = 3
@@ -188,7 +205,7 @@ func DisassociateBD(w http.ResponseWriter, r *http.Request){
 		if err != nil {
 			templates.WriteBDTemplate(w, model.Mgr.GetAllBDs(), model.Mgr.GetAllUsuarioBDs(), model.Mgr.GetAllAsociacionBDs(),"Error al borrar la asociacion")
 		} else {
-			templates.WriteBDTemplate(w, model.Mgr.GetAllBDs(), model.Mgr.GetAllUsuarioBDs(), model.Mgr.GetAllAsociacionBDs(),"")
+			http.Redirect(w,r,"/bd",http.StatusSeeOther)
 		}
 	} else {
 		templates.WriteLoginTemplate(w,"")
@@ -200,6 +217,10 @@ func AddIP(w http.ResponseWriter, r *http.Request){
 	if UsuarioName != "" {
 		r.ParseForm()
 		bdid := strings.Join(r.Form["bdid"],"")
+		if len(bdid) == 0 {
+			http.Redirect(w,r,"/bd",http.StatusSeeOther)
+			return
+		}
 		bd := model.Mgr.GetBD(bdid)
 		newip := strings.Join(r.Form["ip"],"")
 		exists := 0
@@ -219,7 +240,7 @@ func AddIP(w http.ResponseWriter, r *http.Request){
 			if err != nil {
 				templates.WriteBDTemplate(w,model.Mgr.GetAllBDs(),model.Mgr.GetAllUsuarioBDs(),model.Mgr.GetAllAsociacionBDs(),"Error al agregar IP a la de base de datos")
 			} else {
-				templates.WriteBDTemplate(w,model.Mgr.GetAllBDs(),model.Mgr.GetAllUsuarioBDs(),model.Mgr.GetAllAsociacionBDs(),"")
+				http.Redirect(w,r,"/bd",http.StatusSeeOther)
 			}
 		}
 	} else {
@@ -232,6 +253,10 @@ func RemoveIP(w http.ResponseWriter, r *http.Request){
 	if UsuarioName != "" {
 		r.ParseForm()
 		bdid := strings.Join(r.Form["bdid"],"")
+		if len(bdid) == 0 {
+			http.Redirect(w,r,"/bd",http.StatusSeeOther)
+			return
+		}
 		rip := strings.Join(r.Form["ip"],"")
 		bd := model.Mgr.GetBD(bdid)
 		for _ , ip := range bd.IPs {
@@ -241,7 +266,7 @@ func RemoveIP(w http.ResponseWriter, r *http.Request){
 				model.Mgr.UpdateIP(ip,bd)
 			}
 		}
-		templates.WriteBDTemplate(w, model.Mgr.GetAllBDs(), model.Mgr.GetAllUsuarioBDs(), model.Mgr.GetAllAsociacionBDs(),"")
+		http.Redirect(w,r,"/bd",http.StatusSeeOther)
 	} else {
 		templates.WriteLoginTemplate(w,"")
 	}

@@ -27,7 +27,32 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
 
 <!DOCTYPE html>
 <html lang="en">
+<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
 <script type="text/javascript">
+
+    $(document).ready(function(){
+        $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+            localStorage.setItem('activeTab', $(e.target).attr('href'));
+        });
+        var activeTab = localStorage.getItem('activeTab');
+        if(activeTab){
+            $('#myTab a[href="' + activeTab + '"]').tab('show');
+        }
+    });
+
+    var timeoutVar;
+
+    function activarTimeout() {
+        timeoutVar = setTimeout(function() {
+            window.location.href = window.location.href;
+        }, 5000);
+    }
+    activarTimeout()
+
+    function desactivarTimeout() {
+        clearTimeout(timeoutVar);
+    }
+
     function validateFormUsuario() {
         var y = document.getElementById("nombre").value;
         if (y == "" ) {
@@ -69,6 +94,7 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
     function showDivUsuario() {
         var x = document.getElementById('formUsuario');
         x.style.display = 'block';
+        desactivarTimeout()
     }
 
 
@@ -82,6 +108,7 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
             document.getElementById("password").removeAttribute("disabled");
             document.getElementById("checkmostrar").removeAttribute("disabled");
         }
+        activarTimeout()
     }
 
     function modifyUsuario(id,nombre) {
@@ -93,18 +120,21 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
         document.getElementById("checkmostrar").setAttribute("disabled","disabled")
 
         x.style.display = 'block';
+        desactivarTimeout()
     }
 
 
     function showDivBD() {
         var x = document.getElementById('formBD');
         x.style.display = 'block';
+        desactivarTimeout()
     }
 
     function hideDivBD() {
         var x = document.getElementById('formBD');
         x.style.display = 'none';
         document.getElementById("nombre").value = "";
+        activarTimeout()
     }
 
 
@@ -112,12 +142,14 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
         var x = document.getElementById('formRemoveUBD' + id);
         x.style.display = 'none';
         document.getElementById("bd" + id).options[0].selected = true;
+        activarTimeout()
     }
 
     function hideDivAUBD() {
         var x = document.getElementById('formAddUBD');
         x.style.display = 'none';
         document.getElementById("selabd").options[0].selected = true;
+        activarTimeout()
     }
 
     function validateFormBD() {
@@ -158,6 +190,7 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
         document.getElementById("idBD").value = id;
         document.getElementById("nombreBD").value = nombre;
         x.style.display = 'block';
+        desactivarTimeout()
 
     }
 
@@ -165,22 +198,26 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
         var x = document.getElementById('formAddUBD');
         document.getElementById("idABD").value = id;
         x.style.display = 'block';
+        desactivarTimeout()
     }
 
     function removeUBD(id){
         var x = document.getElementById('formRemoveUBD' + id);
         x.style.display = 'block';
+        desactivarTimeout()
     }
 
     function addIP(id){
         var x = document.getElementById('formAddIP');
         document.getElementById("idIP").value = id;
         x.style.display = 'block';
+        desactivarTimeout()
     }
 
     function removeIP(id){
         var x = document.getElementById('formRemoveIP' + id);
         x.style.display = 'block';
+        desactivarTimeout()
     }
 
     function validateFormAddIP(){
@@ -201,13 +238,16 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
         var x = document.getElementById('formAddIP');
         x.style.display = 'none';
         document.getElementById("ip").value = "";
+        activarTimeout()
     }
 
     function hideDivRemoveIP(id) {
         var x = document.getElementById('formRemoveIP' + id);
         x.style.display = 'none';
         document.getElementById("ip" + id).options[0].selected = true;
+        activarTimeout()
     }
+
 
 
 
@@ -244,26 +284,30 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+
+
 </head>
 
 <body>
 
 `)
-	//line templates/bd.qtpl:227
+	//line templates/bd.qtpl:269
 	if len(error) > 0 {
-		//line templates/bd.qtpl:227
+		//line templates/bd.qtpl:269
 		qw422016.N().S(`
 <script type="text/javascript">
     window.alert("`)
-		//line templates/bd.qtpl:229
+		//line templates/bd.qtpl:271
 		qw422016.E().S(error)
-		//line templates/bd.qtpl:229
+		//line templates/bd.qtpl:271
 		qw422016.N().S(`")
+
+
 </script>
 `)
-		//line templates/bd.qtpl:231
+		//line templates/bd.qtpl:275
 	}
-	//line templates/bd.qtpl:231
+	//line templates/bd.qtpl:275
 	qw422016.N().S(`
 
 <div id="wrapper">
@@ -277,7 +321,7 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.html">Docker Panel</a>
+            <a class="navbar-brand">Docker Panel</a>
         </div>
         <!-- /.navbar-header -->
 
@@ -344,7 +388,7 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <!-- Nav tabs -->
-                        <ul class="nav nav-tabs">
+                        <ul class="nav nav-tabs" id="myTab">
                             <li class="active"><a href="#bds" data-toggle="tab">Bases de datos</a>
                             </li>
                             <li><a href="#usuarios" data-toggle="tab">Usuarios</a>
@@ -365,97 +409,97 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
                                     </thead>
                                     <tbody>
                                     `)
-	//line templates/bd.qtpl:331
+	//line templates/bd.qtpl:375
 	for _, user := range ubds {
-		//line templates/bd.qtpl:331
+		//line templates/bd.qtpl:375
 		qw422016.N().S(`
                                     <tr class="odd gradeX">
                                         <td> `)
-		//line templates/bd.qtpl:333
+		//line templates/bd.qtpl:377
 		qw422016.E().S(user.Nombre)
-		//line templates/bd.qtpl:333
+		//line templates/bd.qtpl:377
 		qw422016.N().S(` </td>
 
                                         <td>
                                             `)
-		//line templates/bd.qtpl:336
+		//line templates/bd.qtpl:380
 		for _, abd := range abds {
-			//line templates/bd.qtpl:336
+			//line templates/bd.qtpl:380
 			qw422016.N().S(`
                                                 `)
-			//line templates/bd.qtpl:337
+			//line templates/bd.qtpl:381
 			if user.ID == abd.UsuarioBDID {
-				//line templates/bd.qtpl:337
+				//line templates/bd.qtpl:381
 				qw422016.N().S(`
                                                     `)
-				//line templates/bd.qtpl:338
+				//line templates/bd.qtpl:382
 				for _, bd := range bds {
-					//line templates/bd.qtpl:338
+					//line templates/bd.qtpl:382
 					qw422016.N().S(`
                                                         `)
-					//line templates/bd.qtpl:339
+					//line templates/bd.qtpl:383
 					if abd.BDID == bd.ID {
-						//line templates/bd.qtpl:339
+						//line templates/bd.qtpl:383
 						qw422016.N().S(`
                                                             `)
-						//line templates/bd.qtpl:340
+						//line templates/bd.qtpl:384
 						qw422016.E().S(bd.Nombre)
-						//line templates/bd.qtpl:340
+						//line templates/bd.qtpl:384
 						qw422016.N().S(`
                                                         `)
-						//line templates/bd.qtpl:341
+						//line templates/bd.qtpl:385
 					}
-					//line templates/bd.qtpl:341
+					//line templates/bd.qtpl:385
 					qw422016.N().S(`
                                                     `)
-					//line templates/bd.qtpl:342
+					//line templates/bd.qtpl:386
 				}
-				//line templates/bd.qtpl:342
+				//line templates/bd.qtpl:386
 				qw422016.N().S(`
                                                 `)
-				//line templates/bd.qtpl:343
+				//line templates/bd.qtpl:387
 			}
-			//line templates/bd.qtpl:343
+			//line templates/bd.qtpl:387
 			qw422016.N().S(`
                                             `)
-			//line templates/bd.qtpl:344
+			//line templates/bd.qtpl:388
 		}
-		//line templates/bd.qtpl:344
+		//line templates/bd.qtpl:388
 		qw422016.N().S(`
                                         </td>
 
 
                                         <td class="center">
                                             <button type="button" class="btn btn-xs btn-success" data-toggle="tooltip" data-placement="top" title="Asociar una base de datos" onclick='addUBD(`)
-		//line templates/bd.qtpl:349
+		//line templates/bd.qtpl:393
 		qw422016.N().D(int(user.ID))
-		//line templates/bd.qtpl:349
+		//line templates/bd.qtpl:393
 		qw422016.N().S(`)' ><i class="fa fa-plus"></i></button>
                                             <button type="button" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="top" title="Desacociar una base de datos" onclick='removeUBD(`)
-		//line templates/bd.qtpl:350
+		//line templates/bd.qtpl:394
 		qw422016.N().D(int(user.ID))
-		//line templates/bd.qtpl:350
+		//line templates/bd.qtpl:394
 		qw422016.N().S(`)' ><i class="fa fa-minus"></i></button>
                                             <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Editar usuario" onclick='modifyUsuario(`)
-		//line templates/bd.qtpl:351
+		//line templates/bd.qtpl:395
 		qw422016.N().D(int(user.ID))
-		//line templates/bd.qtpl:351
+		//line templates/bd.qtpl:395
 		qw422016.N().S(`, "`)
-		//line templates/bd.qtpl:351
+		//line templates/bd.qtpl:395
 		qw422016.E().S(user.Nombre)
-		//line templates/bd.qtpl:351
+		//line templates/bd.qtpl:395
 		qw422016.N().S(`"  )' ><i class="fa fa-list"></i></button>
                                             <button class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar usuario" onclick="location.href='removeUsuarioBD?id=`)
-		//line templates/bd.qtpl:352
+		//line templates/bd.qtpl:396
 		qw422016.N().D(int(user.ID))
-		//line templates/bd.qtpl:352
+		//line templates/bd.qtpl:396
 		qw422016.N().S(`';"><i class="fa fa-trash-o"></i></button>
                                         </td>
                                     </tr>
                                     `)
-		//line templates/bd.qtpl:355
+		//line templates/bd.qtpl:399
 	}
-	//line templates/bd.qtpl:355
+	//line templates/bd.qtpl:399
 	qw422016.N().S(`
                                     </tbody>
                                 </table>
@@ -475,159 +519,159 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
                                     </thead>
                                     <tbody>
                                     `)
-	//line templates/bd.qtpl:373
+	//line templates/bd.qtpl:417
 	for _, bd := range bds {
-		//line templates/bd.qtpl:373
+		//line templates/bd.qtpl:417
 		qw422016.N().S(`
                                     <tr class="odd gradeX">
                                         <td> `)
-		//line templates/bd.qtpl:375
+		//line templates/bd.qtpl:419
 		qw422016.E().S(bd.Nombre)
-		//line templates/bd.qtpl:375
+		//line templates/bd.qtpl:419
 		qw422016.N().S(` </td>
 
 
                                         `)
-		//line templates/bd.qtpl:378
+		//line templates/bd.qtpl:422
 		switch bd.Estado {
-		//line templates/bd.qtpl:379
+		//line templates/bd.qtpl:423
 		case 1:
-			//line templates/bd.qtpl:379
+			//line templates/bd.qtpl:423
 			qw422016.N().S(`
                                         <td>a configurar</td>
                                         `)
-		//line templates/bd.qtpl:381
+		//line templates/bd.qtpl:425
 		case 2:
-			//line templates/bd.qtpl:381
+			//line templates/bd.qtpl:425
 			qw422016.N().S(`
                                         <td>configurado</td>
                                         `)
-		//line templates/bd.qtpl:383
+		//line templates/bd.qtpl:427
 		case 3:
-			//line templates/bd.qtpl:383
+			//line templates/bd.qtpl:427
 			qw422016.N().S(`
                                         <td>activo</td>
                                         `)
-		//line templates/bd.qtpl:385
+		//line templates/bd.qtpl:429
 		case 4:
-			//line templates/bd.qtpl:385
+			//line templates/bd.qtpl:429
 			qw422016.N().S(`
                                         <td>apagado</td>
                                         `)
-		//line templates/bd.qtpl:387
+		//line templates/bd.qtpl:431
 		case 5:
-			//line templates/bd.qtpl:387
+			//line templates/bd.qtpl:431
 			qw422016.N().S(`
                                         <td>eliminando</td>
                                         `)
-			//line templates/bd.qtpl:389
+			//line templates/bd.qtpl:433
 		}
-		//line templates/bd.qtpl:389
+		//line templates/bd.qtpl:433
 		qw422016.N().S(`
 
                                         <td>
                                             `)
-		//line templates/bd.qtpl:392
+		//line templates/bd.qtpl:436
 		if bd.ID < 10 {
-			//line templates/bd.qtpl:392
+			//line templates/bd.qtpl:436
 			qw422016.N().S(`
                                                 300`)
-			//line templates/bd.qtpl:393
+			//line templates/bd.qtpl:437
 			qw422016.N().D(int(bd.ID))
-			//line templates/bd.qtpl:393
+			//line templates/bd.qtpl:437
 			qw422016.N().S(`
                                             `)
-			//line templates/bd.qtpl:394
+			//line templates/bd.qtpl:438
 		} else if bd.ID < 100 {
-			//line templates/bd.qtpl:394
+			//line templates/bd.qtpl:438
 			qw422016.N().S(`
                                                 30`)
-			//line templates/bd.qtpl:395
+			//line templates/bd.qtpl:439
 			qw422016.N().D(int(bd.ID))
-			//line templates/bd.qtpl:395
+			//line templates/bd.qtpl:439
 			qw422016.N().S(`
                                             `)
-			//line templates/bd.qtpl:396
+			//line templates/bd.qtpl:440
 		} else {
-			//line templates/bd.qtpl:396
+			//line templates/bd.qtpl:440
 			qw422016.N().S(`
                                                 3`)
-			//line templates/bd.qtpl:397
+			//line templates/bd.qtpl:441
 			qw422016.N().D(int(bd.ID))
-			//line templates/bd.qtpl:397
+			//line templates/bd.qtpl:441
 			qw422016.N().S(`
                                             `)
-			//line templates/bd.qtpl:398
+			//line templates/bd.qtpl:442
 		}
-		//line templates/bd.qtpl:398
+		//line templates/bd.qtpl:442
 		qw422016.N().S(`
 
                                         </td>
                                         <td>
                                             `)
-		//line templates/bd.qtpl:402
+		//line templates/bd.qtpl:446
 		if len(bd.IPs) == 0 {
-			//line templates/bd.qtpl:402
+			//line templates/bd.qtpl:446
 			qw422016.N().S(`
                                                 no
                                             `)
-			//line templates/bd.qtpl:404
+			//line templates/bd.qtpl:448
 		} else {
-			//line templates/bd.qtpl:404
+			//line templates/bd.qtpl:448
 			qw422016.N().S(`
                                                 `)
-			//line templates/bd.qtpl:405
+			//line templates/bd.qtpl:449
 			for _, ip := range bd.IPs {
-				//line templates/bd.qtpl:405
+				//line templates/bd.qtpl:449
 				qw422016.N().S(`
                                                     `)
-				//line templates/bd.qtpl:406
+				//line templates/bd.qtpl:450
 				qw422016.E().S(ip.Valor)
-				//line templates/bd.qtpl:406
+				//line templates/bd.qtpl:450
 				qw422016.N().S(`
                                                 `)
-				//line templates/bd.qtpl:407
+				//line templates/bd.qtpl:451
 			}
-			//line templates/bd.qtpl:407
+			//line templates/bd.qtpl:451
 			qw422016.N().S(`
                                             `)
-			//line templates/bd.qtpl:408
+			//line templates/bd.qtpl:452
 		}
-		//line templates/bd.qtpl:408
+		//line templates/bd.qtpl:452
 		qw422016.N().S(`
                                         </td>
 
                                         <td class="center">
                                             <button type="button" class="btn btn-xs btn-success" data-toggle="tooltip" data-placement="top" title="Agregar IP remota" onclick='addIP(`)
-		//line templates/bd.qtpl:412
+		//line templates/bd.qtpl:456
 		qw422016.N().D(int(bd.ID))
-		//line templates/bd.qtpl:412
+		//line templates/bd.qtpl:456
 		qw422016.N().S(`)' ><i class="fa fa-plus"></i></button>
                                             <button type="button" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="top" title="Borrar IP remota" onclick='removeIP(`)
-		//line templates/bd.qtpl:413
+		//line templates/bd.qtpl:457
 		qw422016.N().D(int(bd.ID))
-		//line templates/bd.qtpl:413
+		//line templates/bd.qtpl:457
 		qw422016.N().S(`)' ><i class="fa fa-minus"></i></button>
                                             <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Editar base de datos" onclick='modifyBD(`)
-		//line templates/bd.qtpl:414
+		//line templates/bd.qtpl:458
 		qw422016.N().D(int(bd.ID))
-		//line templates/bd.qtpl:414
+		//line templates/bd.qtpl:458
 		qw422016.N().S(`, "`)
-		//line templates/bd.qtpl:414
+		//line templates/bd.qtpl:458
 		qw422016.E().S(bd.Nombre)
-		//line templates/bd.qtpl:414
+		//line templates/bd.qtpl:458
 		qw422016.N().S(`")' ><i class="fa fa-list"></i></button>
                                            <button class="btn btn-xs btn-danger"data-toggle="tooltip" data-placement="top" title="Borrar base de datos"  onclick="location.href='removeBd?id=`)
-		//line templates/bd.qtpl:415
+		//line templates/bd.qtpl:459
 		qw422016.N().D(int(bd.ID))
-		//line templates/bd.qtpl:415
+		//line templates/bd.qtpl:459
 		qw422016.N().S(`';"><i class="fa fa-trash-o"></i></button>
                                         </td>
                                     </tr>
                                     `)
-		//line templates/bd.qtpl:418
+		//line templates/bd.qtpl:462
 	}
-	//line templates/bd.qtpl:418
+	//line templates/bd.qtpl:462
 	qw422016.N().S(`
                                     </tbody>
                                 </table>
@@ -708,23 +752,23 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
                         <select  class="form-control"  id="selabd" name="bdid">
                             <option disabled selected value> -- Elegir base de datos -- </option>
                             `)
-	//line templates/bd.qtpl:497
+	//line templates/bd.qtpl:541
 	for _, bd := range bds {
-		//line templates/bd.qtpl:497
+		//line templates/bd.qtpl:541
 		qw422016.N().S(`
                             <option value="`)
-		//line templates/bd.qtpl:498
+		//line templates/bd.qtpl:542
 		qw422016.N().D(int(bd.ID))
-		//line templates/bd.qtpl:498
+		//line templates/bd.qtpl:542
 		qw422016.N().S(`">`)
-		//line templates/bd.qtpl:498
+		//line templates/bd.qtpl:542
 		qw422016.E().S(bd.Nombre)
-		//line templates/bd.qtpl:498
+		//line templates/bd.qtpl:542
 		qw422016.N().S(`</option>
                             `)
-		//line templates/bd.qtpl:499
+		//line templates/bd.qtpl:543
 	}
-	//line templates/bd.qtpl:499
+	//line templates/bd.qtpl:543
 	qw422016.N().S(`
                         </select>
                         <br>
@@ -736,14 +780,14 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
         </div>
 
         `)
-	//line templates/bd.qtpl:509
+	//line templates/bd.qtpl:553
 	for _, user := range ubds {
-		//line templates/bd.qtpl:509
+		//line templates/bd.qtpl:553
 		qw422016.N().S(`
         <div id="formRemoveUBD`)
-		//line templates/bd.qtpl:510
+		//line templates/bd.qtpl:554
 		qw422016.N().D(int(user.ID))
-		//line templates/bd.qtpl:510
+		//line templates/bd.qtpl:554
 		qw422016.N().S(`" class="col-lg-6" hidden="true" >
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -751,87 +795,87 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
                 </div>
                 <div class="panel-body">
                     <form id="removeubd" action="/removeubd" onsubmit="return validateFormRemoveUBD(`)
-		//line templates/bd.qtpl:516
+		//line templates/bd.qtpl:560
 		qw422016.N().D(int(user.ID))
-		//line templates/bd.qtpl:516
+		//line templates/bd.qtpl:560
 		qw422016.N().S(`)" role=form method="post">
                         <input id="userid" name="userid" value="`)
-		//line templates/bd.qtpl:517
+		//line templates/bd.qtpl:561
 		qw422016.N().D(int(user.ID))
-		//line templates/bd.qtpl:517
+		//line templates/bd.qtpl:561
 		qw422016.N().S(`" hidden="true" >
                         Base de datos
                         <select  class="form-control"  id="bd`)
-		//line templates/bd.qtpl:519
+		//line templates/bd.qtpl:563
 		qw422016.N().D(int(user.ID))
-		//line templates/bd.qtpl:519
+		//line templates/bd.qtpl:563
 		qw422016.N().S(`" name="bdid">
                             <option disabled selected value> -- Elegir base de datos -- </option>
                             `)
-		//line templates/bd.qtpl:521
+		//line templates/bd.qtpl:565
 		for _, abd := range abds {
-			//line templates/bd.qtpl:521
+			//line templates/bd.qtpl:565
 			qw422016.N().S(`
                                 `)
-			//line templates/bd.qtpl:522
+			//line templates/bd.qtpl:566
 			if user.ID == abd.UsuarioBDID {
-				//line templates/bd.qtpl:522
+				//line templates/bd.qtpl:566
 				qw422016.N().S(`
                                     `)
-				//line templates/bd.qtpl:523
+				//line templates/bd.qtpl:567
 				for _, bd := range bds {
-					//line templates/bd.qtpl:523
+					//line templates/bd.qtpl:567
 					qw422016.N().S(`
                                         `)
-					//line templates/bd.qtpl:524
+					//line templates/bd.qtpl:568
 					if abd.BDID == bd.ID {
-						//line templates/bd.qtpl:524
+						//line templates/bd.qtpl:568
 						qw422016.N().S(`
                                             <option value="`)
-						//line templates/bd.qtpl:525
+						//line templates/bd.qtpl:569
 						qw422016.N().D(int(bd.ID))
-						//line templates/bd.qtpl:525
+						//line templates/bd.qtpl:569
 						qw422016.N().S(`">`)
-						//line templates/bd.qtpl:525
+						//line templates/bd.qtpl:569
 						qw422016.E().S(bd.Nombre)
-						//line templates/bd.qtpl:525
+						//line templates/bd.qtpl:569
 						qw422016.N().S(`</option>
                                         `)
-						//line templates/bd.qtpl:526
+						//line templates/bd.qtpl:570
 					}
-					//line templates/bd.qtpl:526
+					//line templates/bd.qtpl:570
 					qw422016.N().S(`
                                     `)
-					//line templates/bd.qtpl:527
+					//line templates/bd.qtpl:571
 				}
-				//line templates/bd.qtpl:527
+				//line templates/bd.qtpl:571
 				qw422016.N().S(`
                                 `)
-				//line templates/bd.qtpl:528
+				//line templates/bd.qtpl:572
 			}
-			//line templates/bd.qtpl:528
+			//line templates/bd.qtpl:572
 			qw422016.N().S(`
                             `)
-			//line templates/bd.qtpl:529
+			//line templates/bd.qtpl:573
 		}
-		//line templates/bd.qtpl:529
+		//line templates/bd.qtpl:573
 		qw422016.N().S(`
                         </select>
                         <br>
                         <button type="submit" class="btn btn-default">Guardar</button>
                         <button type="button" class="btn btn-default" onclick="hideDivRemoveBD(`)
-		//line templates/bd.qtpl:533
+		//line templates/bd.qtpl:577
 		qw422016.N().D(int(user.ID))
-		//line templates/bd.qtpl:533
+		//line templates/bd.qtpl:577
 		qw422016.N().S(`)">Cancelar</button>
                     </form>
                 </div>
             </div>
         </div>
         `)
-		//line templates/bd.qtpl:538
+		//line templates/bd.qtpl:582
 	}
-	//line templates/bd.qtpl:538
+	//line templates/bd.qtpl:582
 	qw422016.N().S(`
 
         <div id="formAddIP" class="col-lg-6" hidden="true" >
@@ -854,14 +898,14 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
 
 
         `)
-	//line templates/bd.qtpl:559
+	//line templates/bd.qtpl:603
 	for _, bd := range bds {
-		//line templates/bd.qtpl:559
+		//line templates/bd.qtpl:603
 		qw422016.N().S(`
         <div id="formRemoveIP`)
-		//line templates/bd.qtpl:560
+		//line templates/bd.qtpl:604
 		qw422016.N().D(int(bd.ID))
-		//line templates/bd.qtpl:560
+		//line templates/bd.qtpl:604
 		qw422016.N().S(`" class="col-lg-6" hidden="true" >
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -869,61 +913,61 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
                 </div>
                 <div class="panel-body">
                     <form id="removebdip" action="/removebdip" onsubmit="return validateFormRemoveIP(`)
-		//line templates/bd.qtpl:566
+		//line templates/bd.qtpl:610
 		qw422016.N().D(int(bd.ID))
-		//line templates/bd.qtpl:566
+		//line templates/bd.qtpl:610
 		qw422016.N().S(`)" role=form method="post">
                         <input id="bd`)
-		//line templates/bd.qtpl:567
+		//line templates/bd.qtpl:611
 		qw422016.N().D(int(bd.ID))
-		//line templates/bd.qtpl:567
+		//line templates/bd.qtpl:611
 		qw422016.N().S(`" name="bdid" value="`)
-		//line templates/bd.qtpl:567
+		//line templates/bd.qtpl:611
 		qw422016.N().D(int(bd.ID))
-		//line templates/bd.qtpl:567
+		//line templates/bd.qtpl:611
 		qw422016.N().S(`" hidden="true" >
                         IPs
                         <select  class="form-control"  id="ip`)
-		//line templates/bd.qtpl:569
+		//line templates/bd.qtpl:613
 		qw422016.N().D(int(bd.ID))
-		//line templates/bd.qtpl:569
+		//line templates/bd.qtpl:613
 		qw422016.N().S(`" name="ip">
                             <option disabled selected value> -- Elegir IP -- </option>
                             `)
-		//line templates/bd.qtpl:571
+		//line templates/bd.qtpl:615
 		for _, ip := range bd.IPs {
-			//line templates/bd.qtpl:571
+			//line templates/bd.qtpl:615
 			qw422016.N().S(`
                             <option value="`)
-			//line templates/bd.qtpl:572
+			//line templates/bd.qtpl:616
 			qw422016.E().S(ip.Valor)
-			//line templates/bd.qtpl:572
+			//line templates/bd.qtpl:616
 			qw422016.N().S(`">`)
-			//line templates/bd.qtpl:572
+			//line templates/bd.qtpl:616
 			qw422016.E().S(ip.Valor)
-			//line templates/bd.qtpl:572
+			//line templates/bd.qtpl:616
 			qw422016.N().S(`</option>
                             `)
-			//line templates/bd.qtpl:573
+			//line templates/bd.qtpl:617
 		}
-		//line templates/bd.qtpl:573
+		//line templates/bd.qtpl:617
 		qw422016.N().S(`
                         </select>
                         <br>
                         <button type="submit" class="btn btn-default">Guardar</button>
                         <button type="button" class="btn btn-default" onclick="hideDivRemoveIP(`)
-		//line templates/bd.qtpl:577
+		//line templates/bd.qtpl:621
 		qw422016.N().D(int(bd.ID))
-		//line templates/bd.qtpl:577
+		//line templates/bd.qtpl:621
 		qw422016.N().S(`)">Cancelar</button>
                     </form>
                 </div>
             </div>
         </div>
         `)
-		//line templates/bd.qtpl:582
+		//line templates/bd.qtpl:626
 	}
-	//line templates/bd.qtpl:582
+	//line templates/bd.qtpl:626
 	qw422016.N().S(`
 
 
@@ -955,31 +999,31 @@ func StreamBDTemplate(qw422016 *qt422016.Writer, bds []model.BD, ubds []model.Us
 </html>
 
 `)
-//line templates/bd.qtpl:612
+//line templates/bd.qtpl:656
 }
 
-//line templates/bd.qtpl:612
+//line templates/bd.qtpl:656
 func WriteBDTemplate(qq422016 qtio422016.Writer, bds []model.BD, ubds []model.UsuarioBD, abds []model.AsociacionBD, error string) {
-	//line templates/bd.qtpl:612
+	//line templates/bd.qtpl:656
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line templates/bd.qtpl:612
+	//line templates/bd.qtpl:656
 	StreamBDTemplate(qw422016, bds, ubds, abds, error)
-	//line templates/bd.qtpl:612
+	//line templates/bd.qtpl:656
 	qt422016.ReleaseWriter(qw422016)
-//line templates/bd.qtpl:612
+//line templates/bd.qtpl:656
 }
 
-//line templates/bd.qtpl:612
+//line templates/bd.qtpl:656
 func BDTemplate(bds []model.BD, ubds []model.UsuarioBD, abds []model.AsociacionBD, error string) string {
-	//line templates/bd.qtpl:612
+	//line templates/bd.qtpl:656
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line templates/bd.qtpl:612
+	//line templates/bd.qtpl:656
 	WriteBDTemplate(qb422016, bds, ubds, abds, error)
-	//line templates/bd.qtpl:612
+	//line templates/bd.qtpl:656
 	qs422016 := string(qb422016.B)
-	//line templates/bd.qtpl:612
+	//line templates/bd.qtpl:656
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line templates/bd.qtpl:612
+	//line templates/bd.qtpl:656
 	return qs422016
-//line templates/bd.qtpl:612
+//line templates/bd.qtpl:656
 }

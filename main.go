@@ -68,23 +68,31 @@ func main() {
 	r.Get("/removeZona",controller.RemoveZona)
 	r.Get("/editRegistros",controller.RegistroHandler)
 	r.Post("/registros",controller.AddRegistro)
+	r.Get("/registros",controller.AddRegistro)
 	r.Get("/removeRegistro",controller.RemoveRegistro)
 
 	r.Get("/ftp", controller.FtpHandler)
 	r.Post("/ftp", controller.AddUsuarioFtp)
 	r.Get("/removeUsuarioFtp",controller.RemoveUsuarioFtp)
 	r.Post("/ftpconfig", controller.FtpConfigHandler)
+	r.Get("/ftpconfig", controller.FtpConfigHandler)
+
 
 
 	r.Get("/bd", controller.BDHandler)
 	r.Post("/bd",controller.AddBD)
 	r.Get("/removeBd",controller.RemoveBD)
 	r.Post("/ubd",controller.AddUsuarioBD)
+	r.Get("/ubd",controller.AddUsuarioBD)
 	r.Get("/removeUsuarioBD",controller.RemoveUsuarioBD)
 	r.Post("/addubd",controller.AssociateBD)
+	r.Get("/addubd",controller.AssociateBD)
 	r.Post("/removeubd",controller.DisassociateBD)
+	r.Get("/removeubd",controller.DisassociateBD)
 	r.Post("/addbdip",controller.AddIP)
+	r.Get("/addbdip",controller.AddIP)
 	r.Post("/removebdip",controller.RemoveIP)
+	r.Get("/removebdip",controller.RemoveIP)
 
 
 	r.Get("/mail",controller.MailHandler)
@@ -92,9 +100,11 @@ func main() {
 	r.Get("/removeDominio",controller.RemoveDominio)
 	r.Get("/editListas",controller.ListaHandler)
 	r.Post("/addLista",controller.AddLista)
+	r.Get("/addLista",controller.AddLista)
 	r.Get("/removeLista",controller.RemoveLista)
 	r.Get("/editCuentas",controller.CuentaHandler)
 	r.Post("/addCuenta",controller.AddCuenta)
+	r.Get("/addCuenta",controller.AddCuenta)
 	r.Get("/removeCuenta",controller.RemoveCuenta)
 
 

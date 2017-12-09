@@ -3,7 +3,32 @@
 
 <!DOCTYPE html>
 <html lang="en">
+<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
 <script type="text/javascript">
+
+    $(document).ready(function(){
+        $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+            localStorage.setItem('activeTab', $(e.target).attr('href'));
+        });
+        var activeTab = localStorage.getItem('activeTab');
+        if(activeTab){
+            $('#myTab a[href="' + activeTab + '"]').tab('show');
+        }
+    });
+
+    var timeoutVar;
+
+    function activarTimeout() {
+        timeoutVar = setTimeout(function() {
+            window.location.href = window.location.href;
+        }, 5000);
+    }
+    activarTimeout()
+
+    function desactivarTimeout() {
+        clearTimeout(timeoutVar);
+    }
+
     function validateFormUsuario() {
         var y = document.getElementById("nombre").value;
         if (y == "" ) {
@@ -45,6 +70,7 @@
     function showDivUsuario() {
         var x = document.getElementById('formUsuario');
         x.style.display = 'block';
+        desactivarTimeout()
     }
 
 
@@ -58,6 +84,7 @@
             document.getElementById("password").removeAttribute("disabled");
             document.getElementById("checkmostrar").removeAttribute("disabled");
         }
+        activarTimeout()
     }
 
     function modifyUsuario(id,nombre) {
@@ -69,18 +96,21 @@
         document.getElementById("checkmostrar").setAttribute("disabled","disabled")
 
         x.style.display = 'block';
+        desactivarTimeout()
     }
 
 
     function showDivBD() {
         var x = document.getElementById('formBD');
         x.style.display = 'block';
+        desactivarTimeout()
     }
 
     function hideDivBD() {
         var x = document.getElementById('formBD');
         x.style.display = 'none';
         document.getElementById("nombre").value = "";
+        activarTimeout()
     }
 
 
@@ -88,12 +118,14 @@
         var x = document.getElementById('formRemoveUBD' + id);
         x.style.display = 'none';
         document.getElementById("bd" + id).options[0].selected = true;
+        activarTimeout()
     }
 
     function hideDivAUBD() {
         var x = document.getElementById('formAddUBD');
         x.style.display = 'none';
         document.getElementById("selabd").options[0].selected = true;
+        activarTimeout()
     }
 
     function validateFormBD() {
@@ -134,6 +166,7 @@
         document.getElementById("idBD").value = id;
         document.getElementById("nombreBD").value = nombre;
         x.style.display = 'block';
+        desactivarTimeout()
 
     }
 
@@ -141,22 +174,26 @@
         var x = document.getElementById('formAddUBD');
         document.getElementById("idABD").value = id;
         x.style.display = 'block';
+        desactivarTimeout()
     }
 
     function removeUBD(id){
         var x = document.getElementById('formRemoveUBD' + id);
         x.style.display = 'block';
+        desactivarTimeout()
     }
 
     function addIP(id){
         var x = document.getElementById('formAddIP');
         document.getElementById("idIP").value = id;
         x.style.display = 'block';
+        desactivarTimeout()
     }
 
     function removeIP(id){
         var x = document.getElementById('formRemoveIP' + id);
         x.style.display = 'block';
+        desactivarTimeout()
     }
 
     function validateFormAddIP(){
@@ -177,13 +214,16 @@
         var x = document.getElementById('formAddIP');
         x.style.display = 'none';
         document.getElementById("ip").value = "";
+        activarTimeout()
     }
 
     function hideDivRemoveIP(id) {
         var x = document.getElementById('formRemoveIP' + id);
         x.style.display = 'none';
         document.getElementById("ip" + id).options[0].selected = true;
+        activarTimeout()
     }
+
 
 
 
@@ -220,6 +260,8 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+
+
 </head>
 
 <body>
@@ -227,6 +269,8 @@
 {% if len(error) > 0 %}
 <script type="text/javascript">
     window.alert("{%s error %}")
+
+
 </script>
 {% endif %}
 
@@ -308,7 +352,7 @@
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <!-- Nav tabs -->
-                        <ul class="nav nav-tabs">
+                        <ul class="nav nav-tabs" id="myTab">
                             <li class="active"><a href="#bds" data-toggle="tab">Bases de datos</a>
                             </li>
                             <li><a href="#usuarios" data-toggle="tab">Usuarios</a>
