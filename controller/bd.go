@@ -158,7 +158,7 @@ func AssociateBD(w http.ResponseWriter, r *http.Request) {
 		userid := strings.Join(r.Form["userid"], "")
 		bdid := strings.Join(r.Form["bdid"], "")
 		if len(userid) == 0 {
-			templates.WriteBDTemplate(w, model.Mgr.GetAllBDs(), model.Mgr.GetAllUsuarioBDs(), model.Mgr.GetAllAsociacionBDs(), "")
+			http.Redirect(w,r,"/bd",http.StatusSeeOther)
 			return
 		}
 		newbd := model.Mgr.GetBD(bdid)

@@ -87,14 +87,14 @@ func AddWeb(w http.ResponseWriter, r *http.Request) {
 				if err != nil {
 					templates.WriteWebTemplate(w, model.Mgr.GetAllWebs(),"Error al agregar el sitio web")
 				} else {
-					templates.WriteWebTemplate(w, model.Mgr.GetAllWebs(),"")
+					http.Redirect(w,r,"/web",http.StatusSeeOther)
 				}
 			} else {
 				err = model.Mgr.UpdateWeb(&web)
 				if err != nil {
 					templates.WriteWebTemplate(w, model.Mgr.GetAllWebs(),"Error al actualizar el sitio web")
 				} else {
-					templates.WriteWebTemplate(w, model.Mgr.GetAllWebs(),"")
+					http.Redirect(w,r,"/web",http.StatusSeeOther)
 				}
 			}
 		}
@@ -107,11 +107,15 @@ func RemoveWeb(w http.ResponseWriter, r *http.Request) {
 	UsuarioName := login.GetUNombreUsuario(r)
 	if UsuarioName != "" {
 		id := r.URL.Query().Get("id")
+		if len(id) == 0 {
+			http.Redirect(w,r,"/web",http.StatusSeeOther)
+			return
+		}
 		err := model.Mgr.RemoveWeb(id)
 		if err != nil {
 			templates.WriteWebTemplate(w,model.Mgr.GetAllWebs(),"Error al borrar el sitio web")
 		} else {
-			templates.WriteWebTemplate(w,model.Mgr.GetAllWebs(),"")
+			http.Redirect(w,r,"/web",http.StatusSeeOther)
 		}
 	} else {
 		templates.WriteLoginTemplate(w,"")

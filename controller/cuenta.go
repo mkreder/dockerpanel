@@ -111,14 +111,14 @@ func AddCuenta(w http.ResponseWriter, r *http.Request) {
 				if err != nil {
 					templates.WriteCuentaTemplate(w, model.Mgr.GetCuentas(dominioid),model.Mgr.GetDominio(dominioid), "Error al agregar cuenta de correo")
 				} else {
-					templates.WriteCuentaTemplate(w, model.Mgr.GetCuentas(dominioid),model.Mgr.GetDominio(dominioid), "")
+					http.Redirect(w,r,"/editCuentas?dominioid=" + dominioid,http.StatusSeeOther)
 				}
 			} else {
 				err = model.Mgr.UpdateCuenta(&cuenta)
 				if err != nil {
 					templates.WriteCuentaTemplate(w, model.Mgr.GetCuentas(dominioid),model.Mgr.GetDominio(dominioid), "Error al modificar cuenta de correo")
 				} else {
-					templates.WriteCuentaTemplate(w, model.Mgr.GetCuentas(dominioid),model.Mgr.GetDominio(dominioid), "")
+					http.Redirect(w,r,"/editCuentas?dominioid=" + dominioid,http.StatusSeeOther)
 				}
 			}
 		}
@@ -139,7 +139,7 @@ func RemoveCuenta(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			templates.WriteCuentaTemplate(w, model.Mgr.GetCuentas(dominioid),model.Mgr.GetDominio(dominioid), "Error al borrar cuenta de correo")
 		} else {
-			templates.WriteCuentaTemplate(w, model.Mgr.GetCuentas(dominioid),model.Mgr.GetDominio(dominioid), "")
+			http.Redirect(w,r,"/editCuentas?dominioid=" + dominioid,http.StatusSeeOther)
 		}
 	} else {
 		templates.WriteLoginTemplate(w,"")

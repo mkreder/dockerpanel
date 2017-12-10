@@ -120,11 +120,14 @@ func RunFTPWorker (){
 	log.Printf("Iniciando FTP worker")
 	// Loop para siempre
 	for {
-		if model.Mgr.GetFtpConfig().Estado == 1 {
-			crearDirectorioConfigFTP()
-			generarConfigFTP()
-			buildearContenedorFTP()
-			correrContenedorFTP()
+		//if model.Mgr.GetFtpConfig().Estado == 1 {
+		if model.Mgr.GetFtpConfig().AnonRead == 1 || model.Mgr.GetFtpConfig().AnonWrite == 1 || ( len(model.Mgr.GetAllUsuarioFtps()) > 0 ){
+			if model.Mgr.GetFtpConfig().Estado == 1{
+				crearDirectorioConfigFTP()
+				generarConfigFTP()
+				buildearContenedorFTP()
+				correrContenedorFTP()
+			}
 		}
 		for _ , uftp := range model.Mgr.GetAllUsuarioFtps() {
 			if uftp.Estado == 1 {
@@ -141,8 +144,10 @@ func RunFTPWorker (){
 				removerUsuarioFTP(uftp)
 			}
 		}
-		if ! isRunning("dp-ftp"){
-			correrContenedorFTP()
+		if model.Mgr.GetFtpConfig().AnonRead == 1 || model.Mgr.GetFtpConfig().AnonWrite == 1 || ( len(model.Mgr.GetAllUsuarioFtps()) > 0 ) {
+			if ! isRunning("dp-ftp") {
+				correrContenedorFTP()
+			}
 		}
 		time.Sleep(2 * time.Second)
 	}

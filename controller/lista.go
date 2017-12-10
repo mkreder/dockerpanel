@@ -59,14 +59,14 @@ func AddLista(w http.ResponseWriter, r *http.Request) {
 				if err != nil {
 					templates.WriteListaTemplate(w, model.Mgr.GetListas(dominioid),dominioid,"Error al agregar la lista de correo")
 				} else {
-					templates.WriteListaTemplate(w, model.Mgr.GetListas(dominioid),dominioid,"")
+					http.Redirect(w,r,"/editListas?dominioid=" + dominioid,http.StatusSeeOther)
 				}
 			} else {
 				err = model.Mgr.UpdateLista(&lista)
 				if err != nil {
 					templates.WriteListaTemplate(w, model.Mgr.GetListas(dominioid),dominioid,"Error al modificar la lista de correo")
 				} else {
-					templates.WriteListaTemplate(w, model.Mgr.GetListas(dominioid),dominioid,"")
+					http.Redirect(w,r,"/editListas?dominioid=" + dominioid,http.StatusSeeOther)
 				}
 			}
 		}
@@ -89,7 +89,7 @@ func RemoveLista(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			templates.WriteListaTemplate(w, model.Mgr.GetListas(dominioid),dominioid,"Error al borrar la lista de correo")
 		} else {
-			templates.WriteListaTemplate(w, model.Mgr.GetListas(dominioid),dominioid,"")
+			http.Redirect(w,r,"/editListas?dominioid=" + dominioid,http.StatusSeeOther)
 		}
 	} else {
 		templates.WriteLoginTemplate(w,"")

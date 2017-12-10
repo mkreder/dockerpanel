@@ -4,6 +4,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <script type="text/javascript">
+    var timeoutVar;
+
+    function activarTimeout() {
+        timeoutVar = setTimeout(function() {
+            window.location.href = window.location.href;
+        }, 5000);
+    }
+    activarTimeout()
+
+    function desactivarTimeout() {
+        clearTimeout(timeoutVar);
+    }
+
     function validateForm() {
         var y = document.getElementById("nombre").value;
         if (y == "" ) {
@@ -51,6 +64,7 @@
     function showDiv() {
         var x = document.getElementById('form');
         x.style.display = 'block';
+        desactivarTimeout();
     }
 
 
@@ -64,6 +78,7 @@
             document.getElementById("password").removeAttribute("disabled");
             document.getElementById("checkmostrar").removeAttribute("disabled");
         }
+        activarTimeout();
     }
 
     function modifyLista(id,nombre) {
@@ -74,6 +89,7 @@
         document.getElementById("btngenerar").innerHTML="Cambiar";
         document.getElementById("checkmostrar").setAttribute("disabled","disabled")
         x.style.display = 'block';
+        desactivarTimeout();
     }
 
 </script>

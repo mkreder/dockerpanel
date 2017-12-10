@@ -44,7 +44,7 @@ func AddDominio(w http.ResponseWriter, r *http.Request) {
 				if err != nil {
 					templates.WriteMailTemplate(w, model.Mgr.GetAllDominios(),"Error al cargar el dominio")
 				} else {
-					templates.WriteMailTemplate(w, model.Mgr.GetAllDominios(),"")
+					http.Redirect(w,r,"/mail",http.StatusSeeOther)
 				}
 			} else {
 				err = model.Mgr.UpdateDominio(&dominio)
@@ -64,11 +64,15 @@ func RemoveDominio(w http.ResponseWriter, r *http.Request) {
 	UsuarioName := login.GetUNombreUsuario(r)
 	if UsuarioName != "" {
 		id := r.URL.Query().Get("id")
+		if len(id) == 0 {
+			http.Redirect(w,r,"/mail",http.StatusSeeOther)
+			return
+		}
 		err := model.Mgr.RemoveDominio(id)
 		if err != nil {
 			templates.WriteMailTemplate(w, model.Mgr.GetAllDominios(),"Error al borrar el dominio")
 		} else {
-			templates.WriteMailTemplate(w, model.Mgr.GetAllDominios(),"")
+			http.Redirect(w,r,"/mail",http.StatusSeeOther)
 		}
 	} else {
 		templates.WriteLoginTemplate(w,"")

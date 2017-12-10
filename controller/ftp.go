@@ -51,14 +51,14 @@ func AddUsuarioFtp(w http.ResponseWriter, r *http.Request) {
 				if err != nil {
 					templates.WriteFtpTemplate (w, model.Mgr.GetAllUsuarioFtps(), model.Mgr.GetAllWebs(),model.Mgr.GetFtpConfig(),"Error al agregar el usuario FTP")
 				} else {
-					templates.WriteFtpTemplate (w, model.Mgr.GetAllUsuarioFtps(), model.Mgr.GetAllWebs(),model.Mgr.GetFtpConfig(),"")
+					http.Redirect(w,r,"/ftp",http.StatusSeeOther)
 				}
 			} else {
 				err = model.Mgr.UpdateUsuarioFtp(&uftp)
 				if err != nil {
 					templates.WriteFtpTemplate (w, model.Mgr.GetAllUsuarioFtps(), model.Mgr.GetAllWebs(),model.Mgr.GetFtpConfig(),"Error al actualizar el usuario FTP")
 				} else {
-					templates.WriteFtpTemplate (w, model.Mgr.GetAllUsuarioFtps(), model.Mgr.GetAllWebs(),model.Mgr.GetFtpConfig(),"")
+					http.Redirect(w,r,"/ftp",http.StatusSeeOther)
 				}
 			}
 		}
@@ -71,13 +71,17 @@ func RemoveUsuarioFtp(w http.ResponseWriter, r *http.Request) {
 	UsuarioName := login.GetUNombreUsuario(r)
 	if UsuarioName != "" {
 		id := r.URL.Query().Get("id")
+		if len(id) == 0 {
+			http.Redirect(w,r,"/ftp",http.StatusSeeOther)
+			return
+		}
 		usuario := model.Mgr.GetUsuarioFtp(id)
 		usuario.Estado = 3
 		err := model.Mgr.UpdateUsuarioFtp(&usuario)
 		if err != nil {
 			templates.WriteFtpTemplate(w,model.Mgr.GetAllUsuarioFtps(),model.Mgr.GetAllWebs(),model.Mgr.GetFtpConfig(),"Error al borrar el usuario FTP")
 		} else {
-			templates.WriteFtpTemplate(w,model.Mgr.GetAllUsuarioFtps(),model.Mgr.GetAllWebs(),model.Mgr.GetFtpConfig(),"")
+			http.Redirect(w,r,"/ftp",http.StatusSeeOther)
 		}
 	} else {
 		templates.WriteLoginTemplate(w,"")
@@ -96,7 +100,7 @@ func FtpConfigHandler(w http.ResponseWriter, r *http.Request){
 		if err != nil {
 			templates.WriteFtpTemplate(w,model.Mgr.GetAllUsuarioFtps(),model.Mgr.GetAllWebs(), model.Mgr.GetFtpConfig(), "Error al guardar configuración FTP")
 		} else {
-			templates.WriteFtpTemplate(w,model.Mgr.GetAllUsuarioFtps(),model.Mgr.GetAllWebs(), model.Mgr.GetFtpConfig(),"")
+			http.Redirect(w,r,"/ftp",http.StatusSeeOther)
 		}
 	} else {
 		templates.WriteLoginTemplate(w,"")

@@ -28,6 +28,19 @@ func StreamFtpTemplate(qw422016 *qt422016.Writer, uftps []model.UsuarioFTP, webs
 <!DOCTYPE html>
 <html lang="en">
 <script type="text/javascript">
+    var timeoutVar;
+
+    function activarTimeout() {
+        timeoutVar = setTimeout(function() {
+            window.location.href = window.location.href;
+        }, 5000);
+    }
+    activarTimeout()
+
+    function desactivarTimeout() {
+        clearTimeout(timeoutVar);
+    }
+
     function validateForm() {
         var x = document.getElementById("dominio").value;
         if (x == "" ) {
@@ -75,6 +88,7 @@ func StreamFtpTemplate(qw422016 *qt422016.Writer, uftps []model.UsuarioFTP, webs
     function showDiv() {
         var x = document.getElementById('form');
         x.style.display = 'block';
+        desactivarTimeout();
     }
 
 
@@ -89,6 +103,7 @@ func StreamFtpTemplate(qw422016 *qt422016.Writer, uftps []model.UsuarioFTP, webs
             document.getElementById("password").removeAttribute("disabled");
             document.getElementById("checkmostrar").removeAttribute("disabled");
         }
+        activarTimeout();
     }
 
     function modifyFtp(id,nombre,dominio) {
@@ -109,6 +124,7 @@ func StreamFtpTemplate(qw422016 *qt422016.Writer, uftps []model.UsuarioFTP, webs
         }
 
         x.style.display = 'block';
+        desactivarTimeout();
     }
 
 </script>
@@ -149,21 +165,21 @@ func StreamFtpTemplate(qw422016 *qt422016.Writer, uftps []model.UsuarioFTP, webs
 <body>
 
 `)
-	//line templates/ftp.qtpl:127
+	//line templates/ftp.qtpl:143
 	if len(error) > 0 {
-		//line templates/ftp.qtpl:127
+		//line templates/ftp.qtpl:143
 		qw422016.N().S(`
 <script type="text/javascript">
     window.alert("`)
-		//line templates/ftp.qtpl:129
+		//line templates/ftp.qtpl:145
 		qw422016.E().S(error)
-		//line templates/ftp.qtpl:129
+		//line templates/ftp.qtpl:145
 		qw422016.N().S(`")
 </script>
 `)
-		//line templates/ftp.qtpl:131
+		//line templates/ftp.qtpl:147
 	}
-	//line templates/ftp.qtpl:131
+	//line templates/ftp.qtpl:147
 	qw422016.N().S(`
 
 <div id="wrapper">
@@ -254,114 +270,114 @@ func StreamFtpTemplate(qw422016 *qt422016.Writer, uftps []model.UsuarioFTP, webs
                             <tbody>
 
                             `)
-	//line templates/ftp.qtpl:221
+	//line templates/ftp.qtpl:237
 	var dominio string
 	var id int
 
-	//line templates/ftp.qtpl:223
+	//line templates/ftp.qtpl:239
 	qw422016.N().S(`
                             `)
-	//line templates/ftp.qtpl:224
+	//line templates/ftp.qtpl:240
 	for _, uftp := range uftps {
-		//line templates/ftp.qtpl:224
+		//line templates/ftp.qtpl:240
 		qw422016.N().S(`
 
                                 `)
-		//line templates/ftp.qtpl:226
+		//line templates/ftp.qtpl:242
 		for _, web := range webs {
-			//line templates/ftp.qtpl:226
+			//line templates/ftp.qtpl:242
 			qw422016.N().S(`
                                     `)
-			//line templates/ftp.qtpl:227
+			//line templates/ftp.qtpl:243
 			if web.ID == uftp.WebID {
-				//line templates/ftp.qtpl:227
+				//line templates/ftp.qtpl:243
 				qw422016.N().S(`
                                       `)
-				//line templates/ftp.qtpl:229
+				//line templates/ftp.qtpl:245
 				dominio = web.Dominio
 				id = int(web.ID)
 
-				//line templates/ftp.qtpl:231
+				//line templates/ftp.qtpl:247
 				qw422016.N().S(`
                                     `)
-				//line templates/ftp.qtpl:232
+				//line templates/ftp.qtpl:248
 			}
-			//line templates/ftp.qtpl:232
+			//line templates/ftp.qtpl:248
 			qw422016.N().S(`
                                 `)
-			//line templates/ftp.qtpl:233
+			//line templates/ftp.qtpl:249
 		}
-		//line templates/ftp.qtpl:233
+		//line templates/ftp.qtpl:249
 		qw422016.N().S(`
                             <tr class="odd gradeX">
                                 <td> `)
-		//line templates/ftp.qtpl:235
+		//line templates/ftp.qtpl:251
 		qw422016.E().S(uftp.Nombre)
-		//line templates/ftp.qtpl:235
+		//line templates/ftp.qtpl:251
 		qw422016.N().S(` </td>
                                 <td> `)
-		//line templates/ftp.qtpl:236
+		//line templates/ftp.qtpl:252
 		qw422016.E().S(dominio)
-		//line templates/ftp.qtpl:236
+		//line templates/ftp.qtpl:252
 		qw422016.N().S(` </td>
 
 
                                 `)
-		//line templates/ftp.qtpl:239
+		//line templates/ftp.qtpl:255
 		switch uftp.Estado {
-		//line templates/ftp.qtpl:240
+		//line templates/ftp.qtpl:256
 		case 1:
-			//line templates/ftp.qtpl:240
+			//line templates/ftp.qtpl:256
 			qw422016.N().S(`
                                 <td>a configurar</td>
                                 `)
-		//line templates/ftp.qtpl:242
+		//line templates/ftp.qtpl:258
 		case 2:
-			//line templates/ftp.qtpl:242
+			//line templates/ftp.qtpl:258
 			qw422016.N().S(`
                                 <td>configurado</td>
                                 `)
-		//line templates/ftp.qtpl:244
+		//line templates/ftp.qtpl:260
 		case 3:
-			//line templates/ftp.qtpl:244
+			//line templates/ftp.qtpl:260
 			qw422016.N().S(`
                                 <td>eliminando</td>
                                 `)
-			//line templates/ftp.qtpl:246
+			//line templates/ftp.qtpl:262
 		}
-		//line templates/ftp.qtpl:246
+		//line templates/ftp.qtpl:262
 		qw422016.N().S(`
 
 
                                 <td class="center">
                                     <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Modificar usuario de FTP" onclick='modifyFtp(`)
-		//line templates/ftp.qtpl:250
+		//line templates/ftp.qtpl:266
 		qw422016.N().D(int(uftp.ID))
-		//line templates/ftp.qtpl:250
+		//line templates/ftp.qtpl:266
 		qw422016.N().S(`, "`)
-		//line templates/ftp.qtpl:250
+		//line templates/ftp.qtpl:266
 		qw422016.E().S(uftp.Nombre)
-		//line templates/ftp.qtpl:250
+		//line templates/ftp.qtpl:266
 		qw422016.N().S(`", "`)
-		//line templates/ftp.qtpl:250
+		//line templates/ftp.qtpl:266
 		qw422016.N().D(int(id))
-		//line templates/ftp.qtpl:250
+		//line templates/ftp.qtpl:266
 		qw422016.N().S(`" )' ><i class="fa fa-list"></i></button>
                                     <button class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar usuario de FTP" onclick="location.href='removeUsuarioFtp?id=`)
-		//line templates/ftp.qtpl:251
+		//line templates/ftp.qtpl:267
 		qw422016.N().D(int(uftp.ID))
-		//line templates/ftp.qtpl:251
+		//line templates/ftp.qtpl:267
 		qw422016.N().S(`';"><i class="fa fa-trash-o"></i></button>
                                 </td>
                             </tr>
                             `)
-		//line templates/ftp.qtpl:254
+		//line templates/ftp.qtpl:270
 	}
-	//line templates/ftp.qtpl:254
+	//line templates/ftp.qtpl:270
 	qw422016.N().S(`
                             </tbody>
                         </table>
-                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal" onclick="desactivarTimeout()">
                             Configuración
                         </button>
                         <!-- Modal -->
@@ -378,39 +394,39 @@ func StreamFtpTemplate(qw422016 *qt422016.Writer, uftps []model.UsuarioFTP, webs
                                             <br>
                                             <br>
                                             `)
-	//line templates/ftp.qtpl:273
+	//line templates/ftp.qtpl:289
 	if ftpConfig.AnonRead == 1 {
-		//line templates/ftp.qtpl:273
+		//line templates/ftp.qtpl:289
 		qw422016.N().S(`
                                                 <input name="anonRead" type="checkbox" value="1" checked="checked"> Permiso de lectura
                                             `)
-		//line templates/ftp.qtpl:275
+		//line templates/ftp.qtpl:291
 	} else {
-		//line templates/ftp.qtpl:275
+		//line templates/ftp.qtpl:291
 		qw422016.N().S(`
                                                 <input name="anonRead" type="checkbox" value="1"> Permiso de lectura
                                             `)
-		//line templates/ftp.qtpl:277
+		//line templates/ftp.qtpl:293
 	}
-	//line templates/ftp.qtpl:277
+	//line templates/ftp.qtpl:293
 	qw422016.N().S(`
                                             <br>
                                             `)
-	//line templates/ftp.qtpl:279
+	//line templates/ftp.qtpl:295
 	if ftpConfig.AnonWrite == 1 {
-		//line templates/ftp.qtpl:279
+		//line templates/ftp.qtpl:295
 		qw422016.N().S(`
                                                 <input name="anonWrite" type="checkbox" value="1" checked="checked"> Permiso de escritura
                                             `)
-		//line templates/ftp.qtpl:281
+		//line templates/ftp.qtpl:297
 	} else {
-		//line templates/ftp.qtpl:281
+		//line templates/ftp.qtpl:297
 		qw422016.N().S(`
                                                 <input name="anonWrite" type="checkbox" value="1"> Permiso de escritura
                                             `)
-		//line templates/ftp.qtpl:283
+		//line templates/ftp.qtpl:299
 	}
-	//line templates/ftp.qtpl:283
+	//line templates/ftp.qtpl:299
 	qw422016.N().S(`
 
                                         </div>
@@ -449,23 +465,23 @@ func StreamFtpTemplate(qw422016 *qt422016.Writer, uftps []model.UsuarioFTP, webs
                         <select  class="form-control"  id="dominio" name="dominio">
                             <option disabled selected value> -- Elegir dominio -- </option>
                             `)
-	//line templates/ftp.qtpl:320
+	//line templates/ftp.qtpl:336
 	for _, web := range webs {
-		//line templates/ftp.qtpl:320
+		//line templates/ftp.qtpl:336
 		qw422016.N().S(`
                               <option value="`)
-		//line templates/ftp.qtpl:321
+		//line templates/ftp.qtpl:337
 		qw422016.N().D(int(web.ID))
-		//line templates/ftp.qtpl:321
+		//line templates/ftp.qtpl:337
 		qw422016.N().S(`">`)
-		//line templates/ftp.qtpl:321
+		//line templates/ftp.qtpl:337
 		qw422016.E().S(web.Dominio)
-		//line templates/ftp.qtpl:321
+		//line templates/ftp.qtpl:337
 		qw422016.N().S(`</option>
                             `)
-		//line templates/ftp.qtpl:322
+		//line templates/ftp.qtpl:338
 	}
-	//line templates/ftp.qtpl:322
+	//line templates/ftp.qtpl:338
 	qw422016.N().S(`
                         </select>
                         <br>
@@ -513,31 +529,31 @@ func StreamFtpTemplate(qw422016 *qt422016.Writer, uftps []model.UsuarioFTP, webs
 </html>
 
 `)
-//line templates/ftp.qtpl:368
+//line templates/ftp.qtpl:384
 }
 
-//line templates/ftp.qtpl:368
+//line templates/ftp.qtpl:384
 func WriteFtpTemplate(qq422016 qtio422016.Writer, uftps []model.UsuarioFTP, webs []model.Web, ftpConfig model.FtpConfig, error string) {
-	//line templates/ftp.qtpl:368
+	//line templates/ftp.qtpl:384
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line templates/ftp.qtpl:368
+	//line templates/ftp.qtpl:384
 	StreamFtpTemplate(qw422016, uftps, webs, ftpConfig, error)
-	//line templates/ftp.qtpl:368
+	//line templates/ftp.qtpl:384
 	qt422016.ReleaseWriter(qw422016)
-//line templates/ftp.qtpl:368
+//line templates/ftp.qtpl:384
 }
 
-//line templates/ftp.qtpl:368
+//line templates/ftp.qtpl:384
 func FtpTemplate(uftps []model.UsuarioFTP, webs []model.Web, ftpConfig model.FtpConfig, error string) string {
-	//line templates/ftp.qtpl:368
+	//line templates/ftp.qtpl:384
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line templates/ftp.qtpl:368
+	//line templates/ftp.qtpl:384
 	WriteFtpTemplate(qb422016, uftps, webs, ftpConfig, error)
-	//line templates/ftp.qtpl:368
+	//line templates/ftp.qtpl:384
 	qs422016 := string(qb422016.B)
-	//line templates/ftp.qtpl:368
+	//line templates/ftp.qtpl:384
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line templates/ftp.qtpl:368
+	//line templates/ftp.qtpl:384
 	return qs422016
-//line templates/ftp.qtpl:368
+//line templates/ftp.qtpl:384
 }

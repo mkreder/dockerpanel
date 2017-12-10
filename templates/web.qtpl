@@ -5,6 +5,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <script type="text/javascript">
+    var timeoutVar;
+
+    function activarTimeout() {
+        timeoutVar = setTimeout(function() {
+            window.location.href = window.location.href;
+        }, 5000);
+    }
+    activarTimeout()
+
+    function desactivarTimeout() {
+        clearTimeout(timeoutVar);
+    }
+
     function validateForm() {
         var x = document.getElementById("dominio").value;
         if (x == "" ) {
@@ -22,6 +35,7 @@
     function showDiv() {
         var x = document.getElementById('form');
         x.style.display = 'block';
+        desactivarTimeout()
     }
 
     function activateSelects(){
@@ -59,6 +73,7 @@
         document.getElementById('phpMethod').setAttribute("disabled","disabled");
         document.getElementById('files').setAttribute("disabled","disabled")
         document.getElementById("phpMethod").options[1].disabled = false
+        activarTimeout()
     }
 
     function modifyWeb(id,dominio,ssl,cgi,php,phpVersion,phpMethod,webserver) {
@@ -110,6 +125,7 @@
             }
         }
         x.style.display = 'block';
+        desactivarTimeout()
     }
 
     function opcionesPhp() {

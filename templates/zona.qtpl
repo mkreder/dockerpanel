@@ -4,7 +4,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <script type="text/javascript">
+
+    var timeoutVar;
+
+    function activarTimeout() {
+        timeoutVar = setTimeout(function() {
+            window.location.href = window.location.href;
+        }, 5000);
+    }
+    activarTimeout()
+
+    function desactivarTimeout() {
+        clearTimeout(timeoutVar);
+    }
+
     function validateForm() {
+
+
         var x = document.getElementById("dominio").value;
         if (x == "" ) {
             alert("Se debe completar el dominio");
@@ -34,6 +50,7 @@
     function showDiv() {
         var x = document.getElementById('form');
         x.style.display = 'block';
+        desactivarTimeout();
     }
 
 
@@ -43,6 +60,7 @@
         document.getElementById("dominio").value = "";
         document.getElementById("email").value = "";
         document.getElementById("id").value = "";
+        activarTimeout();
     }
 
     function modifyZona(id,dominio,email) {
@@ -51,6 +69,7 @@
         document.getElementById("dominio").value = dominio;
         document.getElementById("email").value = email;
         x.style.display = 'block';
+        desactivarTimeout();
     }
 
 </script>

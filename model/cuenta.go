@@ -46,7 +46,7 @@ func (mgr *manager) GetCuenta(id string) Cuenta {
 func (mgr *manager) RemoveCuenta(id string) (err error) {
 	cuenta := Mgr.GetCuenta(id)
 	autoresponderid := strconv.Itoa(int(cuenta.Autoresponder.ID))
-	mgr.db.Model(&cuenta).Association("Autoresponder").Delete(&cuenta.Autoresponder)
+//	mgr.db.Model(&cuenta).Association("Autoresponder").Delete(&cuenta.Autoresponder)
 	Mgr.RemoveAutoresponder(autoresponderid)
 	return mgr.db.Delete(Cuenta{}, "id == ?", id).Error
 }

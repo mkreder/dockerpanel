@@ -52,14 +52,14 @@ func AddRegistro(w http.ResponseWriter, r *http.Request) {
 				if err != nil {
 					templates.WriteRegistroTemplate(w, model.Mgr.GetRegistros(zonaid),zonaid,"Error al agregar el registro")
 				} else {
-					templates.WriteRegistroTemplate(w, model.Mgr.GetRegistros(zonaid),zonaid,"")
+					http.Redirect(w,r,"/editRegistros?id=" + zonaid,http.StatusSeeOther)
 				}
 			} else {
 				err := model.Mgr.UpdateRegistro(&registro)
 				if err != nil {
 					templates.WriteRegistroTemplate(w, model.Mgr.GetRegistros(zonaid),zonaid,"Error al actualizar el registro")
 				} else {
-					templates.WriteRegistroTemplate(w, model.Mgr.GetRegistros(zonaid),zonaid,"")
+					http.Redirect(w,r,"/editRegistros?id=" + zonaid,http.StatusSeeOther)
 				}
 			}
 		}
@@ -77,7 +77,7 @@ func RemoveRegistro(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			templates.WriteRegistroTemplate(w,model.Mgr.GetRegistros(zonaid),zonaid,"Error al borrar el registro")
 		} else {
-			templates.WriteRegistroTemplate(w,model.Mgr.GetRegistros(zonaid),zonaid,"")
+			http.Redirect(w,r,"/editRegistros?id=" + zonaid,http.StatusSeeOther)
 		}
 	} else {
 		templates.WriteLoginTemplate(w,"")

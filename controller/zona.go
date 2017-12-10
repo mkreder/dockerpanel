@@ -89,14 +89,14 @@ func AddRegion(w http.ResponseWriter, r *http.Request) {
 				if err != nil {
 					templates.WriteZonaTemplate(w, model.Mgr.GetAllZonas(),"Error al agregar la zona")
 				} else {
-					templates.WriteZonaTemplate(w, model.Mgr.GetAllZonas(),"")
+					http.Redirect(w,r,"/dns",http.StatusSeeOther)
 				}
 			} else {
 				err = model.Mgr.UpdateZona(&zona)
 				if err != nil {
 					templates.WriteZonaTemplate(w, model.Mgr.GetAllZonas(),"Error al actualizar la zona")
 				} else {
-					templates.WriteZonaTemplate(w, model.Mgr.GetAllZonas(),"")
+					http.Redirect(w,r,"/dns",http.StatusSeeOther)
 				}
 			}
 		}
@@ -115,7 +115,7 @@ func RemoveZona(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			templates.WriteZonaTemplate(w,model.Mgr.GetAllZonas(),"Error al borrar la zona")
 		} else {
-			templates.WriteZonaTemplate(w,model.Mgr.GetAllZonas(),"")
+			http.Redirect(w,r,"/dns",http.StatusSeeOther)
 		}
 	} else {
 		templates.WriteLoginTemplate(w,"")
