@@ -12,6 +12,7 @@ import (
 func generarDockerFile(web model.Web){
 	dockerfile := ""
 	phppkg := ""
+	phpdir := ""
 	dockerfile = dockerfile + "FROM ubuntu:trusty \nRUN apt-get update\nRUN mkdir /scripts && echo \"#!/bin/sh\" >> /scripts/start.sh && chmod +x /scripts/start.sh \n"
 	if ( web.PHP == true ) && ( web.PHPversion != "5.5" ) {
 		dockerfile = dockerfile + "RUN apt-get --assume-yes true install software-properties-common\n"+
@@ -21,12 +22,16 @@ func generarDockerFile(web model.Web){
 	if  web.PHP == true {
 		if web.PHPversion == "5.5" {
 			phppkg = "php5"
+			phpdir = "php5"
 		} else if web.PHPversion == "5.6" {
 			phppkg = "php5.6"
+			phpdir = "php/5.6"
 		} else if web.PHPversion == "7.0" {
 			phppkg = "php7.0"
+			phpdir = "php/7.0"
 		} else if web.PHPversion == "7.1" {
 			phppkg = "php7.1"
+			phpdir = "php/7.1"
 		}
 		dockerfile = dockerfile + "RUN apt-get --assume-yes true install " + phppkg + " " + phppkg + "-mysql" + "\n"
 	}
@@ -49,14 +54,14 @@ func generarDockerFile(web model.Web){
 		} else {
 			dockerfile = dockerfile + "RUN apt-get --asume-yes true install " + phppkg +  "-fpm\n"
 			dockerfile = dockerfile + "COPY fpm-nginx.conf /etc/nginx/sites-available/default \n"
-			dockerfile = dockerfile + "RUN sed -i \"/pathinfo/s/;cgi/cgi/\" -i /etc/" + phppkg + "/fpm/php.ini \n"
+			dockerfile = dockerfile + "RUN sed -i \"/pathinfo/s/;cgi/cgi/\" -i /etc/" + phpdir + "/fpm/php.ini \n"
 		}
 		dockerfile = dockerfile + "RUN echo \"/etc/init.d/" + phppkg + "-fpm start\" >> /scripts/start.sh \n"
 	} else if web.PHPmethod == "fcgi" {
 		dockerfile = dockerfile + "RUN apt-get --asume-yes true install apache2-suexec libapache2-mod-fcgid " + phppkg + "-cgi \n"
 		dockerfile = dockerfile + "RUN a2dismod " + phppkg + "\n"
 		dockerfile = dockerfile + "RUN a2enmod rewrite && a2enmod suexec && a2enmod include && a2enmod fcgid \n"
-		dockerfile = dockerfile + "RUN sed -i \"/pathinfo/s/;cgi/cgi/\" -i /etc/" + phppkg + "/cgi/php.ini \n"
+		dockerfile = dockerfile + "RUN sed -i \"/pathinfo/s/;cgi/cgi/\" -i /etc/" + phpdir + "/cgi/php.ini \n"
 		dockerfile = dockerfile + "RUN sed '2 i PHP_Fix_Pathinfo_Enable 1' /etc/apache2/mods-available/fcgid.conf -i \n"
 		dockerfile = dockerfile + "RUN groupadd web && useradd -s /bin/false -d /var/www/html -m -g web web \n"
 		dockerfile = dockerfile + "RUN mkdir -p /var/www/php-fcgi-scripts/web \n"

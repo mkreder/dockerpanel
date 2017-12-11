@@ -23,7 +23,6 @@ func check(e error){
 func checkCmd(e error, stderr bytes.Buffer){
 	if e != nil {
 		log.Printf("Error: " + stderr.String())
-		panic(e)
 	}
 }
 
