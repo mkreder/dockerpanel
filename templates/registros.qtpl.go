@@ -28,6 +28,19 @@ func StreamRegistroTemplate(qw422016 *qt422016.Writer, registros []model.Registr
 <!DOCTYPE html>
 <html lang="en">
 <script type="text/javascript">
+    var timeoutVar;
+
+    function activarTimeout() {
+        timeoutVar = setTimeout(function() {
+            window.location.href = window.location.href;
+        }, 5000);
+    }
+    activarTimeout()
+
+    function desactivarTimeout() {
+        clearTimeout(timeoutVar);
+    }
+
     function validateForm() {
         var x = document.getElementById("nombre").value;
         if (x == "" ) {
@@ -63,6 +76,7 @@ func StreamRegistroTemplate(qw422016 *qt422016.Writer, registros []model.Registr
     function showDiv() {
         var x = document.getElementById('form');
         x.style.display = 'block';
+        desactivarTimeout()
     }
 
 
@@ -75,6 +89,7 @@ func StreamRegistroTemplate(qw422016 *qt422016.Writer, registros []model.Registr
         document.getElementById("prioridad").value = "";
         document.getElementById("id").value = "";
         document.getElementById("prioridad").setAttribute("disabled","disabled")
+        activarTimeout()
     }
 
     function modifyRegistro(id,tipo,nombre,valor,prioridad) {
@@ -96,6 +111,7 @@ func StreamRegistroTemplate(qw422016 *qt422016.Writer, registros []model.Registr
         }
 
         x.style.display = 'block';
+        desactivarTimeout()
     }
 
     function activarPrioridad(){
@@ -144,21 +160,21 @@ func StreamRegistroTemplate(qw422016 *qt422016.Writer, registros []model.Registr
 <body>
 
 `)
-	//line templates/registros.qtpl:122
+	//line templates/registros.qtpl:138
 	if len(error) > 0 {
-		//line templates/registros.qtpl:122
+		//line templates/registros.qtpl:138
 		qw422016.N().S(`
 <script type="text/javascript">
     window.alert("`)
-		//line templates/registros.qtpl:124
+		//line templates/registros.qtpl:140
 		qw422016.E().S(error)
-		//line templates/registros.qtpl:124
+		//line templates/registros.qtpl:140
 		qw422016.N().S(`")
 </script>
 `)
-		//line templates/registros.qtpl:126
+		//line templates/registros.qtpl:142
 	}
-	//line templates/registros.qtpl:126
+	//line templates/registros.qtpl:142
 	qw422016.N().S(`
 
 <div id="wrapper">
@@ -249,69 +265,69 @@ func StreamRegistroTemplate(qw422016 *qt422016.Writer, registros []model.Registr
                             </thead>
                             <tbody>
                             `)
-	//line templates/registros.qtpl:215
+	//line templates/registros.qtpl:231
 	for _, registro := range registros {
-		//line templates/registros.qtpl:215
+		//line templates/registros.qtpl:231
 		qw422016.N().S(`
                             <tr class="odd gradeX">
                                 <td> `)
-		//line templates/registros.qtpl:217
+		//line templates/registros.qtpl:233
 		qw422016.E().S(registro.Tipo)
-		//line templates/registros.qtpl:217
+		//line templates/registros.qtpl:233
 		qw422016.N().S(` </td>
                                 <td> `)
-		//line templates/registros.qtpl:218
+		//line templates/registros.qtpl:234
 		qw422016.E().S(registro.Nombre)
-		//line templates/registros.qtpl:218
+		//line templates/registros.qtpl:234
 		qw422016.N().S(` </td>
                                 <td> `)
-		//line templates/registros.qtpl:219
+		//line templates/registros.qtpl:235
 		qw422016.E().S(registro.Valor)
-		//line templates/registros.qtpl:219
+		//line templates/registros.qtpl:235
 		qw422016.N().S(` </td>
                                 <td> `)
-		//line templates/registros.qtpl:220
+		//line templates/registros.qtpl:236
 		qw422016.E().S(registro.Prioridad)
-		//line templates/registros.qtpl:220
+		//line templates/registros.qtpl:236
 		qw422016.N().S(` </td>
 
                                 <td class="center">
                                     <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Modificar registro" onclick='modifyRegistro(`)
-		//line templates/registros.qtpl:223
+		//line templates/registros.qtpl:239
 		qw422016.N().D(int(registro.ID))
-		//line templates/registros.qtpl:223
+		//line templates/registros.qtpl:239
 		qw422016.N().S(`, "`)
-		//line templates/registros.qtpl:223
+		//line templates/registros.qtpl:239
 		qw422016.E().S(registro.Tipo)
-		//line templates/registros.qtpl:223
+		//line templates/registros.qtpl:239
 		qw422016.N().S(`",  "`)
-		//line templates/registros.qtpl:223
+		//line templates/registros.qtpl:239
 		qw422016.E().S(registro.Nombre)
-		//line templates/registros.qtpl:223
+		//line templates/registros.qtpl:239
 		qw422016.N().S(`", "`)
-		//line templates/registros.qtpl:223
+		//line templates/registros.qtpl:239
 		qw422016.E().S(registro.Valor)
-		//line templates/registros.qtpl:223
+		//line templates/registros.qtpl:239
 		qw422016.N().S(`",  "`)
-		//line templates/registros.qtpl:223
+		//line templates/registros.qtpl:239
 		qw422016.E().S(registro.Prioridad)
-		//line templates/registros.qtpl:223
+		//line templates/registros.qtpl:239
 		qw422016.N().S(`" )' ><i class="fa fa-list"></i></button>
                                     <button class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar registro" onclick="location.href='removeRegistro?id=`)
-		//line templates/registros.qtpl:224
+		//line templates/registros.qtpl:240
 		qw422016.N().D(int(registro.ID))
-		//line templates/registros.qtpl:224
+		//line templates/registros.qtpl:240
 		qw422016.N().S(`&zonaid=`)
-		//line templates/registros.qtpl:224
+		//line templates/registros.qtpl:240
 		qw422016.E().S(zonaid)
-		//line templates/registros.qtpl:224
+		//line templates/registros.qtpl:240
 		qw422016.N().S(`';"><i class="fa fa-trash-o"></i></button>
                                 </td>
                             </tr>
                             `)
-		//line templates/registros.qtpl:227
+		//line templates/registros.qtpl:243
 	}
-	//line templates/registros.qtpl:227
+	//line templates/registros.qtpl:243
 	qw422016.N().S(`
                             </tbody>
                         </table>
@@ -333,9 +349,9 @@ func StreamRegistroTemplate(qw422016 *qt422016.Writer, registros []model.Registr
                     <form id="addregistro" action="/registros" onsubmit="return validateForm()" role=form method="post">
                         <input id="id" name="id" id="id" hidden="true" >
                         <input id="zonaid" name="zonaid" id="zonaid" value="`)
-	//line templates/registros.qtpl:247
+	//line templates/registros.qtpl:263
 	qw422016.E().S(zonaid)
-	//line templates/registros.qtpl:247
+	//line templates/registros.qtpl:263
 	qw422016.N().S(`" hidden="true" >
                         Tipo
                         <select  class="form-control"  id="tipo" name="tipo" onchange="activarPrioridad()">
@@ -393,31 +409,31 @@ func StreamRegistroTemplate(qw422016 *qt422016.Writer, registros []model.Registr
 </html>
 
 `)
-//line templates/registros.qtpl:303
+//line templates/registros.qtpl:319
 }
 
-//line templates/registros.qtpl:303
+//line templates/registros.qtpl:319
 func WriteRegistroTemplate(qq422016 qtio422016.Writer, registros []model.Registro, zonaid string, error string) {
-	//line templates/registros.qtpl:303
+	//line templates/registros.qtpl:319
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line templates/registros.qtpl:303
+	//line templates/registros.qtpl:319
 	StreamRegistroTemplate(qw422016, registros, zonaid, error)
-	//line templates/registros.qtpl:303
+	//line templates/registros.qtpl:319
 	qt422016.ReleaseWriter(qw422016)
-//line templates/registros.qtpl:303
+//line templates/registros.qtpl:319
 }
 
-//line templates/registros.qtpl:303
+//line templates/registros.qtpl:319
 func RegistroTemplate(registros []model.Registro, zonaid string, error string) string {
-	//line templates/registros.qtpl:303
+	//line templates/registros.qtpl:319
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line templates/registros.qtpl:303
+	//line templates/registros.qtpl:319
 	WriteRegistroTemplate(qb422016, registros, zonaid, error)
-	//line templates/registros.qtpl:303
+	//line templates/registros.qtpl:319
 	qs422016 := string(qb422016.B)
-	//line templates/registros.qtpl:303
+	//line templates/registros.qtpl:319
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line templates/registros.qtpl:303
+	//line templates/registros.qtpl:319
 	return qs422016
-//line templates/registros.qtpl:303
+//line templates/registros.qtpl:319
 }

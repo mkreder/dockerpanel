@@ -28,7 +28,23 @@ func StreamZonaTemplate(qw422016 *qt422016.Writer, zonas []model.Zona, error str
 <!DOCTYPE html>
 <html lang="en">
 <script type="text/javascript">
+
+    var timeoutVar;
+
+    function activarTimeout() {
+        timeoutVar = setTimeout(function() {
+            window.location.href = window.location.href;
+        }, 5000);
+    }
+    activarTimeout()
+
+    function desactivarTimeout() {
+        clearTimeout(timeoutVar);
+    }
+
     function validateForm() {
+
+
         var x = document.getElementById("dominio").value;
         if (x == "" ) {
             alert("Se debe completar el dominio");
@@ -58,6 +74,7 @@ func StreamZonaTemplate(qw422016 *qt422016.Writer, zonas []model.Zona, error str
     function showDiv() {
         var x = document.getElementById('form');
         x.style.display = 'block';
+        desactivarTimeout();
     }
 
 
@@ -67,6 +84,7 @@ func StreamZonaTemplate(qw422016 *qt422016.Writer, zonas []model.Zona, error str
         document.getElementById("dominio").value = "";
         document.getElementById("email").value = "";
         document.getElementById("id").value = "";
+        activarTimeout();
     }
 
     function modifyZona(id,dominio,email) {
@@ -75,6 +93,7 @@ func StreamZonaTemplate(qw422016 *qt422016.Writer, zonas []model.Zona, error str
         document.getElementById("dominio").value = dominio;
         document.getElementById("email").value = email;
         x.style.display = 'block';
+        desactivarTimeout();
     }
 
 </script>
@@ -115,21 +134,21 @@ func StreamZonaTemplate(qw422016 *qt422016.Writer, zonas []model.Zona, error str
 <body>
 
 `)
-	//line templates/zona.qtpl:93
+	//line templates/zona.qtpl:112
 	if len(error) > 0 {
-		//line templates/zona.qtpl:93
+		//line templates/zona.qtpl:112
 		qw422016.N().S(`
 <script type="text/javascript">
     window.alert("`)
-		//line templates/zona.qtpl:95
+		//line templates/zona.qtpl:114
 		qw422016.E().S(error)
-		//line templates/zona.qtpl:95
+		//line templates/zona.qtpl:114
 		qw422016.N().S(`")
 </script>
 `)
-		//line templates/zona.qtpl:97
+		//line templates/zona.qtpl:116
 	}
-	//line templates/zona.qtpl:97
+	//line templates/zona.qtpl:116
 	qw422016.N().S(`
 
 <div id="wrapper">
@@ -219,91 +238,91 @@ func StreamZonaTemplate(qw422016 *qt422016.Writer, zonas []model.Zona, error str
                             </thead>
                             <tbody>
                             `)
-	//line templates/zona.qtpl:185
+	//line templates/zona.qtpl:204
 	for _, zona := range zonas {
-		//line templates/zona.qtpl:185
+		//line templates/zona.qtpl:204
 		qw422016.N().S(`
                             <tr class="odd gradeX">
                                 <td> `)
-		//line templates/zona.qtpl:187
+		//line templates/zona.qtpl:206
 		qw422016.E().S(zona.Dominio)
-		//line templates/zona.qtpl:187
+		//line templates/zona.qtpl:206
 		qw422016.N().S(` </td>
 
                                 `)
-		//line templates/zona.qtpl:189
+		//line templates/zona.qtpl:208
 		switch zona.Estado {
-		//line templates/zona.qtpl:190
+		//line templates/zona.qtpl:209
 		case 1:
-			//line templates/zona.qtpl:190
+			//line templates/zona.qtpl:209
 			qw422016.N().S(`
                                 <td>a configurar</td>
                                 `)
-		//line templates/zona.qtpl:192
+		//line templates/zona.qtpl:211
 		case 2:
-			//line templates/zona.qtpl:192
+			//line templates/zona.qtpl:211
 			qw422016.N().S(`
                                 <td>configurado</td>
                                 `)
-		//line templates/zona.qtpl:194
+		//line templates/zona.qtpl:213
 		case 3:
-			//line templates/zona.qtpl:194
+			//line templates/zona.qtpl:213
 			qw422016.N().S(`
                                 <td>activo</td>
                                 `)
-		//line templates/zona.qtpl:196
+		//line templates/zona.qtpl:215
 		case 4:
-			//line templates/zona.qtpl:196
+			//line templates/zona.qtpl:215
 			qw422016.N().S(`
                                 <td>apagado</td>
                                 `)
-		//line templates/zona.qtpl:198
+		//line templates/zona.qtpl:217
 		case 5:
-			//line templates/zona.qtpl:198
+			//line templates/zona.qtpl:217
 			qw422016.N().S(`
                                 <td>eliminando</td>
                                 `)
-			//line templates/zona.qtpl:200
+			//line templates/zona.qtpl:219
 		}
-		//line templates/zona.qtpl:200
+		//line templates/zona.qtpl:219
 		qw422016.N().S(`
 
                                 <td> `)
-		//line templates/zona.qtpl:202
+		//line templates/zona.qtpl:221
 		qw422016.E().S(zona.Email)
-		//line templates/zona.qtpl:202
+		//line templates/zona.qtpl:221
 		qw422016.N().S(` </td>
 
                                 <td class="center">
                                     <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Editar zona" onclick='modifyZona(`)
-		//line templates/zona.qtpl:205
+		//line templates/zona.qtpl:224
 		qw422016.N().D(int(zona.ID))
-		//line templates/zona.qtpl:205
+		//line templates/zona.qtpl:224
 		qw422016.N().S(`, "`)
-		//line templates/zona.qtpl:205
+		//line templates/zona.qtpl:224
 		qw422016.E().S(zona.Dominio)
-		//line templates/zona.qtpl:205
+		//line templates/zona.qtpl:224
 		qw422016.N().S(`",  "`)
-		//line templates/zona.qtpl:205
+		//line templates/zona.qtpl:224
 		qw422016.E().S(zona.Email)
-		//line templates/zona.qtpl:205
+		//line templates/zona.qtpl:224
 		qw422016.N().S(`" )' ><i class="fa fa-list"></i></button>
                                     <button class="btn btn-xs btn-info"  data-toggle="tooltip" data-placement="top" title="Editar registros" onclick="location.href='editRegistros?id=`)
-		//line templates/zona.qtpl:206
+		//line templates/zona.qtpl:225
 		qw422016.N().D(int(zona.ID))
-		//line templates/zona.qtpl:206
+		//line templates/zona.qtpl:225
 		qw422016.N().S(`';"><i class="fa fa-edit"></i></button>
                                     <button class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar zona" onclick="location.href='removeZona?id=`)
-		//line templates/zona.qtpl:207
+		//line templates/zona.qtpl:226
 		qw422016.N().D(int(zona.ID))
-		//line templates/zona.qtpl:207
+		//line templates/zona.qtpl:226
 		qw422016.N().S(`';"><i class="fa fa-trash-o"></i></button>
                                 </td>
                             </tr>
                             `)
-		//line templates/zona.qtpl:210
+		//line templates/zona.qtpl:229
 	}
-	//line templates/zona.qtpl:210
+	//line templates/zona.qtpl:229
 	qw422016.N().S(`
                             </tbody>
                         </table>
@@ -364,31 +383,31 @@ func StreamZonaTemplate(qw422016 *qt422016.Writer, zonas []model.Zona, error str
 </html>
 
 `)
-//line templates/zona.qtpl:269
+//line templates/zona.qtpl:288
 }
 
-//line templates/zona.qtpl:269
+//line templates/zona.qtpl:288
 func WriteZonaTemplate(qq422016 qtio422016.Writer, zonas []model.Zona, error string) {
-	//line templates/zona.qtpl:269
+	//line templates/zona.qtpl:288
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line templates/zona.qtpl:269
+	//line templates/zona.qtpl:288
 	StreamZonaTemplate(qw422016, zonas, error)
-	//line templates/zona.qtpl:269
+	//line templates/zona.qtpl:288
 	qt422016.ReleaseWriter(qw422016)
-//line templates/zona.qtpl:269
+//line templates/zona.qtpl:288
 }
 
-//line templates/zona.qtpl:269
+//line templates/zona.qtpl:288
 func ZonaTemplate(zonas []model.Zona, error string) string {
-	//line templates/zona.qtpl:269
+	//line templates/zona.qtpl:288
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line templates/zona.qtpl:269
+	//line templates/zona.qtpl:288
 	WriteZonaTemplate(qb422016, zonas, error)
-	//line templates/zona.qtpl:269
+	//line templates/zona.qtpl:288
 	qs422016 := string(qb422016.B)
-	//line templates/zona.qtpl:269
+	//line templates/zona.qtpl:288
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line templates/zona.qtpl:269
+	//line templates/zona.qtpl:288
 	return qs422016
-//line templates/zona.qtpl:269
+//line templates/zona.qtpl:288
 }

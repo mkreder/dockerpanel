@@ -61,7 +61,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 			templates.WriteLoginTemplate(w,"Contraseña invalida")
 		} else {
 			setSession(email, w)
-			templates.WriteHomeTemplate(w)
+			http.Redirect(w,r,"/",http.StatusSeeOther)
 		}
 
 	}

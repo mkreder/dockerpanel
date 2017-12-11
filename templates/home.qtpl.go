@@ -5,26 +5,37 @@
 package templates
 
 //line templates/home.qtpl:1
+import "github.com/mkreder/dockerpanel/model"
+
+//line templates/home.qtpl:2
 import (
 	qtio422016 "io"
 
 	qt422016 "github.com/valyala/quicktemplate"
 )
 
-//line templates/home.qtpl:1
+//line templates/home.qtpl:2
 var (
 	_ = qtio422016.Copy
 	_ = qt422016.AcquireByteBuffer
 )
 
-//line templates/home.qtpl:1
-func StreamHomeTemplate(qw422016 *qt422016.Writer) {
-	//line templates/home.qtpl:1
+//line templates/home.qtpl:2
+func StreamHomeTemplate(qw422016 *qt422016.Writer, containers []model.Container) {
+	//line templates/home.qtpl:2
 	qw422016.N().S(`
-
 <!DOCTYPE html>
 <html lang="en">
+<script type="text/javascript">
+    var timeoutVar;
 
+    function activarTimeout() {
+        timeoutVar = setTimeout(function() {
+            window.location.href = window.location.href;
+        }, 5000);
+    }
+    activarTimeout()
+</script>
 <head>
 
     <meta charset="utf-8">
@@ -127,10 +138,77 @@ func StreamHomeTemplate(qw422016 *qt422016.Writer) {
     </nav>
 
     <div id="page-wrapper">
-
-
-
-
+    <br>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <h4 class="panel-title pull-left" style="padding-top: 7.5px;">Contenedores</h4>
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Imagen</th>
+                            <th>Comando</th>
+                            <th>Estado</th>
+                            <th>Puertos</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        `)
+	//line templates/home.qtpl:138
+	for _, container := range containers {
+		//line templates/home.qtpl:138
+		qw422016.N().S(`
+                        <tr class="odd gradeX">
+                            <td> `)
+		//line templates/home.qtpl:140
+		qw422016.E().S(container.ID)
+		//line templates/home.qtpl:140
+		qw422016.N().S(` </td>
+                            <td> `)
+		//line templates/home.qtpl:141
+		qw422016.E().S(container.Nombre)
+		//line templates/home.qtpl:141
+		qw422016.N().S(` </td>
+                            <td> `)
+		//line templates/home.qtpl:142
+		qw422016.E().S(container.Imagen)
+		//line templates/home.qtpl:142
+		qw422016.N().S(` </td>
+                            <td> `)
+		//line templates/home.qtpl:143
+		qw422016.E().S(container.Comando)
+		//line templates/home.qtpl:143
+		qw422016.N().S(` </td>
+                            <td> `)
+		//line templates/home.qtpl:144
+		qw422016.E().S(container.Estado)
+		//line templates/home.qtpl:144
+		qw422016.N().S(` </td>
+                            <td> `)
+		//line templates/home.qtpl:145
+		qw422016.E().S(container.Puertos)
+		//line templates/home.qtpl:145
+		qw422016.N().S(` </td>
+                        </tr>
+                        `)
+		//line templates/home.qtpl:147
+	}
+	//line templates/home.qtpl:147
+	qw422016.N().S(`
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
     </div>
     <!-- /#page-wrapper -->
 
@@ -159,31 +237,31 @@ func StreamHomeTemplate(qw422016 *qt422016.Writer) {
 </html>
 
 `)
-//line templates/home.qtpl:139
+//line templates/home.qtpl:183
 }
 
-//line templates/home.qtpl:139
-func WriteHomeTemplate(qq422016 qtio422016.Writer) {
-	//line templates/home.qtpl:139
+//line templates/home.qtpl:183
+func WriteHomeTemplate(qq422016 qtio422016.Writer, containers []model.Container) {
+	//line templates/home.qtpl:183
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line templates/home.qtpl:139
-	StreamHomeTemplate(qw422016)
-	//line templates/home.qtpl:139
+	//line templates/home.qtpl:183
+	StreamHomeTemplate(qw422016, containers)
+	//line templates/home.qtpl:183
 	qt422016.ReleaseWriter(qw422016)
-//line templates/home.qtpl:139
+//line templates/home.qtpl:183
 }
 
-//line templates/home.qtpl:139
-func HomeTemplate() string {
-	//line templates/home.qtpl:139
+//line templates/home.qtpl:183
+func HomeTemplate(containers []model.Container) string {
+	//line templates/home.qtpl:183
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line templates/home.qtpl:139
-	WriteHomeTemplate(qb422016)
-	//line templates/home.qtpl:139
+	//line templates/home.qtpl:183
+	WriteHomeTemplate(qb422016, containers)
+	//line templates/home.qtpl:183
 	qs422016 := string(qb422016.B)
-	//line templates/home.qtpl:139
+	//line templates/home.qtpl:183
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line templates/home.qtpl:139
+	//line templates/home.qtpl:183
 	return qs422016
-//line templates/home.qtpl:139
+//line templates/home.qtpl:183
 }

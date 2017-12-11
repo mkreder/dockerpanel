@@ -28,6 +28,19 @@ func StreamListaTemplate(qw422016 *qt422016.Writer, listas []model.Lista, domini
 <!DOCTYPE html>
 <html lang="en">
 <script type="text/javascript">
+    var timeoutVar;
+
+    function activarTimeout() {
+        timeoutVar = setTimeout(function() {
+            window.location.href = window.location.href;
+        }, 5000);
+    }
+    activarTimeout()
+
+    function desactivarTimeout() {
+        clearTimeout(timeoutVar);
+    }
+
     function validateForm() {
         var y = document.getElementById("nombre").value;
         if (y == "" ) {
@@ -75,6 +88,7 @@ func StreamListaTemplate(qw422016 *qt422016.Writer, listas []model.Lista, domini
     function showDiv() {
         var x = document.getElementById('form');
         x.style.display = 'block';
+        desactivarTimeout();
     }
 
 
@@ -88,6 +102,7 @@ func StreamListaTemplate(qw422016 *qt422016.Writer, listas []model.Lista, domini
             document.getElementById("password").removeAttribute("disabled");
             document.getElementById("checkmostrar").removeAttribute("disabled");
         }
+        activarTimeout();
     }
 
     function modifyLista(id,nombre) {
@@ -98,6 +113,7 @@ func StreamListaTemplate(qw422016 *qt422016.Writer, listas []model.Lista, domini
         document.getElementById("btngenerar").innerHTML="Cambiar";
         document.getElementById("checkmostrar").setAttribute("disabled","disabled")
         x.style.display = 'block';
+        desactivarTimeout();
     }
 
 </script>
@@ -138,21 +154,21 @@ func StreamListaTemplate(qw422016 *qt422016.Writer, listas []model.Lista, domini
 <body>
 
 `)
-	//line templates/listas.qtpl:116
+	//line templates/listas.qtpl:132
 	if len(error) > 0 {
-		//line templates/listas.qtpl:116
+		//line templates/listas.qtpl:132
 		qw422016.N().S(`
 <script type="text/javascript">
     window.alert("`)
-		//line templates/listas.qtpl:118
+		//line templates/listas.qtpl:134
 		qw422016.E().S(error)
-		//line templates/listas.qtpl:118
+		//line templates/listas.qtpl:134
 		qw422016.N().S(`")
 </script>
 `)
-		//line templates/listas.qtpl:120
+		//line templates/listas.qtpl:136
 	}
-	//line templates/listas.qtpl:120
+	//line templates/listas.qtpl:136
 	qw422016.N().S(`
 
 <div id="wrapper">
@@ -240,67 +256,67 @@ func StreamListaTemplate(qw422016 *qt422016.Writer, listas []model.Lista, domini
                             </thead>
                             <tbody>
                             `)
-	//line templates/listas.qtpl:206
+	//line templates/listas.qtpl:222
 	for _, lista := range listas {
-		//line templates/listas.qtpl:206
+		//line templates/listas.qtpl:222
 		qw422016.N().S(`
                             <tr class="odd gradeX">
                                 <td> `)
-		//line templates/listas.qtpl:208
+		//line templates/listas.qtpl:224
 		qw422016.E().S(lista.Nombre)
-		//line templates/listas.qtpl:208
+		//line templates/listas.qtpl:224
 		qw422016.N().S(` </td>
                                 <td> `)
-		//line templates/listas.qtpl:209
+		//line templates/listas.qtpl:225
 		qw422016.E().S(lista.EmailAdmin)
-		//line templates/listas.qtpl:209
+		//line templates/listas.qtpl:225
 		qw422016.N().S(` </td>
                                 `)
-		//line templates/listas.qtpl:210
+		//line templates/listas.qtpl:226
 		switch lista.Estado {
-		//line templates/listas.qtpl:211
+		//line templates/listas.qtpl:227
 		case 1:
-			//line templates/listas.qtpl:211
+			//line templates/listas.qtpl:227
 			qw422016.N().S(`
                                 <td>a configurar</td>
                                 `)
-		//line templates/listas.qtpl:213
+		//line templates/listas.qtpl:229
 		case 2:
-			//line templates/listas.qtpl:213
+			//line templates/listas.qtpl:229
 			qw422016.N().S(`
                                 <td>configurado</td>
                                 `)
-			//line templates/listas.qtpl:215
+			//line templates/listas.qtpl:231
 		}
-		//line templates/listas.qtpl:215
+		//line templates/listas.qtpl:231
 		qw422016.N().S(`
 
 
                                 <td class="center">
                                     <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Modificar lista de correo" onclick='modifyLista(`)
-		//line templates/listas.qtpl:219
+		//line templates/listas.qtpl:235
 		qw422016.N().D(int(lista.ID))
-		//line templates/listas.qtpl:219
+		//line templates/listas.qtpl:235
 		qw422016.N().S(`, "`)
-		//line templates/listas.qtpl:219
+		//line templates/listas.qtpl:235
 		qw422016.E().S(lista.Nombre)
-		//line templates/listas.qtpl:219
+		//line templates/listas.qtpl:235
 		qw422016.N().S(`")' ><i class="fa fa-list"></i></button>
                                     <button class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar lista de correo" onclick="location.href='removeLista?id=`)
-		//line templates/listas.qtpl:220
+		//line templates/listas.qtpl:236
 		qw422016.N().D(int(lista.ID))
-		//line templates/listas.qtpl:220
+		//line templates/listas.qtpl:236
 		qw422016.N().S(`&dominioid=`)
-		//line templates/listas.qtpl:220
+		//line templates/listas.qtpl:236
 		qw422016.E().S(dominioid)
-		//line templates/listas.qtpl:220
+		//line templates/listas.qtpl:236
 		qw422016.N().S(`';"><i class="fa fa-trash-o"></i></button>
                                 </td>
                             </tr>
                             `)
-		//line templates/listas.qtpl:223
+		//line templates/listas.qtpl:239
 	}
-	//line templates/listas.qtpl:223
+	//line templates/listas.qtpl:239
 	qw422016.N().S(`
                             </tbody>
                         </table>
@@ -322,9 +338,9 @@ func StreamListaTemplate(qw422016 *qt422016.Writer, listas []model.Lista, domini
                     <form id="addftp" action="/addLista" onsubmit="return validateForm()" role=form method="post">
                         <input id="id" name="id" hidden="true" >
                         <input id="dominioid" name="dominioid" hidden="true" value="`)
-	//line templates/listas.qtpl:243
+	//line templates/listas.qtpl:259
 	qw422016.E().S(dominioid)
-	//line templates/listas.qtpl:243
+	//line templates/listas.qtpl:259
 	qw422016.N().S(`">
                         <label>Configuración</label>
                         <br>
@@ -377,31 +393,31 @@ func StreamListaTemplate(qw422016 *qt422016.Writer, listas []model.Lista, domini
 </html>
 
 `)
-//line templates/listas.qtpl:294
+//line templates/listas.qtpl:310
 }
 
-//line templates/listas.qtpl:294
+//line templates/listas.qtpl:310
 func WriteListaTemplate(qq422016 qtio422016.Writer, listas []model.Lista, dominioid string, error string) {
-	//line templates/listas.qtpl:294
+	//line templates/listas.qtpl:310
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line templates/listas.qtpl:294
+	//line templates/listas.qtpl:310
 	StreamListaTemplate(qw422016, listas, dominioid, error)
-	//line templates/listas.qtpl:294
+	//line templates/listas.qtpl:310
 	qt422016.ReleaseWriter(qw422016)
-//line templates/listas.qtpl:294
+//line templates/listas.qtpl:310
 }
 
-//line templates/listas.qtpl:294
+//line templates/listas.qtpl:310
 func ListaTemplate(listas []model.Lista, dominioid string, error string) string {
-	//line templates/listas.qtpl:294
+	//line templates/listas.qtpl:310
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line templates/listas.qtpl:294
+	//line templates/listas.qtpl:310
 	WriteListaTemplate(qb422016, listas, dominioid, error)
-	//line templates/listas.qtpl:294
+	//line templates/listas.qtpl:310
 	qs422016 := string(qb422016.B)
-	//line templates/listas.qtpl:294
+	//line templates/listas.qtpl:310
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line templates/listas.qtpl:294
+	//line templates/listas.qtpl:310
 	return qs422016
-//line templates/listas.qtpl:294
+//line templates/listas.qtpl:310
 }

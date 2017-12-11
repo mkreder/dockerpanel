@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/mkreder/dockerpanel/tools"
 	"net/http"
 	"strings"
 	"time"
@@ -24,7 +25,7 @@ import (
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	userName := login.GetUNombreUsuario(r)
 	if userName != "" {
-		templates.WriteHomeTemplate(w)
+		templates.WriteHomeTemplate(w,tools.GetRunningContainers())
 	} else {
 		templates.WriteLoginTemplate(w,"")
 	}
