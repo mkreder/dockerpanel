@@ -56,3 +56,4 @@ func (mgr *manager) GetCuentas(dominioid string) []Cuenta {
 	mgr.db.Preload("Autoresponder").Where("dominio_id = ?", dominioid).Find(&cuentas)
 	return cuentas
 }
+

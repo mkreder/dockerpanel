@@ -334,7 +334,6 @@
                             <tr>
                                 <th>Cuenta</th>
                                 <th>Nombre real</th>
-                                <th>Estado</th>
                                 <th>Cuota</th>
                                 <th>Auto-responder</th>
                                 <th>Cuenta por defecto</th>
@@ -347,13 +346,6 @@
                             <tr class="odd gradeX">
                                 <td> {%s cuenta.Nombre %}@{%s dominio.Nombre %} </td>
                                 <td> {%s cuenta.NombreReal %} </td>
-
-                                {% switch cuenta.Estado %}
-                                {% case 1 %}
-                                <td>a configurar</td>
-                                {% case 2 %}
-                                <td>configurado</td>
-                                {% endswitch %}
 
                                 {% if cuenta.Cuota == 0 %}
                                 <td> ilimitada </td>

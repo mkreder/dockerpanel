@@ -109,26 +109,32 @@ func generarConfig() {
 		passwd := ""
 		shadow := ""
 		sieve := "require [\"vacation\"]; \n"
-		for _, cuenta := range model.Mgr.GetCuentas(strconv.Itoa(int(dominio.ID))) {
-			passwd = passwd + cuenta.Nombre + "@" + dominio.Nombre + "::101:104:\"" + cuenta.NombreReal + "\":/var/mail/vhosts/" + dominio.Nombre + "/" + cuenta.Nombre
-			if cuenta.Cuota != 0 {
-				passwd = passwd + "::userdb_quota_rule=*:bytes=" + strconv.Itoa(cuenta.Cuota) + "M \n"
-			} else {
-				passwd = passwd + "::\n"
-			}
-			shadow = shadow + cuenta.Nombre + "@" + dominio.Nombre + ":{DIGEST-MD5}" + cuenta.Password + "\n"
-			if cuenta.Autoresponder.Activado == true {
-				inicio, _ := time.Parse("2006-01-02", cuenta.Autoresponder.FechaIncio)
-				fin, _ := time.Parse("2006-01-02", cuenta.Autoresponder.FechaFin)
-				if time.Now().After(inicio) && time.Now().Before(fin) {
-					// days define cada cuanto volver a repsonder a las mismas direcciones
-					sieve = sieve + "vacation \n:days 1 \n:subject " + cuenta.Autoresponder.Asunto +
-						"\n" + ":addresses [\"" + cuenta.Nombre + "@" + dominio.Nombre + "\"]\n" +
-						"\"" + strings.Replace(cuenta.Autoresponder.Mensaje, ",", "\n", -1) + "\";\n"
+		for _, cuenta := range model.Mgr.GetAllCuentas() {
+			if cuenta.DominioID == dominio.ID {
+				passwd = passwd + cuenta.Nombre + "@" + dominio.Nombre + "::101:104:\"" + cuenta.NombreReal + "\":/var/mail/vhosts/" + dominio.Nombre + "/" + cuenta.Nombre
+				if cuenta.Cuota != 0 {
+					passwd = passwd + "::userdb_quota_rule=*:bytes=" + strconv.Itoa(cuenta.Cuota) + "M \n"
+				} else {
+					passwd = passwd + "::\n"
+				}
+				shadow = shadow + cuenta.Nombre + "@" + dominio.Nombre + ":{DIGEST-MD5}" + cuenta.Password + "\n"
+				if cuenta.Autoresponder.Activado == true {
+					inicio, _ := time.Parse("2006-01-02", cuenta.Autoresponder.FechaIncio)
+					fin, _ := time.Parse("2006-01-02", cuenta.Autoresponder.FechaFin)
+					if time.Now().After(inicio) && time.Now().Before(fin) {
+						// days define cada cuanto volver a repsonder a las mismas direcciones
+						sieve = sieve + "vacation \n:days 1 \n:subject " + cuenta.Autoresponder.Asunto +
+							"\n" + ":addresses [\"" + cuenta.Nombre + "@" + dominio.Nombre + "\"]\n" +
+							"\"" + strings.Replace(cuenta.Autoresponder.Mensaje, ",", "\n", -1) + "\";\n"
+					}
 				}
 			}
-			cuenta.Estado = 2
-			model.Mgr.UpdateCuenta(&cuenta)
+		}
+		for _, cuenta := range model.Mgr.GetAllCuentasRaw() {
+			if cuenta.DominioID == dominio.ID {
+				cuenta.Estado = 2
+				model.Mgr.UpdateCuenta(&cuenta)
+			}
 		}
 		err := ioutil.WriteFile("configs/mail/dovecot/conf/auth/"+dominio.Nombre+"/passwd", []byte(passwd), 0644)
 		if err != nil {

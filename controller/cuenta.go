@@ -1,6 +1,9 @@
 package controller
 
-import "net/http"
+import (
+	"net/http"
+	"time"
+)
 import (
 	"github.com/mkreder/dockerpanel/templates"
 	"github.com/mkreder/dockerpanel/model"
@@ -22,6 +25,22 @@ func CuentaHandler(w http.ResponseWriter, r *http.Request) {
 		templates.WriteLoginTemplate(w,"")
 	}
 
+}
+
+func actualizarDominio(dominioid string, nombrecuenta string, cuentadefecto string){
+	for {
+		dominio := model.Mgr.GetDominio(dominioid)
+		if ( dominio.Estado == 3 ){
+			dominio.Estado = 1
+			if len(cuentadefecto) != 0 {
+				dominio.CuentaDefecto = nombrecuenta
+			}
+
+			model.Mgr.UpdateDominio(&dominio)
+			break
+		}
+		time.Sleep(2 * time.Second)
+	}
 }
 
 func AddCuenta(w http.ResponseWriter, r *http.Request) {
@@ -94,14 +113,9 @@ func AddCuenta(w http.ResponseWriter, r *http.Request) {
 				cuenta.Renvio = ""
 			}
 			cuenta.Estado = 1
-			dominio.Estado = 1
-
 			cuentadefecto := strings.Join(r.Form["cuentadefecto"],"")
-			if len(cuentadefecto) != 0 {
-				dominio.CuentaDefecto = cuenta.Nombre
-			}
 
-			model.Mgr.UpdateDominio(&dominio)
+			go actualizarDominio(dominioid,cuenta.Nombre,cuentadefecto)
 
 			d64, err := strconv.ParseUint(dominioid,10,32)
 			cuenta.DominioID = uint(d64)
@@ -132,9 +146,7 @@ func RemoveCuenta(w http.ResponseWriter, r *http.Request) {
 	if UsuarioName != "" {
 		id := r.URL.Query().Get("id")
 		dominioid := r.URL.Query().Get("dominioid")
-		dominio := model.Mgr.GetDominio(dominioid)
-		dominio.Estado = 1
-		model.Mgr.UpdateDominio(&dominio)
+		go actualizarDominio(dominioid,"","")
 		err := model.Mgr.RemoveCuenta(id)
 		if err != nil {
 			templates.WriteCuentaTemplate(w, model.Mgr.GetCuentas(dominioid),model.Mgr.GetDominio(dominioid), "Error al borrar cuenta de correo")

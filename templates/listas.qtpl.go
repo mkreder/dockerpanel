@@ -250,73 +250,52 @@ func StreamListaTemplate(qw422016 *qt422016.Writer, listas []model.Lista, domini
                             <tr>
                                 <th>Nombre</th>
                                 <th>Correo del administrador</th>
-                                <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                             </thead>
                             <tbody>
                             `)
-	//line templates/listas.qtpl:222
+	//line templates/listas.qtpl:221
 	for _, lista := range listas {
-		//line templates/listas.qtpl:222
+		//line templates/listas.qtpl:221
 		qw422016.N().S(`
                             <tr class="odd gradeX">
                                 <td> `)
-		//line templates/listas.qtpl:224
+		//line templates/listas.qtpl:223
 		qw422016.E().S(lista.Nombre)
-		//line templates/listas.qtpl:224
+		//line templates/listas.qtpl:223
 		qw422016.N().S(` </td>
                                 <td> `)
-		//line templates/listas.qtpl:225
+		//line templates/listas.qtpl:224
 		qw422016.E().S(lista.EmailAdmin)
-		//line templates/listas.qtpl:225
+		//line templates/listas.qtpl:224
 		qw422016.N().S(` </td>
-                                `)
-		//line templates/listas.qtpl:226
-		switch lista.Estado {
-		//line templates/listas.qtpl:227
-		case 1:
-			//line templates/listas.qtpl:227
-			qw422016.N().S(`
-                                <td>a configurar</td>
-                                `)
-		//line templates/listas.qtpl:229
-		case 2:
-			//line templates/listas.qtpl:229
-			qw422016.N().S(`
-                                <td>configurado</td>
-                                `)
-			//line templates/listas.qtpl:231
-		}
-		//line templates/listas.qtpl:231
-		qw422016.N().S(`
-
 
                                 <td class="center">
                                     <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Modificar lista de correo" onclick='modifyLista(`)
-		//line templates/listas.qtpl:235
+		//line templates/listas.qtpl:227
 		qw422016.N().D(int(lista.ID))
-		//line templates/listas.qtpl:235
+		//line templates/listas.qtpl:227
 		qw422016.N().S(`, "`)
-		//line templates/listas.qtpl:235
+		//line templates/listas.qtpl:227
 		qw422016.E().S(lista.Nombre)
-		//line templates/listas.qtpl:235
+		//line templates/listas.qtpl:227
 		qw422016.N().S(`")' ><i class="fa fa-list"></i></button>
                                     <button class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar lista de correo" onclick="location.href='removeLista?id=`)
-		//line templates/listas.qtpl:236
+		//line templates/listas.qtpl:228
 		qw422016.N().D(int(lista.ID))
-		//line templates/listas.qtpl:236
+		//line templates/listas.qtpl:228
 		qw422016.N().S(`&dominioid=`)
-		//line templates/listas.qtpl:236
+		//line templates/listas.qtpl:228
 		qw422016.E().S(dominioid)
-		//line templates/listas.qtpl:236
+		//line templates/listas.qtpl:228
 		qw422016.N().S(`';"><i class="fa fa-trash-o"></i></button>
                                 </td>
                             </tr>
                             `)
-		//line templates/listas.qtpl:239
+		//line templates/listas.qtpl:231
 	}
-	//line templates/listas.qtpl:239
+	//line templates/listas.qtpl:231
 	qw422016.N().S(`
                             </tbody>
                         </table>
@@ -338,9 +317,9 @@ func StreamListaTemplate(qw422016 *qt422016.Writer, listas []model.Lista, domini
                     <form id="addftp" action="/addLista" onsubmit="return validateForm()" role=form method="post">
                         <input id="id" name="id" hidden="true" >
                         <input id="dominioid" name="dominioid" hidden="true" value="`)
-	//line templates/listas.qtpl:259
+	//line templates/listas.qtpl:251
 	qw422016.E().S(dominioid)
-	//line templates/listas.qtpl:259
+	//line templates/listas.qtpl:251
 	qw422016.N().S(`">
                         <label>Configuración</label>
                         <br>
@@ -393,31 +372,31 @@ func StreamListaTemplate(qw422016 *qt422016.Writer, listas []model.Lista, domini
 </html>
 
 `)
-//line templates/listas.qtpl:310
+//line templates/listas.qtpl:302
 }
 
-//line templates/listas.qtpl:310
+//line templates/listas.qtpl:302
 func WriteListaTemplate(qq422016 qtio422016.Writer, listas []model.Lista, dominioid string, error string) {
-	//line templates/listas.qtpl:310
+	//line templates/listas.qtpl:302
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line templates/listas.qtpl:310
+	//line templates/listas.qtpl:302
 	StreamListaTemplate(qw422016, listas, dominioid, error)
-	//line templates/listas.qtpl:310
+	//line templates/listas.qtpl:302
 	qt422016.ReleaseWriter(qw422016)
-//line templates/listas.qtpl:310
+//line templates/listas.qtpl:302
 }
 
-//line templates/listas.qtpl:310
+//line templates/listas.qtpl:302
 func ListaTemplate(listas []model.Lista, dominioid string, error string) string {
-	//line templates/listas.qtpl:310
+	//line templates/listas.qtpl:302
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line templates/listas.qtpl:310
+	//line templates/listas.qtpl:302
 	WriteListaTemplate(qb422016, listas, dominioid, error)
-	//line templates/listas.qtpl:310
+	//line templates/listas.qtpl:302
 	qs422016 := string(qb422016.B)
-	//line templates/listas.qtpl:310
+	//line templates/listas.qtpl:302
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line templates/listas.qtpl:310
+	//line templates/listas.qtpl:302
 	return qs422016
-//line templates/listas.qtpl:310
+//line templates/listas.qtpl:302
 }

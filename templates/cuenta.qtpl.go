@@ -372,7 +372,6 @@ func StreamCuentaTemplate(qw422016 *qt422016.Writer, cuentas []model.Cuenta, dom
                             <tr>
                                 <th>Cuenta</th>
                                 <th>Nombre real</th>
-                                <th>Estado</th>
                                 <th>Cuota</th>
                                 <th>Auto-responder</th>
                                 <th>Cuenta por defecto</th>
@@ -382,198 +381,178 @@ func StreamCuentaTemplate(qw422016 *qt422016.Writer, cuentas []model.Cuenta, dom
                             </thead>
                             <tbody>
                             `)
-	//line templates/cuenta.qtpl:346
+	//line templates/cuenta.qtpl:345
 	for _, cuenta := range cuentas {
-		//line templates/cuenta.qtpl:346
+		//line templates/cuenta.qtpl:345
 		qw422016.N().S(`
                             <tr class="odd gradeX">
                                 <td> `)
-		//line templates/cuenta.qtpl:348
+		//line templates/cuenta.qtpl:347
 		qw422016.E().S(cuenta.Nombre)
-		//line templates/cuenta.qtpl:348
+		//line templates/cuenta.qtpl:347
 		qw422016.N().S(`@`)
-		//line templates/cuenta.qtpl:348
+		//line templates/cuenta.qtpl:347
 		qw422016.E().S(dominio.Nombre)
-		//line templates/cuenta.qtpl:348
+		//line templates/cuenta.qtpl:347
 		qw422016.N().S(` </td>
                                 <td> `)
-		//line templates/cuenta.qtpl:349
+		//line templates/cuenta.qtpl:348
 		qw422016.E().S(cuenta.NombreReal)
-		//line templates/cuenta.qtpl:349
+		//line templates/cuenta.qtpl:348
 		qw422016.N().S(` </td>
 
                                 `)
-		//line templates/cuenta.qtpl:351
-		switch cuenta.Estado {
-		//line templates/cuenta.qtpl:352
-		case 1:
-			//line templates/cuenta.qtpl:352
-			qw422016.N().S(`
-                                <td>a configurar</td>
-                                `)
-		//line templates/cuenta.qtpl:354
-		case 2:
-			//line templates/cuenta.qtpl:354
-			qw422016.N().S(`
-                                <td>configurado</td>
-                                `)
-			//line templates/cuenta.qtpl:356
-		}
-		//line templates/cuenta.qtpl:356
-		qw422016.N().S(`
-
-                                `)
-		//line templates/cuenta.qtpl:358
+		//line templates/cuenta.qtpl:350
 		if cuenta.Cuota == 0 {
-			//line templates/cuenta.qtpl:358
+			//line templates/cuenta.qtpl:350
 			qw422016.N().S(`
                                 <td> ilimitada </td>
                                 `)
-			//line templates/cuenta.qtpl:360
+			//line templates/cuenta.qtpl:352
 		} else {
-			//line templates/cuenta.qtpl:360
+			//line templates/cuenta.qtpl:352
 			qw422016.N().S(`
                                 <td> `)
-			//line templates/cuenta.qtpl:361
+			//line templates/cuenta.qtpl:353
 			qw422016.N().D(cuenta.Cuota)
-			//line templates/cuenta.qtpl:361
+			//line templates/cuenta.qtpl:353
 			qw422016.N().S(` MB </td>
                                 `)
-			//line templates/cuenta.qtpl:362
+			//line templates/cuenta.qtpl:354
 		}
-		//line templates/cuenta.qtpl:362
+		//line templates/cuenta.qtpl:354
 		qw422016.N().S(`
 
+                                <td>
+                                    `)
+		//line templates/cuenta.qtpl:357
+		if cuenta.Autoresponder.Activado == true {
+			//line templates/cuenta.qtpl:357
+			qw422016.N().S(`
+                                        si
+                                    `)
+			//line templates/cuenta.qtpl:359
+		} else {
+			//line templates/cuenta.qtpl:359
+			qw422016.N().S(`
+                                        no
+                                    `)
+			//line templates/cuenta.qtpl:361
+		}
+		//line templates/cuenta.qtpl:361
+		qw422016.N().S(`
+                                </td>
                                 <td>
                                     `)
 		//line templates/cuenta.qtpl:365
-		if cuenta.Autoresponder.Activado == true {
-			//line templates/cuenta.qtpl:365
-			qw422016.N().S(`
-                                        si
-                                    `)
-			//line templates/cuenta.qtpl:367
-		} else {
-			//line templates/cuenta.qtpl:367
-			qw422016.N().S(`
-                                        no
-                                    `)
-			//line templates/cuenta.qtpl:369
-		}
-		//line templates/cuenta.qtpl:369
-		qw422016.N().S(`
-                                </td>
-                                <td>
-                                    `)
-		//line templates/cuenta.qtpl:373
 		cuentadefecto := "no"
 
-		//line templates/cuenta.qtpl:374
+		//line templates/cuenta.qtpl:366
 		qw422016.N().S(`
                                     `)
-		//line templates/cuenta.qtpl:375
+		//line templates/cuenta.qtpl:367
 		if cuenta.Nombre == dominio.CuentaDefecto {
-			//line templates/cuenta.qtpl:375
+			//line templates/cuenta.qtpl:367
 			qw422016.N().S(`
                                         si
                                     `)
-			//line templates/cuenta.qtpl:378
+			//line templates/cuenta.qtpl:370
 			cuentadefecto = "si"
 
-			//line templates/cuenta.qtpl:379
+			//line templates/cuenta.qtpl:371
 			qw422016.N().S(`
                                     `)
-			//line templates/cuenta.qtpl:380
+			//line templates/cuenta.qtpl:372
 		} else {
-			//line templates/cuenta.qtpl:380
+			//line templates/cuenta.qtpl:372
 			qw422016.N().S(`
                                         no
                                     `)
-			//line templates/cuenta.qtpl:382
+			//line templates/cuenta.qtpl:374
 		}
-		//line templates/cuenta.qtpl:382
+		//line templates/cuenta.qtpl:374
 		qw422016.N().S(`
                                 </td>
                                 <td>
                                     `)
-		//line templates/cuenta.qtpl:385
+		//line templates/cuenta.qtpl:377
 		if len(cuenta.Renvio) > 0 {
-			//line templates/cuenta.qtpl:385
+			//line templates/cuenta.qtpl:377
 			qw422016.N().S(`
                                         si
                                     `)
-			//line templates/cuenta.qtpl:387
+			//line templates/cuenta.qtpl:379
 		} else {
-			//line templates/cuenta.qtpl:387
+			//line templates/cuenta.qtpl:379
 			qw422016.N().S(`
                                         no
                                     `)
-			//line templates/cuenta.qtpl:389
+			//line templates/cuenta.qtpl:381
 		}
-		//line templates/cuenta.qtpl:389
+		//line templates/cuenta.qtpl:381
 		qw422016.N().S(`
                                 </td>
                                 <td class="center">
                                     <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Modificar cuenta de correo" onclick='modifyCuenta(`)
-		//line templates/cuenta.qtpl:392
+		//line templates/cuenta.qtpl:384
 		qw422016.N().D(int(cuenta.ID))
-		//line templates/cuenta.qtpl:392
+		//line templates/cuenta.qtpl:384
 		qw422016.N().S(`, "`)
-		//line templates/cuenta.qtpl:392
+		//line templates/cuenta.qtpl:384
 		qw422016.E().S(cuenta.Nombre)
-		//line templates/cuenta.qtpl:392
+		//line templates/cuenta.qtpl:384
 		qw422016.N().S(`", "`)
-		//line templates/cuenta.qtpl:392
+		//line templates/cuenta.qtpl:384
 		qw422016.E().S(cuenta.NombreReal)
-		//line templates/cuenta.qtpl:392
+		//line templates/cuenta.qtpl:384
 		qw422016.N().S(`","`)
-		//line templates/cuenta.qtpl:392
+		//line templates/cuenta.qtpl:384
 		qw422016.N().D(cuenta.Cuota)
-		//line templates/cuenta.qtpl:392
+		//line templates/cuenta.qtpl:384
 		qw422016.N().S(`", "`)
-		//line templates/cuenta.qtpl:392
+		//line templates/cuenta.qtpl:384
 		qw422016.E().S(cuentadefecto)
-		//line templates/cuenta.qtpl:392
+		//line templates/cuenta.qtpl:384
 		qw422016.N().S(`", "`)
-		//line templates/cuenta.qtpl:392
+		//line templates/cuenta.qtpl:384
 		qw422016.E().S(strconv.FormatBool(cuenta.Autoresponder.Activado))
-		//line templates/cuenta.qtpl:392
+		//line templates/cuenta.qtpl:384
 		qw422016.N().S(`", "`)
-		//line templates/cuenta.qtpl:392
+		//line templates/cuenta.qtpl:384
 		qw422016.E().S(cuenta.Autoresponder.FechaIncio)
-		//line templates/cuenta.qtpl:392
+		//line templates/cuenta.qtpl:384
 		qw422016.N().S(`", "`)
-		//line templates/cuenta.qtpl:392
+		//line templates/cuenta.qtpl:384
 		qw422016.E().S(cuenta.Autoresponder.FechaFin)
-		//line templates/cuenta.qtpl:392
+		//line templates/cuenta.qtpl:384
 		qw422016.N().S(`", "`)
-		//line templates/cuenta.qtpl:392
+		//line templates/cuenta.qtpl:384
 		qw422016.E().S(cuenta.Autoresponder.Mensaje)
-		//line templates/cuenta.qtpl:392
+		//line templates/cuenta.qtpl:384
 		qw422016.N().S(`", "`)
-		//line templates/cuenta.qtpl:392
+		//line templates/cuenta.qtpl:384
 		qw422016.E().S(cuenta.Autoresponder.Asunto)
-		//line templates/cuenta.qtpl:392
+		//line templates/cuenta.qtpl:384
 		qw422016.N().S(`", "`)
-		//line templates/cuenta.qtpl:392
+		//line templates/cuenta.qtpl:384
 		qw422016.E().S(cuenta.Renvio)
-		//line templates/cuenta.qtpl:392
+		//line templates/cuenta.qtpl:384
 		qw422016.N().S(`" )' ><i class="fa fa-list"></i></button>
                                     <button class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar cuenta de correo" onclick="location.href='removeCuenta?id=`)
-		//line templates/cuenta.qtpl:393
+		//line templates/cuenta.qtpl:385
 		qw422016.N().D(int(cuenta.ID))
-		//line templates/cuenta.qtpl:393
+		//line templates/cuenta.qtpl:385
 		qw422016.N().S(`&dominioid=`)
-		//line templates/cuenta.qtpl:393
+		//line templates/cuenta.qtpl:385
 		qw422016.N().D(int(dominio.ID))
-		//line templates/cuenta.qtpl:393
+		//line templates/cuenta.qtpl:385
 		qw422016.N().S(`';"><i class="fa fa-trash-o"></i></button>
                                 </td>
                             </tr>
                             `)
-		//line templates/cuenta.qtpl:396
+		//line templates/cuenta.qtpl:388
 	}
-	//line templates/cuenta.qtpl:396
+	//line templates/cuenta.qtpl:388
 	qw422016.N().S(`
                             </tbody>
                         </table>
@@ -596,9 +575,9 @@ func StreamCuentaTemplate(qw422016 *qt422016.Writer, cuentas []model.Cuenta, dom
 
                         <input id="id" name="id" hidden="true" >
                         <input id="dominioid" name="dominioid" hidden="true" value="`)
-	//line templates/cuenta.qtpl:417
+	//line templates/cuenta.qtpl:409
 	qw422016.N().D(int(dominio.ID))
-	//line templates/cuenta.qtpl:417
+	//line templates/cuenta.qtpl:409
 	qw422016.N().S(`">
 
                         <ul class="nav nav-tabs">
@@ -707,31 +686,31 @@ func StreamCuentaTemplate(qw422016 *qt422016.Writer, cuentas []model.Cuenta, dom
 </html>
 
 `)
-//line templates/cuenta.qtpl:524
+//line templates/cuenta.qtpl:516
 }
 
-//line templates/cuenta.qtpl:524
+//line templates/cuenta.qtpl:516
 func WriteCuentaTemplate(qq422016 qtio422016.Writer, cuentas []model.Cuenta, dominio model.Dominio, error string) {
-	//line templates/cuenta.qtpl:524
+	//line templates/cuenta.qtpl:516
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line templates/cuenta.qtpl:524
+	//line templates/cuenta.qtpl:516
 	StreamCuentaTemplate(qw422016, cuentas, dominio, error)
-	//line templates/cuenta.qtpl:524
+	//line templates/cuenta.qtpl:516
 	qt422016.ReleaseWriter(qw422016)
-//line templates/cuenta.qtpl:524
+//line templates/cuenta.qtpl:516
 }
 
-//line templates/cuenta.qtpl:524
+//line templates/cuenta.qtpl:516
 func CuentaTemplate(cuentas []model.Cuenta, dominio model.Dominio, error string) string {
-	//line templates/cuenta.qtpl:524
+	//line templates/cuenta.qtpl:516
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line templates/cuenta.qtpl:524
+	//line templates/cuenta.qtpl:516
 	WriteCuentaTemplate(qb422016, cuentas, dominio, error)
-	//line templates/cuenta.qtpl:524
+	//line templates/cuenta.qtpl:516
 	qs422016 := string(qb422016.B)
-	//line templates/cuenta.qtpl:524
+	//line templates/cuenta.qtpl:516
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line templates/cuenta.qtpl:524
+	//line templates/cuenta.qtpl:516
 	return qs422016
-//line templates/cuenta.qtpl:524
+//line templates/cuenta.qtpl:516
 }

@@ -214,7 +214,6 @@
                             <tr>
                                 <th>Nombre</th>
                                 <th>Correo del administrador</th>
-                                <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                             </thead>
@@ -223,13 +222,6 @@
                             <tr class="odd gradeX">
                                 <td> {%s lista.Nombre %} </td>
                                 <td> {%s lista.EmailAdmin %} </td>
-                                {% switch lista.Estado %}
-                                {% case 1 %}
-                                <td>a configurar</td>
-                                {% case 2 %}
-                                <td>configurado</td>
-                                {% endswitch %}
-
 
                                 <td class="center">
                                     <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="top" title="Modificar lista de correo" onclick='modifyLista({%d int(lista.ID) %}, "{%s lista.Nombre %}")' ><i class="fa fa-list"></i></button>
