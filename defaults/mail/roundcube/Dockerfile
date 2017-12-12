@@ -1,16 +1,20 @@
 FROM alpine:latest
 
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.6/main" >> /etc/apk/repositories
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.6/community" >> /etc/apk/repositories
+RUN apk update
 RUN apk --no-cache add \
       nginx \
       openssl \
       s6 \
-      roundcubemail \
       php7-fpm \
       php7-sqlite3 \
       php7-pdo \
+      php7-zip \
       php7-pdo_sqlite \
       sqlite \
-      roundcubemail-installer
+RUN apk add roundcubemail==1.2.7-r0
+RUN apk add roundcubemail-installer==1.2.7-r0
 RUN sed -ie 's^;daemonize = yes^daemonize = no^' /etc/php7/php-fpm.conf
 RUN mkdir -p /etc/s6/.s6-svscan
 RUN ln -s /bin/true /etc/s6/.s6-svscan/finish
