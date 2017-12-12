@@ -83,6 +83,6 @@ $config['plugins'] = array(
 );
 
 // skin name: folder from skins/
-$config['skin'] = 'larry';
+$config['skin'] = 'classic';
 
 $config['log_dir'] = '/var/log/roundcube/';
