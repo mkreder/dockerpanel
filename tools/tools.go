@@ -24,7 +24,8 @@ func GetIPAddress() string {
 
 	localAddr := conn.LocalAddr().(*net.UDPAddr)
 
-	return localAddr.IP.String()
+	//return localAddr.IP.String()
+	return "35.153.46.76"
 }
 
 
