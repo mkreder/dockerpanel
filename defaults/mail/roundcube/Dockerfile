@@ -15,6 +15,9 @@ RUN apk --no-cache add \
       sqlite
 RUN apk add roundcubemail==1.2.7-r0
 RUN apk add roundcubemail-installer==1.2.7-r0
+RUN pear install Mail_Mime
+RUN pear install Mail_mimeDecode
+RUN pear install Net_SMTP
 RUN sed -ie 's^;daemonize = yes^daemonize = no^' /etc/php7/php-fpm.conf
 RUN mkdir -p /etc/s6/.s6-svscan
 RUN ln -s /bin/true /etc/s6/.s6-svscan/finish
