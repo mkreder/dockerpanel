@@ -12,7 +12,7 @@ RUN apk --no-cache add \
       php7-pdo \
       php7-zip \
       php7-pdo_sqlite \
-      sqlite \
+      sqlite
 RUN apk add roundcubemail==1.2.7-r0
 RUN apk add roundcubemail-installer==1.2.7-r0
 RUN sed -ie 's^;daemonize = yes^daemonize = no^' /etc/php7/php-fpm.conf
