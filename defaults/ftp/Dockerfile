@@ -8,5 +8,9 @@ RUN sed -i "/xferlog_file/s/#xferlog_file/xferlog_file/g" /etc/vsftpd.conf
 RUN mkdir -p /var/run/vsftpd/empty
 RUN groupadd usuariosftp -g 1001
 RUN echo "pam_service_name=ftp" >> /etc/vsftpd.conf
+RUN echo "pasv_enable=YES \
+          pasv_min_port=1024 \
+          pasv_max_port=1048 \
+          pasv_address=35.153.46.76" >> /etc/vsftpd.conf
 ENTRYPOINT ["/usr/sbin/vsftpd"]
 EXPOSE 20 21
