@@ -113,6 +113,8 @@ func generarDockerFile(web model.Web){
 		dockerfile = dockerfile + "RUN echo \"</VirtualHost>\" >> /etc/apache2/sites-available/web.conf \n"
 		dockerfile = dockerfile + "RUN a2ensite web.conf \n"
 		dockerfile = dockerfile + "RUN echo \"apachectl -e info -DFOREGROUND\" >> /scripts/start.sh \n"
+		dockerfile = dockerfile + "RUN echo \"while true; do sleep 100; done\" >> /scripts/start.sh \n"
+
 
 	}
 	dockerfile = dockerfile + "ENTRYPOINT [\"/scripts/start.sh\"]\n"
