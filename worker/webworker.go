@@ -13,6 +13,7 @@ func generarDockerFile(web model.Web){
 	dockerfile := ""
 	phppkg := ""
 	phpdir := ""
+	fpmver := ""
 	dockerfile = dockerfile + "FROM ubuntu:trusty \nRUN apt-get update\nRUN mkdir /scripts && echo \"#!/bin/sh\" >> /scripts/start.sh && chmod +x /scripts/start.sh \n"
 	if ( web.PHP == true ) && ( web.PHPversion != "5.5" ) {
 		dockerfile = dockerfile + "RUN apt-get --assume-yes true install software-properties-common\n"+
@@ -23,15 +24,19 @@ func generarDockerFile(web model.Web){
 		if web.PHPversion == "5.5" {
 			phppkg = "php5"
 			phpdir = "php5"
+			fpmver = "php5"
 		} else if web.PHPversion == "5.6" {
 			phppkg = "php5.6"
 			phpdir = "php/5.6"
+			fpmver = "php\\/php5.6"
 		} else if web.PHPversion == "7.0" {
 			phppkg = "php7.0"
 			phpdir = "php/7.0"
+			fpmver = "php\\/php7.0"
 		} else if web.PHPversion == "7.1" {
 			phppkg = "php7.1"
 			phpdir = "php/7.1"
+			fpmver = "php\\/php7.1"
 		}
 		dockerfile = dockerfile + "RUN apt-get --assume-yes true install " + phppkg + " " + phppkg + "-mysql" + "\n"
 	}
@@ -54,7 +59,7 @@ func generarDockerFile(web model.Web){
 		} else {
 			dockerfile = dockerfile + "RUN apt-get --asume-yes true install " + phppkg +  "-fpm\n"
 			dockerfile = dockerfile + "COPY fpm-nginx.conf /etc/nginx/sites-available/default \n"
-			dockerfile = dockerfile + "RUN sed -i \"s/PHPVER/" + phpdir + "/g\"  /etc/nginx/sites-available/default \n"
+			dockerfile = dockerfile + "RUN sed -i \"s/PHPVER/" + fpmver + "/g\"  /etc/nginx/sites-available/default \n"
 			dockerfile = dockerfile + "RUN sed -i \"/pathinfo/s/;cgi/cgi/\" -i /etc/" + phpdir + "/fpm/php.ini \n"
 		}
 		dockerfile = dockerfile + "RUN echo \"/etc/init.d/" + phppkg + "-fpm start\" >> /scripts/start.sh \n"
