@@ -69,6 +69,7 @@ func generarDockerFile(web model.Web){
 		dockerfile = dockerfile + "RUN a2enmod rewrite && a2enmod suexec && a2enmod include && a2enmod fcgid \n"
 		dockerfile = dockerfile + "RUN groupadd web && useradd -s /bin/false -d /var/www/html -m -g web web \n"
 		dockerfile = dockerfile + "RUN mkdir -p /var/www/php-fcgi-scripts/web \n"
+		dockerfile = dockerfile + "RUN echo \"AddHandler fcgid-script .fcgi .php \" > /etc/apache2/mods-enabled/fcgid.conf"
 		dockerfile = dockerfile + "RUN echo \"#!/bin/sh\" > /var/www/php-fcgi-scripts/web/php-fcgi-starter \n"
 		dockerfile = dockerfile + "RUN echo \"PHPRC=/etc/" + phppkg +"/cgi/\" >> /var/www/php-fcgi-scripts/web/php-fcgi-starter\n"
 		dockerfile = dockerfile + "RUN echo \"export PHPRC  PHP_FCGI_MAX_REQUESTS=5000 PHP_FCGI_CHILDREN=8 \">> /var/www/php-fcgi-scripts/web/php-fcgi-starter\n"
