@@ -96,7 +96,7 @@ func correrContenedorFTP(){
 			volume = volume + " -v " + wd + "/data/web/" + web.Dominio + ":/data/" + web.Dominio + " "
 		}
 	}
-	cmdString := "docker stop dp-ftp; docker rm dp-ftp; docker run -d -p 20:20 -p 21:21 " + volume + " --name dp-ftp dp-img-ftp"
+	cmdString := "docker stop dp-ftp; docker rm dp-ftp; docker run -d -p 20:20 -p 21:21 -p 21100-21110:21100-21110" + volume + " --name dp-ftp dp-img-ftp"
 	tarCmd := exec.Command("/bin/sh" , "-c", cmdString)
 	var stderr bytes.Buffer
 	var out bytes.Buffer

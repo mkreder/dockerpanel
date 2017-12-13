@@ -9,9 +9,11 @@ RUN mkdir -p /var/run/vsftpd/empty
 RUN groupadd usuariosftp -g 1001
 RUN echo "pam_service_name=ftp" >> /etc/vsftpd.conf
 RUN echo "pasv_enable=YES" >> /etc/vsftpd.conf
-RUN echo "pasv_min_port=1024" >> /etc/vsftpd.conf
-RUN echo "pasv_max_port=1048" >> /etc/vsftpd.conf
+RUN echo "pasv_min_port=21100" >> /etc/vsftpd.conf
+RUN echo "pasv_max_port=21110" >> /etc/vsftpd.conf
 RUN echo "pasv_address=35.153.46.76" >> /etc/vsftpd.conf
-RUN echo "port_enable=YES" >>
+RUN echo "port_enable=YES" >> /etc/vsftpd.conf
+RUN echo "connect_from_port_20=YES" >> /etc/vsftpd.conf
+RUN echo "ftp_data_port=20" >> /etc/vsftpd.conf
 ENTRYPOINT ["/usr/sbin/vsftpd"]
 EXPOSE 20 21
