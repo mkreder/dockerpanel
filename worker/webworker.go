@@ -54,6 +54,7 @@ func generarDockerFile(web model.Web){
 		} else {
 			dockerfile = dockerfile + "RUN apt-get --asume-yes true install " + phppkg +  "-fpm\n"
 			dockerfile = dockerfile + "COPY fpm-nginx.conf /etc/nginx/sites-available/default \n"
+			dockerfile = dockerfile + "RUN sed -i \"s/PHPVER/" + phpdir + "/g\"  /etc/nginx/sites-available/default \n"
 			dockerfile = dockerfile + "RUN sed -i \"/pathinfo/s/;cgi/cgi/\" -i /etc/" + phpdir + "/fpm/php.ini \n"
 		}
 		dockerfile = dockerfile + "RUN echo \"/etc/init.d/" + phppkg + "-fpm start\" >> /scripts/start.sh \n"

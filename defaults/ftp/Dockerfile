@@ -15,5 +15,6 @@ RUN echo "pasv_address=35.153.46.76" >> /etc/vsftpd.conf
 RUN echo "port_enable=YES" >> /etc/vsftpd.conf
 RUN echo "connect_from_port_20=YES" >> /etc/vsftpd.conf
 RUN echo "ftp_data_port=20" >> /etc/vsftpd.conf
+RUN echo "local_umask=022" >> /etc/vsftpd.conf
 ENTRYPOINT ["/usr/sbin/vsftpd"]
 EXPOSE 20 21
