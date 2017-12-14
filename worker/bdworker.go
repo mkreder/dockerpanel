@@ -232,11 +232,11 @@ func RunBDWorker() {
 				if ! isRunning("dp-bd-" + bd.Nombre){
 					correrContenedorBD(bd)
 				}
+				bd.Estado = 3
+				model.Mgr.UpdateBD(&bd)
 				if ! isRunning("dp-bd-phpmyadmin"){
 					correrContenedorPMA()
 				}
-				bd.Estado = 3
-				model.Mgr.UpdateBD(&bd)
 				time.Sleep(10*time.Second)
 			} else if bd.Estado == 3 {
 				if ! isRunning("dp-bd-" + bd.Nombre){
