@@ -14,7 +14,7 @@ chmod +x /etc/mailman/add_lists.sh
 /etc/mailman/add_lists.sh
 > /etc/mailman/add_lists.sh
 /usr/lib/mailman/bin/genaliases  > /var/lib/mailman/data/virtual-mailman
-/usr/lib/mailman/bin/mailmanctl start
+/usr/lib/mailman/bin/mailmanctl -s start
 
 
 while true ; do
