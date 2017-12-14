@@ -9,7 +9,9 @@ COPY start.sh /scripts
 RUN chmod +x /scripts/start.sh
 RUN mkdir /var/www/lists
 RUN a2ensite mailman.conf
-RUN newlist --emailhost=ejemplo.com -a  mailman mailman@ejemplo.com mailman
+RUN a2enmod cgid
+RUN rm -rf /etc/apache2/sites-enabled/000-default.conf
+RUN yes | newlist --emailhost=ejemplo.com -a  mailman1 mailman@ejemplo.com mailman1
 RUN mkdir /var/run/mailman/
 RUN chown -R list:list /var/run/mailman/
 WORKDIR /root
