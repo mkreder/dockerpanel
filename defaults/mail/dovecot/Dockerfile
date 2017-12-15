@@ -1,6 +1,6 @@
 FROM alpine:latest
 RUN apk update
-RUN apk add dovecot rsyslog
+RUN apk add dovecot rsyslog dovecot-pigeonhole-plugin
 RUN mkdir /scripts
 COPY start.sh /scripts/start.sh
 RUN chmod +x /scripts/start.sh
