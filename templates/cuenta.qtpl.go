@@ -36,7 +36,7 @@ func StreamCuentaTemplate(qw422016 *qt422016.Writer, cuentas []model.Cuenta, dom
     function activarTimeout() {
         timeoutVar = setTimeout(function() {
             window.location.href = window.location.href;
-        }, 5000);
+        }, 20000);
     }
     activarTimeout()
 

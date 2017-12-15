@@ -34,7 +34,7 @@ func StreamZonaTemplate(qw422016 *qt422016.Writer, zonas []model.Zona, error str
     function activarTimeout() {
         timeoutVar = setTimeout(function() {
             window.location.href = window.location.href;
-        }, 5000);
+        }, 10000);
     }
     activarTimeout()
 

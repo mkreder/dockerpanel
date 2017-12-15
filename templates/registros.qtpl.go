@@ -33,7 +33,7 @@ func StreamRegistroTemplate(qw422016 *qt422016.Writer, registros []model.Registr
     function activarTimeout() {
         timeoutVar = setTimeout(function() {
             window.location.href = window.location.href;
-        }, 5000);
+        }, 10000);
     }
     activarTimeout()
 
