@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 cd /etc/dovecot/auth/
 for dominio in *; do
@@ -9,10 +9,10 @@ for dominio in *; do
     cp -rf $dominio/shadow  /var/mail/vhosts/$dominio/
     for cuenta in $dominio/*; do
         if [ "$cuenta" != "${dominio}/passwd" ] && [ "$cuenta" != "${dominio}/shadow" ]; then
-            if ! [ -d /var/mail/vhosts/$dominio/$cuenta ]; then
-              mkdir -p /var/mail/vhosts/$dominio/$cuenta
+            if ! [ -d /var/mail/vhosts/$cuenta ]; then
+              mkdir -p /var/mail/vhosts/$cuenta
             fi
-            cp -rf $dominio/$cuenta/autoreply.sieve  /var/mail/vhosts/$dominio/$cuenta/
+            cp -rf $cuenta/autoreply.sieve  /var/mail/vhosts/$cuenta/
         fi
     done
 done
