@@ -146,7 +146,7 @@ func StreamWebTemplate(qw422016 *qt422016.Writer, webs []model.Web, error string
         var selwebserver = document.getElementById("webserver");
 
         for (var i = 0; i < selwebserver.options.length; i++) {
-            if (selwebserver.options[i].text== webserver) {
+            if (selwebserver.options[i].value == webserver) {
                 selwebserver.options[i].selected = true;
             }
         }
