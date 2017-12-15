@@ -127,8 +127,8 @@ func generarConfig() {
 						"\"" + strings.Replace(cuenta.Autoresponder.Mensaje, ",", "\n", -1) + "\";\n"
 				}
 			}
-			cuenta.Estado = 2
-			model.Mgr.UpdateCuenta(&cuenta)
+	//		cuenta.Estado = 2
+	//		model.Mgr.UpdateCuenta(&cuenta)
 		}
 		err := ioutil.WriteFile("configs/mail/dovecot/conf/auth/"+dominio.Nombre+"/passwd", []byte(passwd), 0644)
 		if err != nil {
