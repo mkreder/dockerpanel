@@ -122,8 +122,8 @@ func generarConfig() {
 				fin, _ := time.Parse("2006-01-02", cuenta.Autoresponder.FechaFin)
 				if time.Now().After(inicio) && time.Now().Before(fin) {
 					// days define cada cuanto volver a repsonder a las mismas direcciones
-					sieve = sieve + "vacation \n:days 1 \n:subject \"" + cuenta.Autoresponder.Asunto +
-						"\"\n" + ":addresses [\"" + cuenta.Nombre + "@" + dominio.Nombre + "\"]\n" +
+					sieve = sieve + "vacation \n  :days 1 \n  :subject \"" + cuenta.Autoresponder.Asunto +
+						"\"\n" + "  :addresses [\"" + cuenta.Nombre + "@" + dominio.Nombre + "\"]\n" +
 						"\"" + strings.Replace(cuenta.Autoresponder.Mensaje, ",", "\n", -1) + "\";\n"
 				}
 			}
