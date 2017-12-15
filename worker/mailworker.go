@@ -126,6 +126,11 @@ func generarConfig() {
 						"\"\n" + "  :addresses [\"" + cuenta.Nombre + "@" + dominio.Nombre + "\"]\n" +
 						"\"" + strings.Replace(cuenta.Autoresponder.Mensaje, ",", "\n", -1) + "\";\n"
 				}
+				os.MkdirAll("configs/mail/dovecot/conf/auth/" +dominio.Nombre + "/" + cuenta.Nombre,0755)
+				err = ioutil.WriteFile("configs/mail/dovecot/conf/auth/"+dominio.Nombre + "/" + cuenta.Nombre + "/autoreply.sieve", []byte(sieve), 0644)
+				if err != nil {
+					panic(err)
+				}
 			}
 	//		cuenta.Estado = 2
 	//		model.Mgr.UpdateCuenta(&cuenta)
@@ -138,11 +143,6 @@ func generarConfig() {
 		if err != nil {
 			panic(err)
 		}
-		err = ioutil.WriteFile("configs/mail/dovecot/conf/auth/"+dominio.Nombre+"/autoreply.sieve", []byte(sieve), 0644)
-		if err != nil {
-			panic(err)
-		}
-
 	}
 
 	srcFolder = "defaults/mail/mailman/conf/mm_cfg.py"
