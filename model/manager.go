@@ -1,21 +1,22 @@
 package model
 
 import (
-	"github.com/jinzhu/gorm"
 	"log"
-	"golang.org/x/crypto/bcrypt"
+
+	"github.com/jinzhu/gorm"
 	_ "github.com/mattn/go-sqlite3"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type Manager interface {
 	AddWeb(web *Web) error
 	CheckIfWebExists(dominio string) bool
-    GetAllWebs() []Web
+	GetAllWebs() []Web
 	RemoveWeb(id string) (err error)
 	UpdateWeb(web *Web) (err error)
 	GetWeb(id string) Web
 
-	GetUsuario(email string) Usuario
+	GetUser(email string) User
 	UpdatePassword(Usuario string, hash string) (err error)
 
 	AddZona(zona *Zona) error
@@ -27,13 +28,13 @@ type Manager interface {
 
 	AddRegistros(registros []Registro)
 	GetRegistros(zonaid string) []Registro
-	CheckIfRegistroExists(nombre string,tipo string, valor string, prioridad string, zonaid string ) bool
+	CheckIfRegistroExists(nombre string, tipo string, valor string, prioridad string, zonaid string) bool
 	GetRegistro(id string) Registro
 	AddRegistro(registro *Registro) (err error)
 	UpdateRegistro(registro *Registro) (err error)
 	RemoveRegistro(id string) (err error)
 
-	AddUsuarioFtp(uftp *UsuarioFTP)  (err error)
+	AddUsuarioFtp(uftp *UsuarioFTP) (err error)
 	UpdateUsuarioFtp(ftp *UsuarioFTP) (err error)
 	CheckIfUsuarioFtpExists(nombre string, webid string) bool
 	GetAllUsuarioFtps() []UsuarioFTP
@@ -42,29 +43,29 @@ type Manager interface {
 	UpdateFtpConfig(anonWrite int, anonRead int, estado int) (err error)
 	GetFtpConfig() FtpConfig
 
-    AddBD(bd *BD) (err error)
-	UpdateBD(bd *BD) (err error)
-	CheckIfBDExists(nombre string) bool
-	GetAllBDs() []BD
-	GetBD(id string) BD
-	RemoveBD(id string) (err error)
-	UpdateIP(ip IP,bd BD)
+	AddDB(db *DB) (err error)
+	UpdateDB(db *DB) (err error)
+	CheckIfDBExists(name string) bool
+	GetAllDBs() []DB
+	GetDB(id string) DB
+	RemoveDB(id string) (err error)
+	RemoveAssociationIP(db *DB, ip *IP) (err error)
 
+	UpdateIP(ip IP, bd BD)
 
-UpdateUsuarioBD(ubd *UsuarioBD) (err error)
-	AddUsuarioBD(ubd *UsuarioBD) (err error)
-	CheckIfUsuarioBDExists(nombre string) bool
-	GetAllUsuarioBDs() []UsuarioBD
-	GetUsuarioBD(id string) UsuarioBD
-	RemoveUsuarioBD(id string) (err error)
-	RemoveAssociationIP(bd *BD, ip *IP) (err error)
-	GetUsuariosDeBD(bdid string) []UsuarioBD
+	UpdateDBUser(dbu *DBUser) (err error)
+	AddDBUser(dbu *DBUser) (err error)
+	CheckIfDBUserExists(name string) bool
+	GetAllDBUsers() []DBUser
+	GetDBUser(id string) DBUser
+	RemoveDBUser(id string) (err error)
+	GetDBUserbyDB(dbid string) []DBUser
 
-	AddAsociacionBD(adb *AsociacionBD) (err error)
-	UpdateAsociacionBD(adb *AsociacionBD) (err error)
-	CheckIfAsociacionBDExists(bdid string, usuariobdid string) bool
-	GetAllAsociacionBDs() []AsociacionBD
-	GetAsociacionBD(bdid string, usuariobdid string) AsociacionBD
+	AddDBAssociation(dba *DBAssociation) (err error)
+	UpdateDBAssociation(dba *DBAssociation) (err error)
+	CheckIfDBAssociationExists(dbid string, dbuserid string) bool
+	GetDBAssociations() []DBAssociation
+	GetDBAssociation(dbid string, dbuserid string) DBAssociation
 	RemoveAsociacionBD(adb AsociacionBD)
 
 	AddDominio(dominio *Dominio) (err error)
@@ -108,7 +109,7 @@ type manager struct {
 var Mgr Manager
 
 func init() {
-	db, err :=gorm.Open("sqlite3", "dockerpanel.db")
+	db, err := gorm.Open("sqlite3", "dockerpanel.db")
 	//migrate()
 	if err != nil {
 		log.Fatal("Failed to init db:", err)
@@ -119,12 +120,12 @@ func init() {
 
 func (mgr *manager) migrate() {
 	mgr.db.AutoMigrate(&Web{})
-	mgr.db.AutoMigrate(&Usuario{})
+	mgr.db.AutoMigrate(&User{})
 	mgr.db.AutoMigrate(&Zona{})
 	mgr.db.AutoMigrate(&Registro{})
 	mgr.db.AutoMigrate(&UsuarioFTP{})
 	mgr.db.AutoMigrate(&FtpConfig{})
-	mgr.db.AutoMigrate(&UsuarioBD{})
+	mgr.db.AutoMigrate(&DBUser{})
 	mgr.db.AutoMigrate(&AsociacionBD{})
 	mgr.db.AutoMigrate(&BD{})
 	mgr.db.AutoMigrate(&IP{})
@@ -134,7 +135,7 @@ func (mgr *manager) migrate() {
 	mgr.db.AutoMigrate(&Autoresponder{})
 
 	// Add default Usuario
-	var usr Usuario
+	var usr User
 
 	if mgr.db.First(&usr, "email = ?", "admin@admin.com").RecordNotFound() {
 		usr.Email = "admin@admin.com"
@@ -145,7 +146,6 @@ func (mgr *manager) migrate() {
 
 	var ftpConfig FtpConfig
 	if mgr.db.First(&ftpConfig, "id = 1").RecordNotFound() {
-		mgr.UpdateFtpConfig(0, 0,1)
+		mgr.UpdateFtpConfig(0, 0, 1)
 	}
 }
-
