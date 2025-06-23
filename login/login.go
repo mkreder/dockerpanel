@@ -14,9 +14,9 @@ var cookieHandler = securecookie.New(
 	securecookie.GenerateRandomKey(32))
 
 
-func setSession(UsuarioName string, response http.ResponseWriter) {
+func setSession(userName string, response http.ResponseWriter) {
 	value := map[string]string{
-		"name": UsuarioName,
+		"name": userName,
 	}
 	if encoded, err := cookieHandler.Encode("session", value); err == nil {
 		cookie := &http.Cookie{
@@ -28,14 +28,14 @@ func setSession(UsuarioName string, response http.ResponseWriter) {
 	}
 }
 
-func GetUNombreUsuario(request *http.Request) (UsuarioName string) {
+func GetUserName(request *http.Request) (userName string) {
 	if cookie, err := request.Cookie("session"); err == nil {
 		cookieValue := make(map[string]string)
 		if err = cookieHandler.Decode("session", cookie.Value, &cookieValue); err == nil {
-			UsuarioName = cookieValue["name"]
+			userName = cookieValue["name"]
 		}
 	}
-	return UsuarioName
+	return userName
 }
 
 func clearSession(response http.ResponseWriter) {
@@ -56,9 +56,9 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	if len(email) == 0 {
 		templates.WriteLoginTemplate(w, "")
 	} else {
-		Usuario := model.Mgr.GetUsuario(email)
-		if err := bcrypt.CompareHashAndPassword([]byte(Usuario.Password), []byte(pass)); err != nil {
-			templates.WriteLoginTemplate(w,"Contraseña invalida")
+		user := model.Mgr.GetUser(email)
+		if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(pass)); err != nil {
+			templates.WriteLoginTemplate(w,"Invalid password")
 		} else {
 			setSession(email, w)
 			http.Redirect(w,r,"/",http.StatusSeeOther)

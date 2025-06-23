@@ -10,53 +10,53 @@ import (
 )
 
 func FtpHandler(w http.ResponseWriter, r *http.Request) {
-	UsuarioName := login.GetUNombreUsuario(r)
-	if UsuarioName != "" {
+	userName := login.GetUserName(r)
+	if userName != "" {
 		webs := model.Mgr.GetAllWebs()
-		uftps := model.Mgr.GetAllUsuarioFtps()
-		templates.WriteFtpTemplate(w,uftps,webs,model.Mgr.GetFtpConfig(),"")
+		ftpUsers := model.Mgr.GetAllFTPUsers()
+		templates.WriteFtpTemplate(w,ftpUsers,webs,model.Mgr.GetFtpConfig(),"")
 	} else {
 		templates.WriteLoginTemplate(w,"")
 	}
 
 }
 
-func AddUsuarioFtp(w http.ResponseWriter, r *http.Request) {
-	UsuarioName := login.GetUNombreUsuario(r)
-	if UsuarioName != "" {
+func AddFTPUser(w http.ResponseWriter, r *http.Request) {
+	userName := login.GetUserName(r)
+	if userName != "" {
 		r.ParseForm()
-		dominio := strings.Join(r.Form["dominio"],"")
-		nombre := strings.Join(r.Form["nombre"],"")
+		domain := strings.Join(r.Form["domain"],"")
+		name := strings.Join(r.Form["name"],"")
 		id := strings.Join(r.Form["id"],"")
 
-		if ( len(id) == 0 ) && ( model.Mgr.CheckIfUsuarioFtpExists(nombre,dominio) ) {
-			templates.WriteFtpTemplate(w, model.Mgr.GetAllUsuarioFtps(),model.Mgr.GetAllWebs(),model.Mgr.GetFtpConfig(),"El usuario de FTP " + nombre + "@" + dominio +" ya existe")
+		if ( len(id) == 0 ) && ( model.Mgr.CheckIfFTPUserExists(name,domain) ) {
+			templates.WriteFtpTemplate(w, model.Mgr.GetAllFTPUsers(),model.Mgr.GetAllWebs(),model.Mgr.GetFtpConfig(),"FTP user " + name + "@" + domain +" already exists")
 		} else {
-			var uftp model.UsuarioFTP
+			var ftpUser model.FTPUser
 			if (len(id) != 0) {
-				uftp = model.Mgr.GetUsuarioFtp(id)
+				ftpUser = model.Mgr.GetFTPUser(id)
 			}
 
-			uftp.Nombre = nombre
-			z64, err := strconv.ParseUint(dominio,10,32)
-			uftp.WebID = uint(z64)
+			ftpUser.Name = name
+			z64, err := strconv.ParseUint(domain,10,32)
+			ftpUser.WebID = uint(z64)
 			password := strings.Join(r.Form["password"],"")
 			if len(password) > 0 {
-				uftp.Password = password
+				ftpUser.Password = password
 			}
 
-			uftp.Estado = 1
+			ftpUser.Status = 1
 			if len(id) == 0 {
-				err = model.Mgr.AddUsuarioFtp(&uftp)
+				err = model.Mgr.AddFTPUser(&ftpUser)
 				if err != nil {
-					templates.WriteFtpTemplate (w, model.Mgr.GetAllUsuarioFtps(), model.Mgr.GetAllWebs(),model.Mgr.GetFtpConfig(),"Error al agregar el usuario FTP")
+					templates.WriteFtpTemplate (w, model.Mgr.GetAllFTPUsers(), model.Mgr.GetAllWebs(),model.Mgr.GetFtpConfig(),"Error adding FTP user")
 				} else {
 					http.Redirect(w,r,"/ftp",http.StatusSeeOther)
 				}
 			} else {
-				err = model.Mgr.UpdateUsuarioFtp(&uftp)
+				err = model.Mgr.UpdateFTPUser(&ftpUser)
 				if err != nil {
-					templates.WriteFtpTemplate (w, model.Mgr.GetAllUsuarioFtps(), model.Mgr.GetAllWebs(),model.Mgr.GetFtpConfig(),"Error al actualizar el usuario FTP")
+					templates.WriteFtpTemplate (w, model.Mgr.GetAllFTPUsers(), model.Mgr.GetAllWebs(),model.Mgr.GetFtpConfig(),"Error updating FTP user")
 				} else {
 					http.Redirect(w,r,"/ftp",http.StatusSeeOther)
 				}
@@ -67,19 +67,19 @@ func AddUsuarioFtp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func RemoveUsuarioFtp(w http.ResponseWriter, r *http.Request) {
-	UsuarioName := login.GetUNombreUsuario(r)
-	if UsuarioName != "" {
+func RemoveFTPUser(w http.ResponseWriter, r *http.Request) {
+	userName := login.GetUserName(r)
+	if userName != "" {
 		id := r.URL.Query().Get("id")
 		if len(id) == 0 {
 			http.Redirect(w,r,"/ftp",http.StatusSeeOther)
 			return
 		}
-		usuario := model.Mgr.GetUsuarioFtp(id)
-		usuario.Estado = 3
-		err := model.Mgr.UpdateUsuarioFtp(&usuario)
+		user := model.Mgr.GetFTPUser(id)
+		user.Status = 3
+		err := model.Mgr.UpdateFTPUser(&user)
 		if err != nil {
-			templates.WriteFtpTemplate(w,model.Mgr.GetAllUsuarioFtps(),model.Mgr.GetAllWebs(),model.Mgr.GetFtpConfig(),"Error al borrar el usuario FTP")
+			templates.WriteFtpTemplate(w,model.Mgr.GetAllFTPUsers(),model.Mgr.GetAllWebs(),model.Mgr.GetFtpConfig(),"Error deleting FTP user")
 		} else {
 			http.Redirect(w,r,"/ftp",http.StatusSeeOther)
 		}
@@ -90,15 +90,15 @@ func RemoveUsuarioFtp(w http.ResponseWriter, r *http.Request) {
 }
 
 func FtpConfigHandler(w http.ResponseWriter, r *http.Request){
-	UsuarioName := login.GetUNombreUsuario(r)
-	if UsuarioName != "" {
+	userName := login.GetUserName(r)
+	if userName != "" {
 		r.ParseForm()
 		write, _ := strconv.Atoi(strings.Join(r.Form["anonWrite"],""))
 		read, _ := strconv.Atoi(strings.Join(r.Form["anonRead"],""))
 
 		err := model.Mgr.UpdateFtpConfig(write,read,1)
 		if err != nil {
-			templates.WriteFtpTemplate(w,model.Mgr.GetAllUsuarioFtps(),model.Mgr.GetAllWebs(), model.Mgr.GetFtpConfig(), "Error al guardar configuración FTP")
+			templates.WriteFtpTemplate(w,model.Mgr.GetAllFTPUsers(),model.Mgr.GetAllWebs(), model.Mgr.GetFtpConfig(), "Error saving FTP configuration")
 		} else {
 			http.Redirect(w,r,"/ftp",http.StatusSeeOther)
 		}

@@ -37,5 +37,4 @@ Login to server IP on port 9090 with username "admin@admin.com" and password "ad
 
 ## TODO: 
 
-* English translation
 * Improve user interface (specially user management)

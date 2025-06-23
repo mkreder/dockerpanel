@@ -10,17 +10,17 @@ import (
 )
 
 func ProfileHandler(w http.ResponseWriter, r *http.Request) {
-	UsuarioName := login.GetUNombreUsuario(r)
-	if UsuarioName != "" {
+	userName := login.GetUserName(r)
+	if userName != "" {
 		r.ParseForm()
 		pass1 := strings.Join(r.Form["pass1"],"")
 		if len(pass1) > 0 {
 			hash, _ := bcrypt.GenerateFromPassword([]byte(pass1), bcrypt.DefaultCost)
-			err := model.Mgr.UpdatePassword(login.GetUNombreUsuario(r),string(hash))
+			err := model.Mgr.UpdatePassword(login.GetUserName(r),string(hash))
 			if err != nil {
-				templates.WriteProfileTemplate(w,"Error al cambiar contraseña")
+				templates.WriteProfileTemplate(w,"Error changing password")
 			} else {
-				templates.WriteProfileTemplate(w,"Contraseña guardada")
+				templates.WriteProfileTemplate(w,"Password saved")
 			}
 		} else {
 			templates.WriteProfileTemplate(w,"")

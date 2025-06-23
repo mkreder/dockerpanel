@@ -6,16 +6,16 @@ import (
 
 type Web struct {
 	gorm.Model
-	Dominio string
+	Domain string
 	CGI bool
 	SSL bool
-	CertSSL string
+	SSLCert string
 	PHP bool
-	PHPversion string
-	PHPmethod string
-	Webserver string
-	Estado int
-	Ftps []UsuarioFTP
+	PHPVersion string
+	PHPMethod string
+	WebServer string
+	Status int
+	FTPUsers []FTPUser
 }
 
 
@@ -28,9 +28,9 @@ func (mgr *manager) UpdateWeb(web *Web) (err error) {
 	return mgr.db.Save(&web).Error
 }
 
-func (mgr *manager) CheckIfWebExists(dominio string) bool{
+func (mgr *manager) CheckIfWebExists(domain string) bool{
 	var web Web
-	exists := mgr.db.First(&web,"dominio = ?",dominio).RecordNotFound()
+	exists := mgr.db.First(&web,"domain = ?",domain).RecordNotFound()
 	return ! exists
 }
 

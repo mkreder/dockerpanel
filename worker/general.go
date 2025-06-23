@@ -6,18 +6,18 @@ import (
 	"os/exec"
 )
 
-func reiniciarContenedor(nombre string){
-	cmdString := "docker restart -t 1 " + nombre
+func restartContainer(name string){
+	cmdString := "docker restart -t 1 " + name
 	tarCmd := exec.Command("/bin/sh" , "-c", cmdString)
 	var stderr bytes.Buffer
 	tarCmd.Stderr = &stderr
 	err := tarCmd.Run()
 	checkCmd(err,stderr)
-	log.Printf("Contenedor reiniciado " + nombre)
+	log.Printf("Contenedor reiniciado " + name)
 }
 
-func isRunning(nombre string) bool{
-	cmdString := "docker ps -q -f  name=" + nombre + "$"
+func isRunning(name string) bool{
+	cmdString := "docker ps -q -f  name=" + name + "$"
 	psCmd := exec.Command("/bin/sh" , "-c", cmdString)
 	var stderr bytes.Buffer
 	var out bytes.Buffer

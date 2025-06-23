@@ -6,19 +6,19 @@
     function validateForm() {
         var x = document.getElementById("pass1").value;
         if (x == "") {
-            alert("Se debe completar el campo contraseña");
+            alert("Password field must be completed");
             return false;
         }
 
         var y = document.getElementById("pass2").value;
         if (2 == "") {
-            alert("Se debe completar el campo repetir contraseña");
+            alert("Repeat password field must be completed");
             return false;
         }
 
 
         if ( x != y ) {
-            alert("Las contraseñas ingresadas no coinciden");
+            alert("The entered passwords do not match");
             return false;
         }
 
@@ -33,22 +33,22 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Panel Docker</title>
+    <title>Docker Panel</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- MetisMenu CSS -->
-    <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+    <link href="/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+    <link href="/dist/css/sb-admin-2.css" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
-    <link href="../vendor/morrisjs/morris.css" rel="stylesheet">
+    <link href="/vendor/morrisjs/morris.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -88,7 +88,7 @@
                     <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
-                    <li><a href="/profile"><i class="fa fa-user fa-fw"></i> Configuración</a>
+                    <li><a href="/profile"><i class="fa fa-user fa-fw"></i> Settings</a>
                     </li>
                     <li class="divider"></li>
                     <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
@@ -107,13 +107,13 @@
                         <a href="/"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="/web"><i class="fa fa-server fa-fw"></i>Sitios Web</a>
+                        <a href="/web"><i class="fa fa-server fa-fw"></i>Websites</a>
                     </li>
                     <li>
                         <a href="/dns"><i class="fa fa-cloud fa-fw"></i>DNS</a>
                     </li>
                     <li>
-                        <a href="/bd"><i class="fa fa-database fa-fw"></i>Base de Datos</a>
+                        <a href="/db"><i class="fa fa-database fa-fw"></i>Database</a>
                     </li>
                     <li>
                         <a href="/mail"><i class="fa fa-at fa-fw"></i>E-Mail</a>
@@ -133,15 +133,15 @@
         <div id="form" class="col-lg-6"  >
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Cambiar contraseña
+                    Change Password
                 </div>
                 <div class="panel-body">
                     <form id="addweb" action="/profile" onsubmit="return validateForm()" role=form method="post">
-                        <label>Contraseña</label>
+                        <label>Password</label>
                         <input class="form-control" type="password" name="pass1" id="pass1">
-                        <label>Repetir Contraseña</label>
+                        <label>Repeat Password</label>
                         <input class="form-control" type="password" name="pass2" id="pass2">
-                        <button type="submit" class="btn btn-default">Guardar</button>
+                        <button type="submit" class="btn btn-default">Save</button>
                     </form>
                 </div>
             </div>
@@ -158,21 +158,21 @@
 <!-- /#wrapper -->
 
 <!-- jQuery -->
-<script src="../vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/jquery/jquery.min.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
-<script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
 
 <!-- Metis Menu Plugin JavaScript -->
-<script src="../vendor/metisMenu/metisMenu.min.js"></script>
+<script src="/vendor/metisMenu/metisMenu.min.js"></script>
 
 <!-- Morris Charts JavaScript -->
-<!--<script src="../vendor/raphael/raphael.min.js"></script>-->
-<!--<script src="../vendor/morrisjs/morris.min.js"></script>-->
+<!--<script src="/vendor/raphael/raphael.min.js"></script>-->
+<!--<script src="/vendor/morrisjs/morris.min.js"></script>-->
 <!--<script src="../data/morris-data.js"></script>-->
 
 <!-- Custom Theme JavaScript -->
-<script src="../dist/js/sb-admin-2.js"></script>
+<script src="/dist/js/sb-admin-2.js"></script>
 
 </body>
 

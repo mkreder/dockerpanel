@@ -4,12 +4,12 @@ import "github.com/jinzhu/gorm"
 
 type Autoresponder struct {
 	gorm.Model
-	Activado bool
-	Asunto string
-	Mensaje string
-	FechaIncio string
-	FechaFin string
-	CuentaID uint
+	Enabled bool
+	Subject string
+	Message string
+	StartDate string
+	EndDate string
+	AccountID uint
 }
 
 func (mgr *manager) AddAutoresponder(aresponder *Autoresponder) (err error) {
@@ -20,9 +20,9 @@ func (mgr *manager) UpdateAutoresponder(aresponder *Autoresponder) (err error) {
 	return mgr.db.Save(&aresponder).Error
 }
 
-func (mgr *manager) CheckIfAutoresponderExists(cuentaid string) bool{
+func (mgr *manager) CheckIfAutoresponderExists(accountid string) bool{
 	var aresponder Autoresponder
-	exists := mgr.db.First(&aresponder,"cuenta_id = ?",cuentaid).RecordNotFound()
+	exists := mgr.db.First(&aresponder,"account_id = ?",accountid).RecordNotFound()
 	return ! exists
 }
 

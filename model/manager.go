@@ -9,90 +9,89 @@ import (
 
 type Manager interface {
 	AddWeb(web *Web) error
-	CheckIfWebExists(dominio string) bool
+	CheckIfWebExists(domain string) bool
     GetAllWebs() []Web
 	RemoveWeb(id string) (err error)
 	UpdateWeb(web *Web) (err error)
 	GetWeb(id string) Web
 
-	GetUsuario(email string) Usuario
-	UpdatePassword(Usuario string, hash string) (err error)
+	GetUser(email string) User
+	UpdatePassword(user string, hash string) (err error)
 
-	AddZona(zona *Zona) error
-	CheckIfZonaExists(dominio string) bool
-	GetAllZonas() []Zona
-	RemoveZona(id string) (err error)
-	UpdateZona(zona *Zona) (err error)
-	GetZona(id string) Zona
+	AddZone(zone *Zone) error
+	CheckIfZoneExists(domain string) bool
+	GetAllZones() []Zone
+	RemoveZone(id string) (err error)
+	UpdateZone(zone *Zone) (err error)
+	GetZone(id string) Zone
 
-	AddRegistros(registros []Registro)
-	GetRegistros(zonaid string) []Registro
-	CheckIfRegistroExists(nombre string,tipo string, valor string, prioridad string, zonaid string ) bool
-	GetRegistro(id string) Registro
-	AddRegistro(registro *Registro) (err error)
-	UpdateRegistro(registro *Registro) (err error)
-	RemoveRegistro(id string) (err error)
+	AddRecords(records []Record)
+	GetRecords(zoneid string) []Record
+	CheckIfRecordExists(name string,recordtype string, value string, priority string, zoneid string ) bool
+	GetRecord(id string) Record
+	AddRecord(record *Record) (err error)
+	UpdateRecord(record *Record) (err error)
+	RemoveRecord(id string) (err error)
 
-	AddUsuarioFtp(uftp *UsuarioFTP)  (err error)
-	UpdateUsuarioFtp(ftp *UsuarioFTP) (err error)
-	CheckIfUsuarioFtpExists(nombre string, webid string) bool
-	GetAllUsuarioFtps() []UsuarioFTP
-	GetUsuarioFtp(id string) UsuarioFTP
-	RemoveUsuarioFtp(id string) (err error)
-	UpdateFtpConfig(anonWrite int, anonRead int, estado int) (err error)
+	AddFTPUser(ftpu *FTPUser)  (err error)
+	UpdateFTPUser(ftpu *FTPUser) (err error)
+	CheckIfFTPUserExists(name string, webid string) bool
+	GetAllFTPUsers() []FTPUser
+	GetFTPUser(id string) FTPUser
+	RemoveFTPUser(id string) (err error)
+	UpdateFtpConfig(anonWrite int, anonRead int, status int) (err error)
 	GetFtpConfig() FtpConfig
 
-    AddBD(bd *BD) (err error)
-	UpdateBD(bd *BD) (err error)
-	CheckIfBDExists(nombre string) bool
-	GetAllBDs() []BD
-	GetBD(id string) BD
-	RemoveBD(id string) (err error)
-	UpdateIP(ip IP,bd BD)
+    AddDatabase(db *Database) (err error)
+	UpdateDatabase(db *Database) (err error)
+	CheckIfDatabaseExists(name string) bool
+	GetAllDatabases() []Database
+	GetDatabase(id string) Database
+	RemoveDatabase(id string) (err error)
+	UpdateIP(ip IP,db Database)
 
+	UpdateDatabaseUser(dbu *DatabaseUser) (err error)
+	AddDatabaseUser(dbu *DatabaseUser) (err error)
+	CheckIfDatabaseUserExists(name string) bool
+	GetAllDatabaseUsers() []DatabaseUser
+	GetDatabaseUser(id string) DatabaseUser
+	RemoveDatabaseUser(id string) (err error)
+	RemoveAssociationIP(db *Database, ip *IP) (err error)
+	GetUsersOfDatabase(dbid string) []DatabaseUser
 
-UpdateUsuarioBD(ubd *UsuarioBD) (err error)
-	AddUsuarioBD(ubd *UsuarioBD) (err error)
-	CheckIfUsuarioBDExists(nombre string) bool
-	GetAllUsuarioBDs() []UsuarioBD
-	GetUsuarioBD(id string) UsuarioBD
-	RemoveUsuarioBD(id string) (err error)
-	RemoveAssociationIP(bd *BD, ip *IP) (err error)
-	GetUsuariosDeBD(bdid string) []UsuarioBD
+	AddDatabaseAssociation(dba *DatabaseAssociation) (err error)
+	UpdateDatabaseAssociation(dba *DatabaseAssociation) (err error)
+	CheckIfDatabaseAssociationExists(dbid string, dbuserid string) bool
+	GetAllDatabaseAssociations() []DatabaseAssociation
+	GetDatabaseAssociation(dbid string, dbuserid string) DatabaseAssociation
+	RemoveDatabaseAssociation(dba DatabaseAssociation)
 
-	AddAsociacionBD(adb *AsociacionBD) (err error)
-	UpdateAsociacionBD(adb *AsociacionBD) (err error)
-	CheckIfAsociacionBDExists(bdid string, usuariobdid string) bool
-	GetAllAsociacionBDs() []AsociacionBD
-	GetAsociacionBD(bdid string, usuariobdid string) AsociacionBD
-	RemoveAsociacionBD(adb AsociacionBD)
+	AddDomain(domain *Domain) (err error)
+	UpdateDomain(domain *Domain) (err error)
+	CheckIfDomainExists(name string) bool
+	GetAllDomains() []Domain
+	GetDomain(id string) Domain
+	RemoveDomain(id string) (err error)
 
-	AddDominio(dominio *Dominio) (err error)
-	UpdateDominio(dominio *Dominio) (err error)
-	CheckIfDominioExists(nombre string) bool
-	GetAllDominios() []Dominio
-	GetDominio(id string) Dominio
-	RemoveDominio(id string) (err error)
+	AddAccount(account *Account) (err error)
+	UpdateAccount(account *Account) (err error)
+	CheckIfAccountExists(name string, domainid string) bool
+	GetAllAccounts() []Account
+	GetAccount(id string) Account
+	RemoveAccount(id string) (err error)
+	GetAccounts(domainid string) []Account
 
-	AddCuenta(cuenta *Cuenta) (err error)
-	UpdateCuenta(cuenta *Cuenta) (err error)
-	CheckIfCuentaExists(nombre string, dominioid string) bool
-	GetAllCuentas() []Cuenta
-	GetCuenta(id string) Cuenta
-	RemoveCuenta(id string) (err error)
-	GetCuentas(dominioid string) []Cuenta
-
-	AddLista(lista *Lista) (err error)
-	UpdateLista(lista *Lista) (err error)
-	CheckIfListaExists(nombre string, dominioid string) bool
-	GetAllListas() []Lista
-	GetLista(id string) Lista
-	RemoveLista(id string) (err error)
-	GetListas(dominioid string) []Lista
+	AddList(list *List) (err error)
+	UpdateList(list *List) (err error)
+	CheckIfListExists(name string, domainid string) bool
+	GetAllLists() []List
+	GetList(id string) List
+	RemoveList(id string) (err error)
+	GetLists(domainid string) []List
 
 	AddAutoresponder(aresponder *Autoresponder) (err error)
 	UpdateAutoresponder(aresponder *Autoresponder) (err error)
-	CheckIfAutoresponderExists(cuentaid string) bool
+	CheckIfAutoresponderExists(accountid string) bool
 	GetAllAutoresponders() []Autoresponder
 	GetAutoresponder(id string) Autoresponder
 	RemoveAutoresponder(id string) (err error)
@@ -119,22 +118,22 @@ func init() {
 
 func (mgr *manager) migrate() {
 	mgr.db.AutoMigrate(&Web{})
-	mgr.db.AutoMigrate(&Usuario{})
-	mgr.db.AutoMigrate(&Zona{})
-	mgr.db.AutoMigrate(&Registro{})
-	mgr.db.AutoMigrate(&UsuarioFTP{})
+	mgr.db.AutoMigrate(&User{})
+	mgr.db.AutoMigrate(&Zone{})
+	mgr.db.AutoMigrate(&Record{})
+	mgr.db.AutoMigrate(&FTPUser{})
 	mgr.db.AutoMigrate(&FtpConfig{})
-	mgr.db.AutoMigrate(&UsuarioBD{})
-	mgr.db.AutoMigrate(&AsociacionBD{})
-	mgr.db.AutoMigrate(&BD{})
+	mgr.db.AutoMigrate(&DatabaseUser{})
+	mgr.db.AutoMigrate(&DatabaseAssociation{})
+	mgr.db.AutoMigrate(&Database{})
 	mgr.db.AutoMigrate(&IP{})
-	mgr.db.AutoMigrate(&Dominio{})
-	mgr.db.AutoMigrate(&Cuenta{})
-	mgr.db.AutoMigrate(&Lista{})
+	mgr.db.AutoMigrate(&Domain{})
+	mgr.db.AutoMigrate(&Account{})
+	mgr.db.AutoMigrate(&List{})
 	mgr.db.AutoMigrate(&Autoresponder{})
 
-	// Add default Usuario
-	var usr Usuario
+	// Add default User
+	var usr User
 
 	if mgr.db.First(&usr, "email = ?", "admin@admin.com").RecordNotFound() {
 		usr.Email = "admin@admin.com"

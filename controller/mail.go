@@ -10,48 +10,48 @@ import (
 )
 
 func MailHandler(w http.ResponseWriter, r *http.Request) {
-	UsuarioName := login.GetUNombreUsuario(r)
-	if UsuarioName != "" {
-		dominios := model.Mgr.GetAllDominios()
-		templates.WriteMailTemplate(w,dominios,"")
+	userName := login.GetUserName(r)
+	if userName != "" {
+		domains := model.Mgr.GetAllDomains()
+		templates.WriteMailTemplate(w,domains,"")
 	} else {
 		templates.WriteLoginTemplate(w,"")
 	}
 
 }
 
-func AddDominio(w http.ResponseWriter, r *http.Request) {
-	UsuarioName := login.GetUNombreUsuario(r)
-	if UsuarioName != "" {
+func AddDomain(w http.ResponseWriter, r *http.Request) {
+	userName := login.GetUserName(r)
+	if userName != "" {
 		r.ParseForm()
-		nombre := strings.Join(r.Form["nombre"],"")
+		name := strings.Join(r.Form["name"],"")
 		id := strings.Join(r.Form["id"],"")
 		var err error
 
-		if ( len(id) == 0 ) && ( model.Mgr.CheckIfDominioExists(nombre) ){
-			templates.WriteMailTemplate(w, model.Mgr.GetAllDominios(),"El dominio de e-mail " + nombre + " ya existe")
+		if ( len(id) == 0 ) && ( model.Mgr.CheckIfDomainExists(name) ){
+			templates.WriteMailTemplate(w, model.Mgr.GetAllDomains(),"Email domain " + name + " already exists")
 		} else {
-			var dominio model.Dominio
+			var domain model.Domain
 			if (len(id) != 0) {
-				dominio = model.Mgr.GetDominio(id)
+				domain = model.Mgr.GetDomain(id)
 			}
-			dominio.Nombre = nombre
-			dominio.FiltroSpam = strings.Join(r.Form["filtro"],"")
+			domain.Name = name
+			domain.SpamFilter = strings.Join(r.Form["filter"],"")
 
-			dominio.Estado = 1
+			domain.Status = 1
 			if len(id) == 0 {
-				err = model.Mgr.AddDominio(&dominio)
+				err = model.Mgr.AddDomain(&domain)
 				if err != nil {
-					templates.WriteMailTemplate(w, model.Mgr.GetAllDominios(),"Error al cargar el dominio")
+					templates.WriteMailTemplate(w, model.Mgr.GetAllDomains(),"Error loading domain")
 				} else {
 					http.Redirect(w,r,"/mail",http.StatusSeeOther)
 				}
 			} else {
-				err = model.Mgr.UpdateDominio(&dominio)
+				err = model.Mgr.UpdateDomain(&domain)
 				if err != nil {
-					templates.WriteMailTemplate(w, model.Mgr.GetAllDominios(),"Error al actualizar el dominio")
+					templates.WriteMailTemplate(w, model.Mgr.GetAllDomains(),"Error updating domain")
 				} else {
-					templates.WriteMailTemplate(w, model.Mgr.GetAllDominios(),"")
+					templates.WriteMailTemplate(w, model.Mgr.GetAllDomains(),"")
 				}
 			}
 		}
@@ -60,17 +60,17 @@ func AddDominio(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func RemoveDominio(w http.ResponseWriter, r *http.Request) {
-	UsuarioName := login.GetUNombreUsuario(r)
-	if UsuarioName != "" {
+func RemoveDomain(w http.ResponseWriter, r *http.Request) {
+	userName := login.GetUserName(r)
+	if userName != "" {
 		id := r.URL.Query().Get("id")
 		if len(id) == 0 {
 			http.Redirect(w,r,"/mail",http.StatusSeeOther)
 			return
 		}
-		err := model.Mgr.RemoveDominio(id)
+		err := model.Mgr.RemoveDomain(id)
 		if err != nil {
-			templates.WriteMailTemplate(w, model.Mgr.GetAllDominios(),"Error al borrar el dominio")
+			templates.WriteMailTemplate(w, model.Mgr.GetAllDomains(),"Error deleting domain")
 		} else {
 			http.Redirect(w,r,"/mail",http.StatusSeeOther)
 		}

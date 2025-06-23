@@ -56,11 +56,11 @@ func GetRunningContainers() []model.Container{
 		}
 		containers = append(containers, model.Container{
 			ID: line[0],
-			Nombre: line[1],
-			Imagen: line[2],
-			Comando: line[3],
-			Estado: line[4],
-			Puertos: line[5],
+			Name: line[1],
+			Image: line[2],
+			Command: line[3],
+			Status: line[4],
+			Ports: line[5],
 		})
 	}
 

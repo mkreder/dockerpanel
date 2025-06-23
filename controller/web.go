@@ -12,8 +12,8 @@ import (
 )
 
 func WebHandler(w http.ResponseWriter, r *http.Request) {
-	UsuarioName := login.GetUNombreUsuario(r)
-	if UsuarioName != "" {
+	userName := login.GetUserName(r)
+	if userName != "" {
 		webs := model.Mgr.GetAllWebs()
 		templates.WriteWebTemplate(w,webs,"")
 	} else {
@@ -23,21 +23,21 @@ func WebHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddWeb(w http.ResponseWriter, r *http.Request) {
-	UsuarioName := login.GetUNombreUsuario(r)
-	if UsuarioName != "" {
+	userName := login.GetUserName(r)
+	if userName != "" {
 		r.ParseMultipartForm(32  << 20)
-		dominio := strings.Join(r.Form["dominio"],"")
+		domain := strings.Join(r.Form["domain"],"")
 		id := strings.Join(r.Form["id"],"")
 		var err error
 
-		if ( len(id) == 0 ) && ( model.Mgr.CheckIfWebExists(dominio) ){
-			templates.WriteWebTemplate(w, model.Mgr.GetAllWebs(),"El sitio web " + dominio + " ya existe")
+		if ( len(id) == 0 ) && ( model.Mgr.CheckIfWebExists(domain) ){
+			templates.WriteWebTemplate(w, model.Mgr.GetAllWebs(),"Website " + domain + " already exists")
 		} else {
 			var web model.Web
 			if (len(id) != 0) {
 				web = model.Mgr.GetWeb(id)
 			}
-			web.Dominio = dominio
+			web.Domain = domain
 
 			cgi := strings.Join(r.Form["cgi"],"")
 			if len(cgi) != 0 {
@@ -54,7 +54,7 @@ func AddWeb(w http.ResponseWriter, r *http.Request) {
 					buf := bytes.NewBuffer(nil)
 					io.Copy(buf, pem)
 					pem.Close()
-					web.CertSSL = string(buf.Bytes())
+					web.SSLCert = string(buf.Bytes())
 				}
 			} else {
 				web.SSL = false
@@ -68,31 +68,31 @@ func AddWeb(w http.ResponseWriter, r *http.Request) {
 			}
 
 			phpVersion := strings.Join(r.Form["phpVersion"],"")
-			web.PHPversion = phpVersion
+			web.PHPVersion = phpVersion
 
 
 			phpMethod := strings.Join(r.Form["phpMethod"],"")
-			web.PHPmethod = phpMethod
+			web.PHPMethod = phpMethod
 
 
 			webserver := strings.Join(r.Form["webserver"],"")
-			web.Webserver = webserver
+			web.WebServer = webserver
 
 
 
 
-			web.Estado = 1
+			web.Status = 1
 			if len(id) == 0 {
 				err = model.Mgr.AddWeb(&web)
 				if err != nil {
-					templates.WriteWebTemplate(w, model.Mgr.GetAllWebs(),"Error al agregar el sitio web")
+					templates.WriteWebTemplate(w, model.Mgr.GetAllWebs(),"Error adding website")
 				} else {
 					http.Redirect(w,r,"/web",http.StatusSeeOther)
 				}
 			} else {
 				err = model.Mgr.UpdateWeb(&web)
 				if err != nil {
-					templates.WriteWebTemplate(w, model.Mgr.GetAllWebs(),"Error al actualizar el sitio web")
+					templates.WriteWebTemplate(w, model.Mgr.GetAllWebs(),"Error updating website")
 				} else {
 					http.Redirect(w,r,"/web",http.StatusSeeOther)
 				}
@@ -104,8 +104,8 @@ func AddWeb(w http.ResponseWriter, r *http.Request) {
 }
 
 func RemoveWeb(w http.ResponseWriter, r *http.Request) {
-	UsuarioName := login.GetUNombreUsuario(r)
-	if UsuarioName != "" {
+	userName := login.GetUserName(r)
+	if userName != "" {
 		id := r.URL.Query().Get("id")
 		if len(id) == 0 {
 			http.Redirect(w,r,"/web",http.StatusSeeOther)
@@ -113,7 +113,7 @@ func RemoveWeb(w http.ResponseWriter, r *http.Request) {
 		}
 		err := model.Mgr.RemoveWeb(id)
 		if err != nil {
-			templates.WriteWebTemplate(w,model.Mgr.GetAllWebs(),"Error al borrar el sitio web")
+			templates.WriteWebTemplate(w,model.Mgr.GetAllWebs(),"Error deleting website")
 		} else {
 			http.Redirect(w,r,"/web",http.StatusSeeOther)
 		}
